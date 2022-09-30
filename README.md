@@ -1,2 +1,2 @@
-# dream-calendar-ios
+# Dream Calendar
 DreamTree 팀 Dream Calendar iOS 앱 프로젝트입니다.
