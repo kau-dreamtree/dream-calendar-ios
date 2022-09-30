@@ -1,9 +1,9 @@
 ---
 name: TASK
-about: 백로그에서 Task 하나에 해당하는 이슈입니다.
+about: 백로그에서 Task 하나에 해당하는 이슈 템플릿입니다.
 title: "[EPIC] TASK"
-labels: FEAT
-assignees: ''
+labels: FEAT, FIX
+assignees: tmfrlrkvlek
 
 ---
 
