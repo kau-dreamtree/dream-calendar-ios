@@ -10,40 +10,31 @@ import Foundation
 struct Month: Collection {
     let weeks: [Week]
     
-    init(date: (year: Int, month: Int)?) throws {
-        let stringDate: String
-        if let date = date {
-            stringDate = "\(date.year)-\(date.month)-1"
-        } else {
-            let date = Date()
-            stringDate = "\(date.year)-\(date.month)-1"
-        }
-        
-        guard let startDay = DateFormatter.DCdateFormatter.date(from: stringDate),
-              let nextMonthFirstDay = Calendar.current.date(byAdding: .month, value: 1, to: startDay) ,
-              let lastDay = Calendar.current.date(byAdding: .day, value: -1, to: nextMonthFirstDay)?.day,
+    init(year: Int = Date().year, month: Int = Date().month) throws {
+        guard let startDay = Calendar.current.date(from: DateComponents(calendar: Calendar.current, year: year, month: month, day: 1)),
+              let lastDay = Calendar.current.date(byAdding: DateComponents(calendar: Calendar.current, month: 1, day: -1), to: startDay)?.day,
               let firstWeekday = Days.allCases.firstIndex(of: startDay.weekday) else {
             throw CalendarUIError.monthIndexError
         }
         
-        self.weeks = (0..<5).map { week in
+        self.weeks = (0..<6).compactMap { week in
             let dates: [Date?] = (0..<7).map { day in
                 let value = 7*week+(day-firstWeekday)
-                guard value >= 0 && value <= lastDay else {
+                guard value >= 0 && value < lastDay else {
                     return nil
                 }
                 return Calendar.current.date(byAdding: .day, value: 7*week+(day-firstWeekday), to: startDay)
             }
-            return Week(dates: dates)
+            return dates.compactMap({ $0 }).isEmpty ? nil : Week(dates: dates)
         }
     }
     
     var startIndex : Int { return 0 }
-    var endIndex: Int { return weeks.count - 1 }
+    var endIndex: Int { return self.weeks.count }
     func index(after n: Int) -> Int {
         return n + 1
     }
     subscript(i: Int) -> Week? {
-        return i <= endIndex ? weeks[i] : nil
+        return i < self.endIndex ? self.weeks[i] : nil
     }
 }

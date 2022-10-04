@@ -10,7 +10,7 @@ import CalendarUI
 
 struct ContentView: View {
     var body: some View {
-        CalendarView()
+        CalendarView(year: 2022, month: 12)
     }
 }
 

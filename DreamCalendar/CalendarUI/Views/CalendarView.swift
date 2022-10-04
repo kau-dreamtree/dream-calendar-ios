@@ -14,8 +14,12 @@ enum CalendarUIError: Error {
 public struct CalendarView: View {
     private let monthInfo: Month?
     
-    public init(date: (year: Int, month: Int)? = nil) {
-        self.monthInfo = try? Month(date: date)
+    public init(year: Int? = nil, month: Int? = nil) {
+        if let year = year, let month = month {
+            self.monthInfo = try? Month(year: year, month: month)
+        } else {
+            self.monthInfo = try? Month()
+        }
     }
     
     public var body: some View {
@@ -26,7 +30,7 @@ public struct CalendarView: View {
             
             if let monthInfo = monthInfo {
                 VStack {
-                    ForEach(0..<5) { weekIndex in
+                    ForEach(0..<monthInfo.count, id: \.hashValue) { weekIndex in
                         if let week = monthInfo[weekIndex] {
                             WeekView(week: week)
                         } else {
@@ -48,7 +52,7 @@ public struct CalendarView: View {
 
 struct CalendarView_Previews: PreviewProvider {
     static var previews: some View {
-        CalendarView()
+        CalendarView(year: 2022, month: 7)
             .previewDevice("iPhone 11")
             .padding(EdgeInsets(top: 10, leading: 10, bottom: 20, trailing: 10))
     }
