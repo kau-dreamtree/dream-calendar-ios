@@ -26,18 +26,16 @@ public struct CalendarView: View {
         VStack {
             WeekdayView()
             
-            Divider().padding(0)
-            
             if let monthInfo = monthInfo {
                 VStack {
                     ForEach(0..<monthInfo.count, id: \.hashValue) { weekIndex in
+                        Divider().padding(0)
                         if let week = monthInfo[weekIndex] {
                             WeekView(week: week)
                         } else {
                             Text("")
                         }
                         Spacer()
-                        Divider()
                     }
                 }
             } else {
@@ -52,7 +50,7 @@ public struct CalendarView: View {
 
 struct CalendarView_Previews: PreviewProvider {
     static var previews: some View {
-        CalendarView(year: 2022, month: 7)
+        CalendarView(year: 2022, month: 10)
             .previewDevice("iPhone 11")
             .padding(EdgeInsets(top: 10, leading: 10, bottom: 20, trailing: 10))
     }

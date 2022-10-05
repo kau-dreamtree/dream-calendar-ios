@@ -24,6 +24,11 @@ public extension Date {
         let rawValue = Calendar.current.component(.weekday, from: self)
         return Days(rawValue: rawValue) ?? Days.firstWeekday
     }
+    
+    var isHoliday: Bool {
+        // TODO: 수정 필요 - 공휴일 판단 기준
+        return self.weekday == .sun
+    }
 }
 
 public extension DateFormatter {

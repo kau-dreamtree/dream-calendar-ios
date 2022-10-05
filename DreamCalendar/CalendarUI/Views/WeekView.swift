@@ -18,12 +18,11 @@ struct WeekView: View {
         HStack {
             Spacer()
             ForEach(0..<7) { day in
-                if let day = self.week[day]?.day {
-                    Text("\(day)")
+                if let day = self.week[day] {
+                    Text("\(day.day)")
                         .font(.AppleSD10)
-                        .foregroundColor(.dayBlack)
+                        .foregroundColor(day.dayColor)
                         .frame(width: 12, height: 11, alignment: .center)
-                        .padding(EdgeInsets(top: 3, leading: 0, bottom: 0, trailing: 0))
                 } else {
                     Text("0")
                         .foregroundColor(.clear)
@@ -31,5 +30,7 @@ struct WeekView: View {
                 Spacer()
             }
         }
+        .frame(height: 11, alignment: .center)
+        .padding(EdgeInsets(top: 3, leading: 0, bottom: 0, trailing: 0))
     }
 }
