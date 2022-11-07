@@ -8,18 +8,18 @@
 import SwiftUI
 import CalendarUI
 
-struct ContentView: View {
-    var body: some View {
-        CalendarView(year: 2022, month: 10)
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-            .padding(EdgeInsets(top: 10, leading: 10, bottom: 20, trailing: 10))
-    }
-}
+//struct ContentView: View {
+//    var body: some View {
+//        CalendarView(year: 2022, month: 10)
+//    }
+//}
+//
+//struct ContentView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ContentView()
+//            .padding(EdgeInsets(top: 10, leading: 10, bottom: 20, trailing: 10))
+//    }
+//}
 
 //import CoreData
 //
