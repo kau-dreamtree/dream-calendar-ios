@@ -20,7 +20,7 @@ struct WeekView: View {
             ForEach(0..<7) { day in
                 if let day = self.week[day] {
                     Text("\(day.day)")
-                        .font(.AppleSD10)
+                        .font(.AppleSDSemiBold12)
                         .foregroundColor(day.dayColor)
                         .frame(width: 15, height: 13, alignment: .center)
                 } else {

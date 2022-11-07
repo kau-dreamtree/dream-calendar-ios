@@ -8,9 +8,10 @@
 import SwiftUI
 
 public extension Font {
-    static let AppleSD08 = Font.custom("Apple SD Gothic Neo", size: 8)
-    static let AppleSD10 = Font.custom("Apple SD Gothic Neo", size: 10)
-    static let AppleSD12 = Font.custom("Apple SD Gothic Neo", size: 12)
-    static let AppleSD14 = Font.custom("Apple SD Gothic Neo", size: 14)
-    static let AppleSD16 = Font.custom("Apple SD Gothic Neo", size: 16)
+    static let AppleSDSemiBold08 = Font.custom("Apple SD Gothic Neo", size: 8).weight(.semibold)
+    static let AppleSDSemiBold10 = Font.custom("Apple SD Gothic Neo", size: 10).weight(.semibold)
+    static let AppleSDSemiBold12 = Font.custom("Apple SD Gothic Neo", size: 12).weight(.semibold)
+    static let AppleSDSemiBold14 = Font.custom("Apple SD Gothic Neo", size: 14).weight(.semibold)
+    static let AppleSDSemiBold16 = Font.custom("Apple SD Gothic Neo", size: 16).weight(.semibold)
+    static let AppleSDBold16 = Font.custom("Apple SD Gothic Neo", size: 16).weight(.bold)
 }

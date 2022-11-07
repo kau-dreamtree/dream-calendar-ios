@@ -14,7 +14,7 @@ struct WeekdayView: View {
             ForEach(Days.allCases, id: \.hashValue) { day in
                 Text(String(describing: day))
                     .foregroundColor(Color.dayGray)
-                    .font(Font.AppleSD10)
+                    .font(Font.AppleSDSemiBold12)
                     .frame(width: 15, height: 13, alignment: .center)
                 Spacer()
             }
