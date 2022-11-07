@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4A0724552918B615005AA8B7 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0724542918B615005AA8B7 /* MainViewModel.swift */; };
+		4A0724572918B647005AA8B7 /* MainTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0724562918B647005AA8B7 /* MainTopView.swift */; };
+		4A0724592918B970005AA8B7 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0724582918B970005AA8B7 /* View+Extension.swift */; };
 		4A08421028EA99FA003E70A4 /* DreamCalendarApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A08420F28EA99FA003E70A4 /* DreamCalendarApp.swift */; };
 		4A08421228EA99FA003E70A4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A08421128EA99FA003E70A4 /* ContentView.swift */; };
 		4A08421428EA99FB003E70A4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4A08421328EA99FB003E70A4 /* Assets.xcassets */; };
@@ -16,6 +19,8 @@
 		4A08422628EA99FC003E70A4 /* DreamCalendarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A08422528EA99FC003E70A4 /* DreamCalendarTests.swift */; };
 		4A08423028EA99FC003E70A4 /* DreamCalendarUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A08422F28EA99FC003E70A4 /* DreamCalendarUITests.swift */; };
 		4A08423228EA99FC003E70A4 /* DreamCalendarUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A08423128EA99FC003E70A4 /* DreamCalendarUITestsLaunchTests.swift */; };
+		4A3CFC1B2910B0780034F4BA /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A3CFC1A2910B0780034F4BA /* MainView.swift */; };
+		4A3CFC1E2910B4730034F4BA /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A3CFC1D2910B4730034F4BA /* Color+Extension.swift */; };
 		4A62B22528EAA04500FBE1F6 /* CalendarUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A62B21D28EAA04500FBE1F6 /* CalendarUI.framework */; };
 		4A62B22C28EAA04500FBE1F6 /* CalendarUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A62B22B28EAA04500FBE1F6 /* CalendarUITests.swift */; };
 		4A62B23028EAA04500FBE1F6 /* CalendarUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A62B21D28EAA04500FBE1F6 /* CalendarUI.framework */; };
@@ -85,6 +90,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4A0724542918B615005AA8B7 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
+		4A0724562918B647005AA8B7 /* MainTopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTopView.swift; sourceTree = "<group>"; };
+		4A0724582918B970005AA8B7 /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
 		4A08420C28EA99FA003E70A4 /* DreamCalendar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DreamCalendar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A08420F28EA99FA003E70A4 /* DreamCalendarApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DreamCalendarApp.swift; sourceTree = "<group>"; };
 		4A08421128EA99FA003E70A4 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -97,6 +105,8 @@
 		4A08422B28EA99FC003E70A4 /* DreamCalendarUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DreamCalendarUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A08422F28EA99FC003E70A4 /* DreamCalendarUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DreamCalendarUITests.swift; sourceTree = "<group>"; };
 		4A08423128EA99FC003E70A4 /* DreamCalendarUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DreamCalendarUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		4A3CFC1A2910B0780034F4BA /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		4A3CFC1D2910B4730034F4BA /* Color+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
 		4A62B21D28EAA04500FBE1F6 /* CalendarUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CalendarUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A62B22428EAA04500FBE1F6 /* CalendarUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CalendarUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A62B22B28EAA04500FBE1F6 /* CalendarUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarUITests.swift; sourceTree = "<group>"; };
@@ -153,6 +163,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4A0724512918B5E7005AA8B7 /* Scene */ = {
+			isa = PBXGroup;
+			children = (
+				4A0724532918B607005AA8B7 /* Main */,
+			);
+			path = Scene;
+			sourceTree = "<group>";
+		};
+		4A0724532918B607005AA8B7 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				4A0724542918B615005AA8B7 /* MainViewModel.swift */,
+				4A3CFC1A2910B0780034F4BA /* MainView.swift */,
+				4A0724562918B647005AA8B7 /* MainTopView.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
 		4A08420328EA99FA003E70A4 = {
 			isa = PBXGroup;
 			children = (
@@ -180,6 +208,8 @@
 		4A08420E28EA99FA003E70A4 /* DreamCalendar */ = {
 			isa = PBXGroup;
 			children = (
+				4A0724512918B5E7005AA8B7 /* Scene */,
+				4A3CFC1C2910B45D0034F4BA /* Extensions */,
 				4A08420F28EA99FA003E70A4 /* DreamCalendarApp.swift */,
 				4A08421128EA99FA003E70A4 /* ContentView.swift */,
 				4A08421828EA99FB003E70A4 /* Persistence.swift */,
@@ -213,6 +243,15 @@
 				4A08423128EA99FC003E70A4 /* DreamCalendarUITestsLaunchTests.swift */,
 			);
 			path = DreamCalendarUITests;
+			sourceTree = "<group>";
+		};
+		4A3CFC1C2910B45D0034F4BA /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				4A3CFC1D2910B4730034F4BA /* Color+Extension.swift */,
+				4A0724582918B970005AA8B7 /* View+Extension.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		4A62B21E28EAA04500FBE1F6 /* CalendarUI */ = {
@@ -468,10 +507,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4A0724552918B615005AA8B7 /* MainViewModel.swift in Sources */,
 				4A08421928EA99FB003E70A4 /* Persistence.swift in Sources */,
+				4A3CFC1E2910B4730034F4BA /* Color+Extension.swift in Sources */,
 				4A08421C28EA99FB003E70A4 /* DreamCalendar.xcdatamodeld in Sources */,
+				4A3CFC1B2910B0780034F4BA /* MainView.swift in Sources */,
 				4A08421228EA99FA003E70A4 /* ContentView.swift in Sources */,
 				4A08421028EA99FA003E70A4 /* DreamCalendarApp.swift in Sources */,
+				4A0724592918B970005AA8B7 /* View+Extension.swift in Sources */,
+				4A0724572918B647005AA8B7 /* MainTopView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
