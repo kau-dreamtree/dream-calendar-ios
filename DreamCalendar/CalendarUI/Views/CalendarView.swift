@@ -23,13 +23,13 @@ public struct CalendarView: View {
     }
     
     public var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             WeekdayView()
             
             if let monthInfo = monthInfo {
-                VStack {
+                VStack(spacing: 0) {
                     ForEach(0..<monthInfo.count, id: \.hashValue) { weekIndex in
-                        Divider().padding(0)
+                        Divider()
                         if let week = monthInfo[weekIndex] {
                             WeekView(week: week)
                         } else {

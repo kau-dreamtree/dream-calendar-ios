@@ -22,7 +22,7 @@ struct WeekView: View {
                     Text("\(day.day)")
                         .font(.AppleSD10)
                         .foregroundColor(day.dayColor)
-                        .frame(width: 12, height: 11, alignment: .center)
+                        .frame(width: 15, height: 13, alignment: .center)
                 } else {
                     Text("0")
                         .foregroundColor(.clear)
@@ -31,6 +31,6 @@ struct WeekView: View {
             }
         }
         .frame(height: 11, alignment: .center)
-        .padding(EdgeInsets(top: 3, leading: 0, bottom: 0, trailing: 0))
+        .padding(EdgeInsets(top: 5, leading: 0, bottom: 0, trailing: 0))
     }
 }
