@@ -9,16 +9,23 @@ import SwiftUI
 
 enum CalendarUIError: Error {
     case monthIndexError
+    case weekIndexError
 }
 
 public struct CalendarView: View {
     private let monthInfo: Month?
+    private let schedules: [Schedules]
     
-    public init(year: Int? = nil, month: Int? = nil) {
+    public init(year: Int? = nil, month: Int? = nil, schedules: [Schedule]) {
         if let year = year, let month = month {
             self.monthInfo = try? Month(year: year, month: month)
         } else {
             self.monthInfo = try? Month()
+        }
+        if let month = self.monthInfo {
+            self.schedules = Schedules.sortingSchedules(schedules, on: month)
+        } else {
+            self.schedules = []
         }
     }
     
@@ -31,7 +38,7 @@ public struct CalendarView: View {
                     ForEach(0..<monthInfo.count, id: \.hashValue) { weekIndex in
                         Divider()
                         if let week = monthInfo[weekIndex] {
-                            WeekView(week: week)
+                            WeekView(week: week, schedules: schedules[weekIndex])
                         } else {
                             Text("")
                         }
@@ -50,7 +57,16 @@ public struct CalendarView: View {
 
 struct CalendarView_Previews: PreviewProvider {
     static var previews: some View {
-        CalendarView(year: 2022, month: 10)
+        try? CalendarView(year: 2022,
+                          month: 10,
+                          schedules: [Schedule(id: UUID(),
+                                               serverId: 1234,
+                                               title: "heelo",
+                                               isAllDay: true,
+                                               startTime: Date.now,
+                                               endTime: Calendar.current.date(byAdding: .day, value: 1, to: Date.now) ?? Date.now,
+                                               tag: .babyBlue,
+                                               isValid: true)])
             .previewDevice("iPhone 11")
             .padding(EdgeInsets(top: 10, leading: 10, bottom: 20, trailing: 10))
     }

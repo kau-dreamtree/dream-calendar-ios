@@ -23,13 +23,16 @@ protocol MainViewDelegate {
 
 struct MainView: View, MainViewDelegate {
     @State private var viewModel: MainViewModel = MainViewModel()
+    @State private var isShowAlert: Bool = false
+    @State private var error: Error? = nil
     
     var body: some View {
         VStack(spacing: 0) {
             MainTopView(topTitle: self.viewModel.currentTopTitle,
                         delegate: self)
             CalendarView(year: self.viewModel.currentYear,
-                         month: self.viewModel.currentMonth)
+                         month: self.viewModel.currentMonth,
+                         schedules: testSchedules)
         }
     }
     

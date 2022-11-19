@@ -35,6 +35,7 @@
 		4A62B24928EBEE6C00FBE1F6 /* Days.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A62B24828EBEE6C00FBE1F6 /* Days.swift */; };
 		4A62B24C28EBEEE300FBE1F6 /* WeekdayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A62B24B28EBEEE300FBE1F6 /* WeekdayView.swift */; };
 		4A62B24E28EBEF0500FBE1F6 /* WeekView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A62B24D28EBEF0500FBE1F6 /* WeekView.swift */; };
+		4ACF64632920C19F00D335A3 /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ACF64622920C19F00D335A3 /* Schedule.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -120,6 +121,7 @@
 		4A62B24828EBEE6C00FBE1F6 /* Days.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Days.swift; sourceTree = "<group>"; };
 		4A62B24B28EBEEE300FBE1F6 /* WeekdayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekdayView.swift; sourceTree = "<group>"; };
 		4A62B24D28EBEF0500FBE1F6 /* WeekView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekView.swift; sourceTree = "<group>"; };
+		4ACF64622920C19F00D335A3 /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -289,6 +291,7 @@
 				4A62B24428EBEE6200FBE1F6 /* Month.swift */,
 				4A62B24628EBEE6700FBE1F6 /* Week.swift */,
 				4A62B24828EBEE6C00FBE1F6 /* Days.swift */,
+				4ACF64622920C19F00D335A3 /* Schedule.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -548,6 +551,7 @@
 				4A62B24928EBEE6C00FBE1F6 /* Days.swift in Sources */,
 				4A62B24E28EBEF0500FBE1F6 /* WeekView.swift in Sources */,
 				4A62B23F28EBEDE600FBE1F6 /* Date+Extension.swift in Sources */,
+				4ACF64632920C19F00D335A3 /* Schedule.swift in Sources */,
 				4A62B24728EBEE6700FBE1F6 /* Week.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

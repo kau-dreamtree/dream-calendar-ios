@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum Days: Int, CustomStringConvertible, CaseIterable {
+public enum Days: Int, CustomStringConvertible, CaseIterable, Codable {
     
     case sun = 1, mon, tue, wed, thu, fri, sat
     

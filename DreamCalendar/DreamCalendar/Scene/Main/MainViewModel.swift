@@ -15,10 +15,10 @@ protocol DateManipulationDelegate {
 
 @propertyWrapper
 struct MonthValue {
-    private var month = Date().month
+    private var month: Int = Date().month
     var wrappedValue: Int {
         get { return month }
-        set { month = max(1, min(newValue, 12)) }
+        set { self.month = max(1, min(newValue, 12)) }
     }
 }
 
@@ -95,5 +95,11 @@ struct MainViewModel: DateManipulationDelegate {
                                  currentMonth: self.currentMonth + 1,
                                  currentDay: nil)
         }
+    }
+    
+    mutating func chooseSpecificDay(year: Int? = nil, month: Int? = nil, day: Int? = nil) {
+        self = MainViewModel(currentYear: year ?? self.currentYear,
+                             currentMonth: month ?? self.currentMonth,
+                             currentDay: day ?? self.currentDay)
     }
 }
