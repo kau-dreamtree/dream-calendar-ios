@@ -8,23 +8,11 @@
 import SwiftUI
 import CalendarUI
 
-protocol MainViewDelegate {
-    
-    // Main Top Left View
-    var notNeedTodayButton: Bool { get }
-    func todayButtonDidTouched()
-    
-    // Main Top Middle View
-    func previousButtonDidTouched()
-    func nextButtonDidTouched()
-    
-    // Main Top Right View
-}
-
-struct MainView: View, MainViewDelegate {
+struct MainView: View, MainTopViewDelegate {
     @State private var viewModel: MainViewModel = MainViewModel()
     @State private var isShowAlert: Bool = false
     @State private var error: Error? = nil
+    @State private var scheduleAdditionViewIsPresented: Bool = false
     
     var body: some View {
         VStack(spacing: 0) {
@@ -33,6 +21,8 @@ struct MainView: View, MainViewDelegate {
             CalendarView(year: self.viewModel.currentYear,
                          month: self.viewModel.currentMonth,
                          schedules: testSchedules)
+            .sheet(isPresented: $scheduleAdditionViewIsPresented,
+                   content: ScheduleAdditionView.init)
         }
     }
     
@@ -50,6 +40,14 @@ struct MainView: View, MainViewDelegate {
     
     func nextButtonDidTouched() {
         self.viewModel.goToNextMonth()
+    }
+    
+    func searchButtonDidTouched() {
+        print("search button clicked")
+    }
+    
+    func writeButtonDidTouched() {
+        self.scheduleAdditionViewIsPresented.toggle()
     }
 }
 

@@ -15,9 +15,9 @@ struct WeekdayView: View {
                 Text(String(describing: day))
                     .foregroundColor(Color.dayGray)
                     .font(Font.AppleSDSemiBold12)
-                    .frame(width: 15, height: 13, alignment: .center)
-                Spacer()
+                    .frame(maxWidth: .infinity, minHeight: 13, maxHeight: 13, alignment: .center)
             }
+            Spacer()
         }
         .frame(height: 13, alignment: .bottom)
         .padding(EdgeInsets(top: 7, leading: 0, bottom: 6, trailing: 0))

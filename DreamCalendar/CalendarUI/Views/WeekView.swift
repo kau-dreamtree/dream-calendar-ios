@@ -53,13 +53,14 @@ struct WeekView: View {
                     Text("\(day.day)")
                         .font(.AppleSDSemiBold12)
                         .foregroundColor(day.dayColor)
-                        .frame(width: 15, height: 13, alignment: .center)
+                        .frame(maxWidth: .infinity, minHeight: 13, maxHeight: 13, alignment: .center)
                 } else {
                     Text("0")
                         .foregroundColor(.clear)
+                        .frame(maxWidth: .infinity, minHeight: 13, maxHeight: 13, alignment: .center)
                 }
-                Spacer()
             }
+            Spacer()
         }
     }
     
