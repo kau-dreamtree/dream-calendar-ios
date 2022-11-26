@@ -39,7 +39,12 @@
 		4A62B24928EBEE6C00FBE1F6 /* Days.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A62B24828EBEE6C00FBE1F6 /* Days.swift */; };
 		4A62B24C28EBEEE300FBE1F6 /* WeekdayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A62B24B28EBEEE300FBE1F6 /* WeekdayView.swift */; };
 		4A62B24E28EBEF0500FBE1F6 /* WeekView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A62B24D28EBEF0500FBE1F6 /* WeekView.swift */; };
+		4AAC0A452931D9DB009CB29C /* ScheduleAdditionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAC0A442931D9DB009CB29C /* ScheduleAdditionViewModel.swift */; };
+		4AAC0A472931DA06009CB29C /* DateStringView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAC0A462931DA06009CB29C /* DateStringView.swift */; };
+		4AAC0A492931DBB5009CB29C /* Tag+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAC0A482931DBB5009CB29C /* Tag+Extension.swift */; };
+		4AAC0A4B2931DCDE009CB29C /* Tag+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAC0A4A2931DCDE009CB29C /* Tag+Extension.swift */; };
 		4ACF64632920C19F00D335A3 /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ACF64622920C19F00D335A3 /* Schedule.swift */; };
+		4AD96EF82928B76A00C31C06 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD96EF72928B76A00C31C06 /* Date+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -129,7 +134,12 @@
 		4A62B24828EBEE6C00FBE1F6 /* Days.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Days.swift; sourceTree = "<group>"; };
 		4A62B24B28EBEEE300FBE1F6 /* WeekdayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekdayView.swift; sourceTree = "<group>"; };
 		4A62B24D28EBEF0500FBE1F6 /* WeekView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekView.swift; sourceTree = "<group>"; };
+		4AAC0A442931D9DB009CB29C /* ScheduleAdditionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleAdditionViewModel.swift; sourceTree = "<group>"; };
+		4AAC0A462931DA06009CB29C /* DateStringView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateStringView.swift; sourceTree = "<group>"; };
+		4AAC0A482931DBB5009CB29C /* Tag+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tag+Extension.swift"; sourceTree = "<group>"; };
+		4AAC0A4A2931DCDE009CB29C /* Tag+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tag+Extension.swift"; sourceTree = "<group>"; };
 		4ACF64622920C19F00D335A3 /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
+		4AD96EF72928B76A00C31C06 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -260,6 +270,8 @@
 			isa = PBXGroup;
 			children = (
 				4A27D0D629289050007FC2DD /* SchduleAdditionView.swift */,
+				4AAC0A442931D9DB009CB29C /* ScheduleAdditionViewModel.swift */,
+				4AAC0A462931DA06009CB29C /* DateStringView.swift */,
 			);
 			path = ScheduleAddition;
 			sourceTree = "<group>";
@@ -280,6 +292,8 @@
 			children = (
 				4A3CFC1D2910B4730034F4BA /* Color+Extension.swift */,
 				4A0724582918B970005AA8B7 /* View+Extension.swift */,
+				4AD96EF72928B76A00C31C06 /* Date+Extension.swift */,
+				4AAC0A482931DBB5009CB29C /* Tag+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -309,6 +323,7 @@
 				4A62B23C28EBEDD000FBE1F6 /* Color+Extension.swift */,
 				4A62B23E28EBEDE600FBE1F6 /* Date+Extension.swift */,
 				4A62B24028EBEE0400FBE1F6 /* Font+Extension.swift */,
+				4AAC0A4A2931DCDE009CB29C /* Tag+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -544,13 +559,17 @@
 				4A08421928EA99FB003E70A4 /* Persistence.swift in Sources */,
 				4A3CFC1E2910B4730034F4BA /* Color+Extension.swift in Sources */,
 				4A27D0D729289050007FC2DD /* SchduleAdditionView.swift in Sources */,
+				4AAC0A452931D9DB009CB29C /* ScheduleAdditionViewModel.swift in Sources */,
 				4A08421C28EA99FB003E70A4 /* DreamCalendar.xcdatamodeld in Sources */,
 				4A27D0DC2928A224007FC2DD /* MainTopLeftView.swift in Sources */,
 				4A3CFC1B2910B0780034F4BA /* MainView.swift in Sources */,
 				4A08421228EA99FA003E70A4 /* ContentView.swift in Sources */,
+				4AAC0A492931DBB5009CB29C /* Tag+Extension.swift in Sources */,
 				4A08421028EA99FA003E70A4 /* DreamCalendarApp.swift in Sources */,
+				4AD96EF82928B76A00C31C06 /* Date+Extension.swift in Sources */,
 				4A0724592918B970005AA8B7 /* View+Extension.swift in Sources */,
 				4A0724572918B647005AA8B7 /* MainTopView.swift in Sources */,
+				4AAC0A472931DA06009CB29C /* DateStringView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -583,6 +602,7 @@
 				4A62B24928EBEE6C00FBE1F6 /* Days.swift in Sources */,
 				4A62B24E28EBEF0500FBE1F6 /* WeekView.swift in Sources */,
 				4A62B23F28EBEDE600FBE1F6 /* Date+Extension.swift in Sources */,
+				4AAC0A4B2931DCDE009CB29C /* Tag+Extension.swift in Sources */,
 				4ACF64632920C19F00D335A3 /* Schedule.swift in Sources */,
 				4A62B24728EBEE6700FBE1F6 /* Week.swift in Sources */,
 			);

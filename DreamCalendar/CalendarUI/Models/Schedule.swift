@@ -25,7 +25,7 @@ public struct Schedule: Codable {
     let isAllDay: Bool
     let startTime: Date
     let endTime: Date
-    let tag: Tag
+    let tag: TagUI
     let isValid: Bool
     
     var length: Int {
@@ -126,6 +126,6 @@ public struct Schedules: Codable, Collection {
     }
 }
 
-enum Tag: Int, Codable {
+public enum TagUI: Int, Codable {
     case babyBlue = 1, green, yellow, orange, red, pink, purple, grey, navy, black
 }

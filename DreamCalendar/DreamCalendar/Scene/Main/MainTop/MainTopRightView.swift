@@ -30,7 +30,6 @@ struct MainTopRightView: View {
             }
             .frame(height: 20)
             Button {
-                //TODO: action 지정 필요
                 delegate.writeButtonDidTouched()
             } label: {
                 Image(systemName: "square.and.pencil")

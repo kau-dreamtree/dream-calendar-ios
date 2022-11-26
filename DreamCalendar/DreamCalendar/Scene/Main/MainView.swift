@@ -18,11 +18,10 @@ struct MainView: View, MainTopViewDelegate {
         VStack(spacing: 0) {
             MainTopView(topTitle: self.viewModel.currentTopTitle,
                         delegate: self)
-            CalendarView(year: self.viewModel.currentYear,
-                         month: self.viewModel.currentMonth,
+            CalendarView(date: self.viewModel.selectedDate,
                          schedules: testSchedules)
             .sheet(isPresented: $scheduleAdditionViewIsPresented,
-                   content: ScheduleAdditionView.init)
+                   content: presentScheduleAdditionModalView)
         }
     }
     
@@ -47,6 +46,36 @@ struct MainView: View, MainTopViewDelegate {
     }
     
     func writeButtonDidTouched() {
+        self.scheduleAdditionViewIsPresented.toggle()
+    }
+    
+    private func presentScheduleAdditionModalView() -> some View {
+        
+        let closeButtonTitle = "닫기"
+        let completeButtonTitle = "완료"
+        
+        return NavigationView {
+            ScheduleAdditionView(lastClickedDate: self.viewModel.selectedDate)
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button(closeButtonTitle) {
+                            self.closeSchduleAdditionButtonDidTouched()
+                        }
+                        .foregroundColor(TagType.babyBlue.color)
+                        .font(.AppleSDSemiBold14)
+                    }
+                    ToolbarItem(placement: .destructiveAction) {
+                        Button(completeButtonTitle) {
+                            self.closeSchduleAdditionButtonDidTouched()
+                        }
+                        .foregroundColor(TagType.babyBlue.color)
+                        .font(.AppleSDSemiBold14)
+                    }
+                }
+        }
+    }
+    
+    private func closeSchduleAdditionButtonDidTouched() {
         self.scheduleAdditionViewIsPresented.toggle()
     }
 }
