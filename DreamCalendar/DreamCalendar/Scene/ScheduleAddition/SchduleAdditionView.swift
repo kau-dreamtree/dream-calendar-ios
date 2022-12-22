@@ -12,12 +12,11 @@ import CalendarUI
 
 struct ScheduleAdditionView: View {
     
-    private let tag: TagInfo = (TagType.babyBlue, TagType.babyBlue.defaultTitle)
-    
-    @State private var title = ""
-    @State private var isAllDay = false
-    @State private var startDate: Date = TimeInfo.defaultTime(.start, date: Date()).toDate()
-    @State private var endDate: Date = TimeInfo.defaultTime(.end, date: Date()).toDate()
+    @Binding private var title: String
+    @Binding private var isAllDay: Bool
+    @Binding private var startDate: Date
+    @Binding private var endDate: Date
+    @Binding private var tag: TagInfo
     @State private var setting: SettingState = .none
     
     enum SettingState {
@@ -28,9 +27,12 @@ struct ScheduleAdditionView: View {
         static let bottomInputViewPadding: CGFloat = 10
     }
     
-    init(lastClickedDate date: Date) {
-        self.startDate = TimeInfo.defaultTime(.start, date: date).toDate()
-        self.endDate = TimeInfo.defaultTime(.end, date: date).toDate()
+    init(title: Binding<String>, isAllDay: Binding<Bool>, startDate: Binding<Date>, endDate: Binding<Date>, tag: Binding<TagInfo>) {
+        self._title = title
+        self._isAllDay = isAllDay
+        self._startDate = startDate
+        self._endDate = endDate
+        self._tag = tag
     }
     
     var body: some View {

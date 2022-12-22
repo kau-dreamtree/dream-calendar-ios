@@ -14,6 +14,12 @@ struct MainView: View, MainTopViewDelegate {
     @State private var error: Error? = nil
     @State private var scheduleAdditionViewIsPresented: Bool = false
     
+    @State private var newTitle = ""
+    @State private var newIsAllDay = false
+    @State private var newStartDate: Date = TimeInfo.defaultTime(.start, date: Date()).toDate()
+    @State private var newEndDate: Date = TimeInfo.defaultTime(.end, date: Date()).toDate()
+    @State private var newTag: TagInfo = (TagType.babyBlue, TagType.babyBlue.defaultTitle)
+    
     var body: some View {
         VStack(spacing: 0) {
             MainTopView(topTitle: self.viewModel.currentTopTitle,
@@ -54,8 +60,15 @@ struct MainView: View, MainTopViewDelegate {
         let closeButtonTitle = "닫기"
         let completeButtonTitle = "완료"
         
+        self.newStartDate = TimeInfo.defaultTime(.start, date: self.viewModel.selectedDate).toDate()
+        self.newEndDate = TimeInfo.defaultTime(.end, date: self.viewModel.selectedDate).toDate()
+        
         return NavigationView {
-            ScheduleAdditionView(lastClickedDate: self.viewModel.selectedDate)
+            ScheduleAdditionView(title: self.$newTitle,
+                                 isAllDay: self.$newIsAllDay,
+                                 startDate: self.$newStartDate,
+                                 endDate: self.$newEndDate,
+                                 tag: self.$newTag)
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
                         Button(closeButtonTitle) {
@@ -66,7 +79,7 @@ struct MainView: View, MainTopViewDelegate {
                     }
                     ToolbarItem(placement: .destructiveAction) {
                         Button(completeButtonTitle) {
-                            self.closeSchduleAdditionButtonDidTouched()
+                            self.uploadScheduleButtionDidTouched()
                         }
                         .foregroundColor(TagType.babyBlue.color)
                         .font(.AppleSDSemiBold14)
@@ -77,6 +90,12 @@ struct MainView: View, MainTopViewDelegate {
     
     private func closeSchduleAdditionButtonDidTouched() {
         self.scheduleAdditionViewIsPresented.toggle()
+    }
+    
+    private func uploadScheduleButtionDidTouched() {
+        self.scheduleAdditionViewIsPresented.toggle()
+        
+        
     }
 }
 
