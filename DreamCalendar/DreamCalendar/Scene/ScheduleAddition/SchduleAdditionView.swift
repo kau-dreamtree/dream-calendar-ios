@@ -11,20 +11,26 @@ import CalendarUI
 
 
 struct ScheduleAdditionView: View {
-    private var viewModel: ScheduleAdditionViewModel
-    private let startTime: TimeInfo
-    private let endTime: TimeInfo
-    private let tag: TagInfo
+    
+    private let tag: TagInfo = (TagType.babyBlue, TagType.babyBlue.defaultTitle)
+    
+    @State private var title = ""
+    @State private var isAllDay = false
+    @State private var startDate: Date = TimeInfo.defaultTime(.start, date: Date()).toDate()
+    @State private var endDate: Date = TimeInfo.defaultTime(.end, date: Date()).toDate()
+    @State private var setting: SettingState = .none
+    
+    enum SettingState {
+        case none, startDate, endDate, tag
+    }
     
     private struct Constant {
         static let bottomInputViewPadding: CGFloat = 10
     }
     
     init(lastClickedDate date: Date) {
-        self.viewModel = ScheduleAdditionViewModel(date: date)
-        self.startTime = self.viewModel.startTime
-        self.endTime = self.viewModel.endTime
-        self.tag = self.viewModel.tag
+        self.startDate = TimeInfo.defaultTime(.start, date: date).toDate()
+        self.endDate = TimeInfo.defaultTime(.end, date: date).toDate()
     }
     
     var body: some View {
@@ -32,9 +38,15 @@ struct ScheduleAdditionView: View {
             Color.additionViewBackgroundGray
                 .edgesIgnoringSafeArea(.all)
             VStack(spacing: 0) {
-                ScheduleAdditionTitleInputView()
+                ScheduleAdditionTitleInputView(title: self.$title, additionState: self.$setting)
                 Divider()
-                ScheduleAdditionBottomInputView(defaultStartTime: self.startTime, endTime: self.endTime, tag: self.tag)
+                ScheduleAdditionBottomInputView(isAllDay: self.$isAllDay,
+                                                startDate: self.$startDate,
+                                                endDate: self.$endDate,
+                                                additionState: self.$setting,
+                                                defaultStartTime: self.startDate.toTimeInfo(),
+                                                endTime: self.endDate.toTimeInfo(),
+                                                tag: self.tag)
                 Spacer()
             }
         }
@@ -42,7 +54,8 @@ struct ScheduleAdditionView: View {
 }
 
 struct ScheduleAdditionTitleInputView: View {
-    @State private(set) var title: String = ""
+    @Binding private(set) var title: String
+    @Binding private(set) var additionState: ScheduleAdditionView.SettingState
     
     private struct Constant {
         static let topPadding: CGFloat = 40
@@ -52,7 +65,7 @@ struct ScheduleAdditionTitleInputView: View {
     }
     
     var body: some View {
-        TextField("제목", text: $title)
+        TextField("제목", text: self.$title)
             .font(.AppleSDBold16)
             .padding(EdgeInsets(top: Constant.topPadding,
                                 leading: Constant.leadingPadding,
@@ -63,7 +76,11 @@ struct ScheduleAdditionTitleInputView: View {
 
 struct ScheduleAdditionBottomInputView: View {
     
-    @State private(set) var isAllDay: Bool = false
+    @Binding private(set) var isAllDay: Bool
+    @Binding private(set) var startDate: Date
+    @Binding private(set) var endDate: Date
+    @Binding private(set) var additionState: ScheduleAdditionView.SettingState
+    @State private(set) var showStartDatePicker: Bool = false
     private let defaultStartTime: TimeInfo
     private let defaultEndTime: TimeInfo
     private let tag: TagInfo
@@ -91,7 +108,12 @@ struct ScheduleAdditionBottomInputView: View {
         }
     }
     
-    init(defaultStartTime startTime: TimeInfo, endTime: TimeInfo, tag: TagInfo) {
+    init(isAllDay: Binding<Bool>, startDate: Binding<Date>, endDate: Binding<Date>, additionState: Binding<ScheduleAdditionView.SettingState>, defaultStartTime startTime: TimeInfo, endTime: TimeInfo, tag: TagInfo) {
+        self._isAllDay = isAllDay
+        self._startDate = startDate
+        self._endDate = endDate
+        self._additionState = additionState
+        
         self.defaultStartTime = startTime
         self.defaultEndTime = endTime
         self.tag = tag
@@ -120,16 +142,16 @@ struct ScheduleAdditionBottomInputView: View {
     private func blockField(_ type: BlockFieldType) -> some View {
         HStack {
             switch type {
-            case .allDay : allDayField
-            case .startTime : startTimeField
-            case .endTime : endTimeField
-            case .tag : tagField
+            case .allDay :      allDayField
+            case .startTime :   startTimeField
+            case .endTime :     endTimeField
+            case .tag :         tagField
             }
-        }.frame(height: Constant.height)
-            .padding(EdgeInsets(top: Constant.blockTopBottomPadding,
-                                leading: Constant.blockLeadingTrailingPadding,
-                                bottom: Constant.blockTopBottomPadding,
-                                trailing: Constant.blockLeadingTrailingPadding))
+        }
+        .padding(EdgeInsets(top: Constant.blockTopBottomPadding,
+                            leading: Constant.blockLeadingTrailingPadding,
+                            bottom: Constant.blockTopBottomPadding,
+                            trailing: Constant.blockLeadingTrailingPadding))
     }
     
     @ViewBuilder
@@ -138,8 +160,12 @@ struct ScheduleAdditionBottomInputView: View {
         
         HStack {
             Toggle(type.title, isOn: $isAllDay)
+                .onChange(of: isAllDay.self) { _ in
+                    self.additionState = .none
+                }
                 .foregroundColor(.black)
                 .font(.AppleSDRegular14)
+                .tint(tag.type.color)
         }
         .frame(height: Constant.height)
         .padding(EdgeInsets(top: Constant.blockTopBottomPadding,
@@ -152,28 +178,28 @@ struct ScheduleAdditionBottomInputView: View {
     private var startTimeField: some View {
         let type: BlockFieldType = .startTime
         
-        HStack {
-            Text(type.title)
-                .foregroundColor(.black)
-                .font(.AppleSDRegular14)
-            Spacer()
-            DateStringView(defaultTime: self.defaultStartTime)
-                .foregroundColor(.black)
-        }
+        DateStringView(type: .startDate,
+                       title: type.title,
+                       defaultTime: self.defaultStartTime,
+                       date: self._startDate,
+                       additionState: self._additionState,
+                       tintColor: tag.type.color)
+            .foregroundColor(.black)
+            .tint(tag.type.color)
     }
     
     @ViewBuilder
     private var endTimeField: some View {
         let type: BlockFieldType = .endTime
         
-        HStack {
-            Text(type.title)
-                .foregroundColor(.black)
-                .font(.AppleSDRegular14)
-            Spacer()
-            DateStringView(defaultTime: self.defaultEndTime)
-                .foregroundColor(.black)
-        }
+        DateStringView(type: .endDate,
+                        title: type.title,
+                       defaultTime: self.defaultEndTime,
+                       date: self._endDate,
+                       additionState: self._additionState,
+                       tintColor: tag.type.color)
+            .foregroundColor(.black)
+            .tint(tag.type.color)
     }
     
     @ViewBuilder
@@ -195,6 +221,9 @@ struct ScheduleAdditionBottomInputView: View {
                 .frame(height: textHeight)
                 .foregroundColor(.tagTitleGray)
                 .font(.AppleSDRegular14)
+        }
+        .onTapGesture {
+            self.additionState = .tag
         }
     }
 }

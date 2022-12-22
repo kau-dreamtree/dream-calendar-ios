@@ -39,11 +39,12 @@
 		4A62B24928EBEE6C00FBE1F6 /* Days.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A62B24828EBEE6C00FBE1F6 /* Days.swift */; };
 		4A62B24C28EBEEE300FBE1F6 /* WeekdayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A62B24B28EBEEE300FBE1F6 /* WeekdayView.swift */; };
 		4A62B24E28EBEF0500FBE1F6 /* WeekView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A62B24D28EBEF0500FBE1F6 /* WeekView.swift */; };
-		4AAC0A452931D9DB009CB29C /* ScheduleAdditionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAC0A442931D9DB009CB29C /* ScheduleAdditionViewModel.swift */; };
+		4AAC0A452931D9DB009CB29C /* TimeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAC0A442931D9DB009CB29C /* TimeInfo.swift */; };
 		4AAC0A472931DA06009CB29C /* DateStringView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAC0A462931DA06009CB29C /* DateStringView.swift */; };
 		4AAC0A492931DBB5009CB29C /* Tag+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAC0A482931DBB5009CB29C /* Tag+Extension.swift */; };
 		4AAC0A4B2931DCDE009CB29C /* Tag+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAC0A4A2931DCDE009CB29C /* Tag+Extension.swift */; };
 		4ACF64632920C19F00D335A3 /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ACF64622920C19F00D335A3 /* Schedule.swift */; };
+		4AD0058F2954290500041173 /* TagType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD0058E2954290500041173 /* TagType.swift */; };
 		4AD96EF82928B76A00C31C06 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD96EF72928B76A00C31C06 /* Date+Extension.swift */; };
 /* End PBXBuildFile section */
 
@@ -134,11 +135,12 @@
 		4A62B24828EBEE6C00FBE1F6 /* Days.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Days.swift; sourceTree = "<group>"; };
 		4A62B24B28EBEEE300FBE1F6 /* WeekdayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekdayView.swift; sourceTree = "<group>"; };
 		4A62B24D28EBEF0500FBE1F6 /* WeekView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekView.swift; sourceTree = "<group>"; };
-		4AAC0A442931D9DB009CB29C /* ScheduleAdditionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleAdditionViewModel.swift; sourceTree = "<group>"; };
+		4AAC0A442931D9DB009CB29C /* TimeInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeInfo.swift; sourceTree = "<group>"; };
 		4AAC0A462931DA06009CB29C /* DateStringView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateStringView.swift; sourceTree = "<group>"; };
 		4AAC0A482931DBB5009CB29C /* Tag+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tag+Extension.swift"; sourceTree = "<group>"; };
 		4AAC0A4A2931DCDE009CB29C /* Tag+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tag+Extension.swift"; sourceTree = "<group>"; };
 		4ACF64622920C19F00D335A3 /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
+		4AD0058E2954290500041173 /* TagType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagType.swift; sourceTree = "<group>"; };
 		4AD96EF72928B76A00C31C06 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -186,6 +188,7 @@
 		4A0724512918B5E7005AA8B7 /* Scene */ = {
 			isa = PBXGroup;
 			children = (
+				4AD0058D295428FB00041173 /* Model */,
 				4A27D0D529288FB3007FC2DD /* ScheduleAddition */,
 				4A0724532918B607005AA8B7 /* Main */,
 			);
@@ -270,7 +273,6 @@
 			isa = PBXGroup;
 			children = (
 				4A27D0D629289050007FC2DD /* SchduleAdditionView.swift */,
-				4AAC0A442931D9DB009CB29C /* ScheduleAdditionViewModel.swift */,
 				4AAC0A462931DA06009CB29C /* DateStringView.swift */,
 			);
 			path = ScheduleAddition;
@@ -347,6 +349,15 @@
 				4A62B24D28EBEF0500FBE1F6 /* WeekView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		4AD0058D295428FB00041173 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				4AD0058E2954290500041173 /* TagType.swift */,
+				4AAC0A442931D9DB009CB29C /* TimeInfo.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -553,13 +564,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4AD0058F2954290500041173 /* TagType.swift in Sources */,
 				4A27D0DE2928A249007FC2DD /* MainTopRightView.swift in Sources */,
 				4A0724552918B615005AA8B7 /* MainViewModel.swift in Sources */,
 				4A27D0DA2928A217007FC2DD /* MainTopMiddleView.swift in Sources */,
 				4A08421928EA99FB003E70A4 /* Persistence.swift in Sources */,
 				4A3CFC1E2910B4730034F4BA /* Color+Extension.swift in Sources */,
 				4A27D0D729289050007FC2DD /* SchduleAdditionView.swift in Sources */,
-				4AAC0A452931D9DB009CB29C /* ScheduleAdditionViewModel.swift in Sources */,
+				4AAC0A452931D9DB009CB29C /* TimeInfo.swift in Sources */,
 				4A08421C28EA99FB003E70A4 /* DreamCalendar.xcdatamodeld in Sources */,
 				4A27D0DC2928A224007FC2DD /* MainTopLeftView.swift in Sources */,
 				4A3CFC1B2910B0780034F4BA /* MainView.swift in Sources */,
