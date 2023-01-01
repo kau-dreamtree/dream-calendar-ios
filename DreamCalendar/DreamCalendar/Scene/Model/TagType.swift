@@ -12,6 +12,10 @@ typealias TagInfo = (type: TagType, title: String)
 enum TagType: Int, Codable {
     case babyBlue = 1, green, yellow, orange, red, pink, purple, grey, navy, black
     
+    var id: Int16 {
+        return Int16(self.rawValue)
+    }
+    
     var defaultTitle: String {
         switch self {
         case .babyBlue : return "베이비 블루"
@@ -25,5 +29,9 @@ enum TagType: Int, Codable {
         case .navy : return "네이비"
         case .black : return "블랙"
         }
+    }
+    
+    var defaultOrder: Int16 {
+        return self.id
     }
 }

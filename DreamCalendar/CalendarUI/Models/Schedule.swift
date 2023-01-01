@@ -28,6 +28,17 @@ public struct Schedule: Codable {
     let tag: TagUI
     let isValid: Bool
     
+    public init(id: UUID, serverId: Int, title: String, isAllDay: Bool, startTime: Date, endTime: Date, tag: TagUI, isValid: Bool) {
+        self.id = id
+        self.serverId = serverId
+        self.title = title
+        self.isAllDay = isAllDay
+        self.startTime = startTime
+        self.endTime = endTime
+        self.tag = tag
+        self.isValid = isValid
+    }
+    
     var length: Int {
         guard let startDay = Calendar.current.date(from: DateComponents(
             calendar: Calendar.current,
@@ -128,4 +139,20 @@ public struct Schedules: Codable, Collection {
 
 public enum TagUI: Int, Codable {
     case babyBlue = 1, green, yellow, orange, red, pink, purple, grey, navy, black
+    
+    public init(rawValue: Int) {
+        switch rawValue {
+        case 1 : self = TagUI.babyBlue
+        case 2 : self = TagUI.green
+        case 3 : self = TagUI.yellow
+        case 4 : self = TagUI.orange
+        case 5 : self = TagUI.red
+        case 6 : self = TagUI.pink
+        case 7 : self = TagUI.purple
+        case 8 : self = TagUI.grey
+        case 9 : self = TagUI.navy
+        case 10 : self = TagUI.black
+        default : self = TagUI.babyBlue
+        }
+    }
 }

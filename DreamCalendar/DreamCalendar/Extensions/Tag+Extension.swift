@@ -10,10 +10,10 @@ import CalendarUI
 
 extension TagType {
     var color: Color {
-        return TagUI(rawValue: self.rawValue)?.color ?? TagUI.babyBlue.color
+        return TagUI(rawValue: self.rawValue).color
     }
     
     var lightColor: Color {
-        return TagUI(rawValue: self.rawValue)?.lightColor ?? TagUI.babyBlue.lightColor
+        return TagUI(rawValue: self.rawValue).lightColor
     }
 }

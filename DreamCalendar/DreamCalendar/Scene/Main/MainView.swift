@@ -9,23 +9,15 @@ import SwiftUI
 import CalendarUI
 
 struct MainView: View, MainTopViewDelegate {
-    @State private var viewModel: MainViewModel = MainViewModel()
-    @State private var isShowAlert: Bool = false
-    @State private var error: Error? = nil
+    @ObservedObject private var viewModel: MainViewModel
     @State private var scheduleAdditionViewIsPresented: Bool = false
-    
-    @State private var newTitle = ""
-    @State private var newIsAllDay = false
-    @State private var newStartDate: Date = TimeInfo.defaultTime(.start, date: Date()).toDate()
-    @State private var newEndDate: Date = TimeInfo.defaultTime(.end, date: Date()).toDate()
-    @State private var newTag: TagInfo = (TagType.babyBlue, TagType.babyBlue.defaultTitle)
     
     var body: some View {
         VStack(spacing: 0) {
             MainTopView(topTitle: self.viewModel.currentTopTitle,
                         delegate: self)
             CalendarView(date: self.viewModel.selectedDate,
-                         schedules: testSchedules)
+                         schedules: self.viewModel.schedules.map({$0.scheduleForUI}))
             .sheet(isPresented: $scheduleAdditionViewIsPresented,
                    content: presentScheduleAdditionModalView)
         }
@@ -33,6 +25,10 @@ struct MainView: View, MainTopViewDelegate {
     
     var notNeedTodayButton: Bool {
         return self.viewModel.isToday
+    }
+    
+    init(viewModel: MainViewModel) {
+        self.viewModel = viewModel
     }
     
     func todayButtonDidTouched() {
@@ -60,49 +56,68 @@ struct MainView: View, MainTopViewDelegate {
         let closeButtonTitle = "닫기"
         let completeButtonTitle = "완료"
         
-        self.newStartDate = TimeInfo.defaultTime(.start, date: self.viewModel.selectedDate).toDate()
-        self.newEndDate = TimeInfo.defaultTime(.end, date: self.viewModel.selectedDate).toDate()
-        
         return NavigationView {
-            ScheduleAdditionView(title: self.$newTitle,
-                                 isAllDay: self.$newIsAllDay,
-                                 startDate: self.$newStartDate,
-                                 endDate: self.$newEndDate,
-                                 tag: self.$newTag)
-                .toolbar {
-                    ToolbarItem(placement: .cancellationAction) {
-                        Button(closeButtonTitle) {
-                            self.closeSchduleAdditionButtonDidTouched()
+            if let viewModel = self.viewModel.getScheduleAdditionViewModel() {
+                ScheduleAdditionView(viewModel: viewModel)
+                    .toolbar {
+                        ToolbarItem(placement: .cancellationAction) {
+                            Button(closeButtonTitle) {
+                                self.closeSchduleAdditionButtonDidTouched()
+                            }
+                            .foregroundColor(TagType.babyBlue.color)
+                            .font(.AppleSDSemiBold14)
                         }
-                        .foregroundColor(TagType.babyBlue.color)
-                        .font(.AppleSDSemiBold14)
-                    }
-                    ToolbarItem(placement: .destructiveAction) {
-                        Button(completeButtonTitle) {
-                            self.uploadScheduleButtionDidTouched()
+                        ToolbarItem(placement: .destructiveAction) {
+                            Button(completeButtonTitle) {
+                                self.uploadScheduleButtionDidTouched()
+                            }
+                            .foregroundColor(TagType.babyBlue.color)
+                            .font(.AppleSDSemiBold14)
                         }
-                        .foregroundColor(TagType.babyBlue.color)
-                        .font(.AppleSDSemiBold14)
                     }
-                }
+            } else {
+                Text("")
+            }
+        }
+        .alert(DCError.title, isPresented: self.$viewModel.isShowAlert) {
+            Button("확인") {
+                self.scheduleAdditionViewIsPresented.toggle()
+                self.viewModel.removeScheduleAdditionViewModel()
+                self.viewModel.changeError()
+            }
+        } message : {
+            Text((self.viewModel.error as? DCError)?.message ?? Alert.failMessage)
         }
     }
     
     private func closeSchduleAdditionButtonDidTouched() {
+        if let schedule = self.viewModel.scheduleAdditionViewModel?.schedule {
+            self.viewModel.cancelScheduleAddition(schedule)
+        }
         self.scheduleAdditionViewIsPresented.toggle()
+        self.viewModel.removeScheduleAdditionViewModel()
     }
     
     private func uploadScheduleButtionDidTouched() {
+        guard let schedule = self.viewModel.scheduleAdditionViewModel?.schedule else {
+            self.viewModel.changeError(DCError.unknown)
+            return
+        }
         self.scheduleAdditionViewIsPresented.toggle()
-        
-        
+        self.viewModel.removeScheduleAdditionViewModel()
+        self.viewModel.addSchedule(schedule)
     }
 }
 
-
-struct MainView_Previews: PreviewProvider {
-    static var previews: some View {
-        MainView()
-            .padding(EdgeInsets(top: 10, leading: 10, bottom: 20, trailing: 10))
+enum DCError: Error {
+    static let title: String = "오류"
+    
+    case unknown, coreData
+    
+    var message: String {
+        switch self {
+        case .unknown : return "알 수 없는 오류로 실패했습니다.\n재시도 해주세요."
+        case .coreData : return "코어 데이터 접근에 실패했습니다.\n재시도 해주세요."
+        }
     }
 }

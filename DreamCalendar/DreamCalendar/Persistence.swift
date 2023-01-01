@@ -53,4 +53,9 @@ struct PersistenceController {
         })
         container.viewContext.automaticallyMergesChangesFromParent = true
     }
+    
+    func fetch<T: NSManagedObject>(request: NSFetchRequest<T>) throws -> [T] {
+       let fetchResult = try self.container.viewContext.fetch(request)
+       return fetchResult
+   }
 }
