@@ -91,7 +91,7 @@ public struct Schedules: Codable, Collection {
         })
         for weekIndex in (0..<monthInfo.count) {
             let week = monthInfo.weeks[weekIndex]
-            for schedule in schedules where schedule.includedWithIn(start: week.first, end: week.last) {
+            for schedule in schedules where schedule.includedWithIn(start: week.first, end: week.lastTime) {
                 // [n주차 시작, n주차 종료]
                 if week.isIncluded(date: schedule.startTime) && week.isIncluded(date: schedule.endTime) {
                     schedulesPerWeek[weekIndex][schedule.startTime.weekday]?

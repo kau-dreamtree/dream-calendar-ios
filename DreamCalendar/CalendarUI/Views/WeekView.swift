@@ -18,7 +18,7 @@ struct WeekView: View {
     
     var body: some View {
         ZStack {
-            VStack {
+            VStack(spacing: 0) {
                 weekView
                     .frame(height: 11, alignment: .top)
                     .padding(EdgeInsets(top: 5, leading: 0, bottom: 0, trailing: 0))
@@ -32,7 +32,7 @@ struct WeekView: View {
     
     @ViewBuilder
     var weekBlockView: some View {
-        HStack {
+        HStack(spacing: 0) {
             ForEach(0..<7) { day in
                 if let schedules = self.schedules[day] {
                     blockView(schedules: schedules)
@@ -46,7 +46,7 @@ struct WeekView: View {
     
     @ViewBuilder
     var weekView: some View {
-        HStack{
+        HStack(spacing: 0){
             Spacer()
             ForEach(0..<7) { day in
                 if let day = self.week[day] {
@@ -77,6 +77,7 @@ struct WeekView: View {
             } else {
                 Text("none21")
                     .foregroundColor(.clear)
+                    .frame(maxWidth: .infinity)
             }
             Spacer()
         }

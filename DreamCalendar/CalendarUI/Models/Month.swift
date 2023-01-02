@@ -11,8 +11,16 @@ struct Month {
     let weeks: [Week]
     
     public init(year: Int = Date().year, month: Int = Date().month) throws {
-        guard let startDay = Calendar.current.date(from: DateComponents(calendar: Calendar.current, year: year, month: month, day: 1)),
-              let lastDay = Calendar.current.date(byAdding: DateComponents(calendar: Calendar.current, month: 1, day: -1), to: startDay)?.day,
+        guard let startDay = Calendar.current.date(from: DateComponents(calendar: Calendar.current,
+                                                                        year: year,
+                                                                        month: month,
+                                                                        day: 1,
+                                                                        hour: 0,
+                                                                        minute: 0,
+                                                                        second: 0)),
+              let lastDay = Calendar.current.date(byAdding: DateComponents(calendar: Calendar.current,
+                                                                           month: 1,
+                                                                           day: -1), to: startDay)?.day,
               let firstWeekday = Days.allCases.firstIndex(of: startDay.weekday) else {
             throw CalendarUIError.monthIndexError
         }
