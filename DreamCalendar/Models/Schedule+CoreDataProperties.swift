@@ -50,7 +50,7 @@ extension Schedule {
         return TagType(rawValue: Int(self.tagId)) ?? .babyBlue
     }
     
-    func log(_ context: NSManagedObjectContext, type: UpdateLogType) -> ScheduleUpdateLog {
+    func createLog(_ context: NSManagedObjectContext, type: UpdateLogType) -> ScheduleUpdateLog {
         let log = ScheduleUpdateLog(context: context)
         log.id = UUID()
         log.schedule = self
@@ -59,3 +59,4 @@ extension Schedule {
         return log
     }
 }
+

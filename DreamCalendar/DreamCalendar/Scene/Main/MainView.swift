@@ -91,11 +91,13 @@ struct MainView: View, MainTopViewDelegate {
     }
     
     private func closeSchduleAdditionButtonDidTouched() {
-        if let schedule = self.viewModel.scheduleAdditionViewModel?.schedule {
-            self.viewModel.cancelScheduleAddition(schedule)
+        guard let schedule = self.viewModel.scheduleAdditionViewModel?.schedule else {
+            self.scheduleAdditionViewIsPresented.toggle()
+            return
         }
-        self.scheduleAdditionViewIsPresented.toggle()
         self.viewModel.removeScheduleAdditionViewModel()
+        self.scheduleAdditionViewIsPresented.toggle()
+        self.viewModel.cancelScheduleAddition(schedule)
     }
     
     private func uploadScheduleButtionDidTouched() {

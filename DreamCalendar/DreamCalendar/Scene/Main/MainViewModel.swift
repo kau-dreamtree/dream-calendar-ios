@@ -135,6 +135,7 @@ class MainViewModel: ObservableObject, DateManipulationDelegate {
     }
     
     func removeScheduleAdditionViewModel() {
+        self.scheduleAdditionViewModel?.removeAllBinding()
         self.scheduleAdditionViewModel = nil
     }
     
@@ -145,10 +146,16 @@ class MainViewModel: ObservableObject, DateManipulationDelegate {
     
     func cancelScheduleAddition(_ schedule: Schedule) {
         self.viewContext.delete(schedule)
+        do {
+            // TODO: save app crash 해결 필요
+            try self.viewContext.save()
+        } catch {
+            self.changeError(error)
+        }
     }
     
     func addSchedule(_ schedule: Schedule) {
-        schedule.log(self.viewContext, type: .create)
+        schedule.createLog(self.viewContext, type: .create)
         do {
             try self.viewContext.save()
             self.schedules = self.fetchSchedule(withCurrentPage: self.selectedDate)

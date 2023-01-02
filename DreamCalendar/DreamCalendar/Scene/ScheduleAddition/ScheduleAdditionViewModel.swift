@@ -36,20 +36,43 @@ final class ScheduleAdditionViewModel: ObservableObject {
         schedule.startTime = startTime
         schedule.endTime = endTime
         schedule.tagId = Int16(tag.type.rawValue)
+        
+        self.setScheduleTimeConstraint()
     }
     
-    // TODO: 시작 시간과 종료 시간이 역순이 되지 않도록 조정 필요
-    private func checkScheduleTimeConstraint(old oldSchedule: Schedule, new newSchedule: Schedule) {
-        guard newSchedule.startTime >= newSchedule.endTime else { return }
+    private func setScheduleTimeConstraint() {
+        self.schedule.publisher(for: \.startTime)
+            .filter({ [weak self] startTime in
+                guard let self = self else { return true }
+                return startTime >= self.schedule.endTime
+            })
+            .map({ date in
+                return Calendar.current.date(byAdding: .hour,
+                                             value: +1,
+                                             to: date) ?? date
+            })
+            .sink(receiveValue: { [weak self] endTime in
+                self?.schedule.endTime = endTime
+            })
+            .store(in: &self.cancellables)
         
-        if oldSchedule.startTime != newSchedule.startTime {
-            self.schedule.endTime = Calendar.current.date(byAdding: .hour,
-                                                          value: +1,
-                                                          to: newSchedule.startTime) ?? newSchedule.startTime
-        } else if oldSchedule.endTime != newSchedule.endTime {
-            self.schedule.startTime = Calendar.current.date(byAdding: .hour,
-                                                            value: -1,
-                                                            to: newSchedule.endTime) ?? newSchedule.endTime
-        }
+        self.schedule.publisher(for: \.endTime)
+            .filter({ [weak self] endTime in
+                guard let self = self else { return true }
+                return self.schedule.startTime >= endTime
+            })
+            .map({ date in
+                return Calendar.current.date(byAdding: .hour,
+                                             value: -1,
+                                             to: date) ?? date
+            })
+            .sink(receiveValue: { [weak self] startTime in
+                self?.schedule.startTime = startTime
+            })
+            .store(in: &self.cancellables)
+    }
+    
+    func removeAllBinding() {
+        self.cancellables.removeAll()
     }
 }
