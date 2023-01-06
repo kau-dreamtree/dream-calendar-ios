@@ -39,6 +39,10 @@
 		4A62B24928EBEE6C00FBE1F6 /* Days.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A62B24828EBEE6C00FBE1F6 /* Days.swift */; };
 		4A62B24C28EBEEE300FBE1F6 /* WeekdayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A62B24B28EBEEE300FBE1F6 /* WeekdayView.swift */; };
 		4A62B24E28EBEF0500FBE1F6 /* WeekView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A62B24D28EBEF0500FBE1F6 /* WeekView.swift */; };
+		4A7F783229640C8B00DA543B /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A7F783129640C8B00DA543B /* LoginView.swift */; };
+		4A7F783429682DEB00DA543B /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A7F783329682DEB00DA543B /* LoginViewModel.swift */; };
+		4A7F78362968311500DA543B /* AccountConfirmButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A7F78352968311500DA543B /* AccountConfirmButton.swift */; };
+		4A7F78382968312C00DA543B /* AccountInputField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A7F78372968312C00DA543B /* AccountInputField.swift */; };
 		4AAC0A452931D9DB009CB29C /* TimeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAC0A442931D9DB009CB29C /* TimeInfo.swift */; };
 		4AAC0A472931DA06009CB29C /* DateStringView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAC0A462931DA06009CB29C /* DateStringView.swift */; };
 		4AAC0A492931DBB5009CB29C /* Tag+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAC0A482931DBB5009CB29C /* Tag+Extension.swift */; };
@@ -148,6 +152,10 @@
 		4A62B24828EBEE6C00FBE1F6 /* Days.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Days.swift; sourceTree = "<group>"; };
 		4A62B24B28EBEEE300FBE1F6 /* WeekdayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekdayView.swift; sourceTree = "<group>"; };
 		4A62B24D28EBEF0500FBE1F6 /* WeekView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekView.swift; sourceTree = "<group>"; };
+		4A7F783129640C8B00DA543B /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		4A7F783329682DEB00DA543B /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		4A7F78352968311500DA543B /* AccountConfirmButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountConfirmButton.swift; sourceTree = "<group>"; };
+		4A7F78372968312C00DA543B /* AccountInputField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInputField.swift; sourceTree = "<group>"; };
 		4AAC0A442931D9DB009CB29C /* TimeInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeInfo.swift; sourceTree = "<group>"; };
 		4AAC0A462931DA06009CB29C /* DateStringView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateStringView.swift; sourceTree = "<group>"; };
 		4AAC0A482931DBB5009CB29C /* Tag+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tag+Extension.swift"; sourceTree = "<group>"; };
@@ -214,6 +222,7 @@
 		4A0724512918B5E7005AA8B7 /* Scene */ = {
 			isa = PBXGroup;
 			children = (
+				4A7F783029640C7A00DA543B /* Account */,
 				4AD0058D295428FB00041173 /* Model */,
 				4A27D0D529288FB3007FC2DD /* ScheduleAddition */,
 				4A0724532918B607005AA8B7 /* Main */,
@@ -379,6 +388,17 @@
 				4A62B24D28EBEF0500FBE1F6 /* WeekView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		4A7F783029640C7A00DA543B /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				4A7F783129640C8B00DA543B /* LoginView.swift */,
+				4A7F783329682DEB00DA543B /* LoginViewModel.swift */,
+				4A7F78352968311500DA543B /* AccountConfirmButton.swift */,
+				4A7F78372968312C00DA543B /* AccountInputField.swift */,
+			);
+			path = Account;
 			sourceTree = "<group>";
 		};
 		4AD0058D295428FB00041173 /* Model */ = {
@@ -621,13 +641,16 @@
 			files = (
 				4AD0058F2954290500041173 /* TagType.swift in Sources */,
 				4AD005F82959927100041173 /* HolidayAnniversary+CoreDataClass.swift in Sources */,
+				4A7F783429682DEB00DA543B /* LoginViewModel.swift in Sources */,
 				4AD005BF29598D5700041173 /* PersistentContainer.swift in Sources */,
+				4A7F78382968312C00DA543B /* AccountInputField.swift in Sources */,
 				4AD005F62959927100041173 /* ScheduleUpdateLog+CoreDataClass.swift in Sources */,
 				4AD005FE295992A900041173 /* Schedule+CoreDataClass.swift in Sources */,
 				4AD005F92959927100041173 /* HolidayAnniversary+CoreDataProperties.swift in Sources */,
 				4A27D0DE2928A249007FC2DD /* MainTopRightView.swift in Sources */,
 				4A0724552918B615005AA8B7 /* MainViewModel.swift in Sources */,
 				4A27D0DA2928A217007FC2DD /* MainTopMiddleView.swift in Sources */,
+				4A7F78362968311500DA543B /* AccountConfirmButton.swift in Sources */,
 				4A08421928EA99FB003E70A4 /* Persistence.swift in Sources */,
 				4A3CFC1E2910B4730034F4BA /* Color+Extension.swift in Sources */,
 				4AD005FA2959927100041173 /* Tag+CoreDataClass.swift in Sources */,
@@ -649,6 +672,7 @@
 				4A0724572918B647005AA8B7 /* MainTopView.swift in Sources */,
 				4AD005F22959927100041173 /* TagUpdateLog+CoreDataClass.swift in Sources */,
 				4AD005F32959927100041173 /* TagUpdateLog+CoreDataProperties.swift in Sources */,
+				4A7F783229640C8B00DA543B /* LoginView.swift in Sources */,
 				4AAC0A472931DA06009CB29C /* DateStringView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -777,7 +801,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -831,7 +855,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
