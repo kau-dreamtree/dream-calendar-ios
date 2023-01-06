@@ -16,12 +16,12 @@ public struct CalendarView: View {
     private let monthInfo: Month?
     private let schedules: [Schedules]
     
-    public init(year: Int? = nil, month: Int? = nil, schedules: [Schedule]) {
-        if let year = year, let month = month {
-            self.monthInfo = try? Month(year: year, month: month)
-        } else {
-            self.monthInfo = try? Month()
-        }
+    public init(date: Date, schedules: [Schedule]) {
+        let year = date.year
+        let month = date.month
+        
+        self.monthInfo = try? Month(year: year, month: month)
+        
         if let month = self.monthInfo {
             self.schedules = Schedules.sortingSchedules(schedules, on: month)
         } else {
@@ -57,8 +57,7 @@ public struct CalendarView: View {
 
 struct CalendarView_Previews: PreviewProvider {
     static var previews: some View {
-        try? CalendarView(year: 2022,
-                          month: 10,
+        try? CalendarView(date: Date(),
                           schedules: [Schedule(id: UUID(),
                                                serverId: 1234,
                                                title: "heelo",

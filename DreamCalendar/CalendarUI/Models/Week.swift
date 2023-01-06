@@ -47,8 +47,19 @@ struct Week: Codable, Collection {
         return days[weekday] ?? endDay
     }
     
+    var lastTime: Date {
+        let lastTime = Calendar.current.date(from: DateComponents(calendar: Calendar.current,
+                                                                  year: self.last.year,
+                                                                  month: self.last.month,
+                                                                  day: self.last.day,
+                                                                  hour: 24,
+                                                                  minute: 0,
+                                                                  second: 0)) ?? endDay
+        return lastTime
+    }
+    
     func isIncluded(date: Date) -> Bool {
-        return (self.first...self.last) ~= date
+        return (self.first...self.lastTime) ~= date
     }
     
     func index(after n: Int) -> Int {

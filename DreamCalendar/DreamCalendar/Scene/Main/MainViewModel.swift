@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreData
 
 protocol DateManipulationDelegate {
     mutating func goToToday()
@@ -13,93 +14,164 @@ protocol DateManipulationDelegate {
     mutating func goToNextMonth()
 }
 
-@propertyWrapper
-struct MonthValue {
-    private var month: Int = Date().month
-    var wrappedValue: Int {
-        get { return month }
-        set { self.month = max(1, min(newValue, 12)) }
-    }
-}
-
-@propertyWrapper
-struct DayValue {
-    private var day: Int? = Date().day
-    var wrappedValue: Int? {
-        get { return day }
-        set {
-            if let newDay = newValue {
-                self.day = max(1, min(newDay, 31))
-            } else {
-                self.day = nil
-            }
-        }
-    }
-}
-
-struct MainViewModel: DateManipulationDelegate {
-    private(set) var currentYear: Int = Date().year
-    @MonthValue private(set) var currentMonth: Int
-    @DayValue private(set) var currentDay: Int?
+class MainViewModel: ObservableObject, DateManipulationDelegate {
     
-    init(currentYear: Int? = nil, currentMonth: Int? = nil, currentDay: Int? = 32) {
-        if let currentYear = currentYear {
-            self.currentYear = currentYear
+    @Published private(set) var selectedDate: Date
+    private(set) var scheduleAdditionViewModel: ScheduleAdditionViewModel? = nil
+    private let viewContext: NSManagedObjectContext
+    
+    @Published private(set) var schedules: [Schedule]
+    
+    private(set) var error: Error? = nil
+    @Published var isShowAlert: Bool = false
+    
+    init(_ context: NSManagedObjectContext, selectedYear: Int? = nil, month selectedMonth: Int? = nil, day selectedDay: Int? = 32) {
+        
+        self.viewContext = context
+        
+        let year: Int, month: Int, day: Int
+        let date = Date()
+        
+        if let selectedYear = selectedYear {
+            year = selectedYear
+        } else {
+            year = date.year
         }
         
-        if let currentMonth = currentMonth {
-            self.currentMonth = currentMonth
+        if let selectedMonth = selectedMonth, (1...12) ~= selectedMonth {
+            month = selectedMonth
+        } else {
+            month = date.month
         }
         
-        if let currentDay = currentDay, (0...31) ~= currentDay {
-            self.currentDay = currentDay
-        } else if currentDay == nil {
-            self.currentDay = nil
+        if let selectedDay = selectedDay, (1...31) ~= selectedDay {
+            day = selectedDay
+        } else {
+            day = date.day
         }
+        
+        self.selectedDate = Calendar.current.date(from: DateComponents(
+            calendar: Calendar.current,
+            year: year,
+            month: month,
+            day: day)
+        ) ?? Date()
+        
+        self.schedules = []
+        self.binding()
     }
     
     var currentTopTitle: String {
-        return "\(String(currentYear))년 \(currentMonth)월"
+        return "\(String(self.selectedDate.year))년 \(self.selectedDate.month)월"
     }
     
     var isToday: Bool {
         let today = Date()
-        return self.currentYear == today.year && self.currentMonth == today.month
+        return self.selectedDate.year == today.year && self.selectedDate.month == today.month
     }
     
-    mutating func goToToday() {
-        self = MainViewModel()
+    private func binding() {
+        self.$selectedDate
+            .map({ [weak self] date -> [Schedule] in
+                return self?.fetchSchedule(withCurrentPage: date) ?? []
+            })
+            .assign(to: &self.$schedules)
     }
     
-    mutating func goToPreviousMonth() {
-        switch currentMonth {
-        case 1 :
-            self = MainViewModel(currentYear: self.currentYear - 1,
-                                 currentMonth: 12,
-                                 currentDay: nil)
-        default :
-            self = MainViewModel(currentYear: self.currentYear,
-                                 currentMonth: self.currentMonth - 1,
-                                 currentDay: nil)
+    func goToToday() {
+        self.selectedDate = Date()
+    }
+    
+    func goToPreviousMonth() {
+        self.selectedDate = Calendar.current.date(byAdding: .month,
+                                                  value: -1,
+                                                  to: self.selectedDate) ?? Date.now
+    }
+    
+    func goToNextMonth() {
+        self.selectedDate = Calendar.current.date(byAdding: .month,
+                                                  value: +1,
+                                                  to: self.selectedDate) ?? Date.now
+    }
+    
+    private func monthRangePredicate(withDate date: Date) -> NSPredicate {
+        let firstDay = Calendar.current.date(from: DateComponents(
+            calendar: Calendar.current,
+            year: date.year,
+            month: date.month,
+            day: 1
+        )) ?? Date.now
+        
+        let nextMonthFirstDay = Calendar.current.date(byAdding: .month,
+                                                      value: +1,
+                                                      to: firstDay) ?? Date.now
+        
+        let lastDay = Calendar.current.date(byAdding: .day,
+                                            value: -1,
+                                            to: nextMonthFirstDay) ?? Date.now
+        
+        let firstDayCVar = firstDay as CVarArg
+        let lastDayCVar = lastDay as CVarArg
+        
+        return NSPredicate(format: "%@ <= startTime AND startTime <= %@ AND %@ <= endTime AND endTime <= %@", firstDayCVar, lastDayCVar, firstDayCVar, lastDayCVar)
+    }
+    
+    func chooseSpecificDay(year: Int? = nil, month: Int? = nil, day: Int? = nil) {
+        self.selectedDate = Calendar.current.date(from: DateComponents(
+            calendar: Calendar.current,
+            year: year ?? self.selectedDate.year,
+            month: month ?? self.selectedDate.month,
+            day: day ?? self.selectedDate.day)
+        ) ?? Date()
+    }
+    
+    func getScheduleAdditionViewModel() -> ScheduleAdditionViewModel? {
+        guard let viewModel = ScheduleAdditionViewModel(self.viewContext, date: self.selectedDate) else {
+            self.error = DCError.coreData
+            return nil
+        }
+        self.scheduleAdditionViewModel = viewModel
+        return viewModel
+    }
+    
+    func removeScheduleAdditionViewModel() {
+        self.scheduleAdditionViewModel?.removeAllBinding()
+        self.scheduleAdditionViewModel = nil
+    }
+    
+    func changeError(_ error: Error? = nil) {
+        self.error = error
+        self.isShowAlert = error != nil
+    }
+    
+    func cancelScheduleAddition(_ schedule: Schedule) {
+        self.viewContext.delete(schedule)
+        do {
+            // TODO: save app crash 해결 필요
+            try self.viewContext.save()
+        } catch {
+            self.changeError(error)
         }
     }
     
-    mutating func goToNextMonth() {
-        switch currentMonth {
-        case 12 :
-            self = MainViewModel(currentYear: self.currentYear + 1,
-                                 currentMonth: 1,
-                                 currentDay: nil)
-        default :
-            self = MainViewModel(currentYear: self.currentYear,
-                                 currentMonth: self.currentMonth + 1,
-                                 currentDay: nil)
+    func addSchedule(_ schedule: Schedule) {
+        schedule.createLog(self.viewContext, type: .create)
+        do {
+            try self.viewContext.save()
+            self.schedules = self.fetchSchedule(withCurrentPage: self.selectedDate)
+        } catch {
+            self.changeError(error)
         }
     }
     
-    mutating func chooseSpecificDay(year: Int? = nil, month: Int? = nil, day: Int? = nil) {
-        self = MainViewModel(currentYear: year ?? self.currentYear,
-                             currentMonth: month ?? self.currentMonth,
-                             currentDay: day ?? self.currentDay)
+    private func fetchSchedule(withCurrentPage date: Date) -> [Schedule] {
+        do {
+            let request = Schedule.fetchRequest()
+            request.predicate = self.monthRangePredicate(withDate: self.selectedDate)
+            return try self.viewContext.fetch(request)
+        } catch {
+            self.changeError(error)
+            return []
+        }
     }
 }

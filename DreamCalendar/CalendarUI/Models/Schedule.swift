@@ -25,8 +25,19 @@ public struct Schedule: Codable {
     let isAllDay: Bool
     let startTime: Date
     let endTime: Date
-    let tag: Tag
+    let tag: TagUI
     let isValid: Bool
+    
+    public init(id: UUID, serverId: Int, title: String, isAllDay: Bool, startTime: Date, endTime: Date, tag: TagUI, isValid: Bool) {
+        self.id = id
+        self.serverId = serverId
+        self.title = title
+        self.isAllDay = isAllDay
+        self.startTime = startTime
+        self.endTime = endTime
+        self.tag = tag
+        self.isValid = isValid
+    }
     
     var length: Int {
         guard let startDay = Calendar.current.date(from: DateComponents(
@@ -80,7 +91,7 @@ public struct Schedules: Codable, Collection {
         })
         for weekIndex in (0..<monthInfo.count) {
             let week = monthInfo.weeks[weekIndex]
-            for schedule in schedules where schedule.includedWithIn(start: week.first, end: week.last) {
+            for schedule in schedules where schedule.includedWithIn(start: week.first, end: week.lastTime) {
                 // [n주차 시작, n주차 종료]
                 if week.isIncluded(date: schedule.startTime) && week.isIncluded(date: schedule.endTime) {
                     schedulesPerWeek[weekIndex][schedule.startTime.weekday]?
@@ -126,6 +137,22 @@ public struct Schedules: Codable, Collection {
     }
 }
 
-enum Tag: Int, Codable {
+public enum TagUI: Int, Codable {
     case babyBlue = 1, green, yellow, orange, red, pink, purple, grey, navy, black
+    
+    public init(rawValue: Int) {
+        switch rawValue {
+        case 1 : self = TagUI.babyBlue
+        case 2 : self = TagUI.green
+        case 3 : self = TagUI.yellow
+        case 4 : self = TagUI.orange
+        case 5 : self = TagUI.red
+        case 6 : self = TagUI.pink
+        case 7 : self = TagUI.purple
+        case 8 : self = TagUI.grey
+        case 9 : self = TagUI.navy
+        case 10 : self = TagUI.black
+        default : self = TagUI.babyBlue
+        }
+    }
 }

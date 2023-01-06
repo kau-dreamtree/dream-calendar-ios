@@ -13,7 +13,7 @@ struct DreamCalendarApp: App {
 
     var body: some Scene {
         WindowGroup {
-            MainView()
+            MainView(viewModel: MainViewModel(self.persistenceController.container.viewContext))
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
