@@ -7,7 +7,7 @@
 
 import XCTest
 
-class DreamCalendarUITestsLaunchTests: XCTestCase {
+final class DreamCalendarUITestsLaunchTests: XCTestCase {
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true
