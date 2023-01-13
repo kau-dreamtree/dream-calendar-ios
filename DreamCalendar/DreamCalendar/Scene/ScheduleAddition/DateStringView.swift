@@ -23,7 +23,7 @@ struct DateStringView: View {
         case none, date, time
     }
     
-    struct Constant {
+    private struct Constraint {
         static let cornerRadius: CGFloat = 3
         static let width: CGFloat = 80
         static let height: CGFloat = 25
@@ -76,8 +76,8 @@ struct DateStringView: View {
                 .font(.AppleSDRegular14)
                 .foregroundColor(self.setting == .date && self.additionState == self.setType ? tintColor : .black)
         }
-        .cornerRadius(Constant.cornerRadius)
-        .frame(width: Constant.width, height: Constant.height)
+        .cornerRadius(Constraint.cornerRadius)
+        .frame(width: Constraint.width, height: Constraint.height)
         .onTapGesture {
             self.additionState = self.setType
             switch self.setting {
@@ -99,8 +99,8 @@ struct DateStringView: View {
                 .font(.AppleSDRegular14)
                 .foregroundColor(self.setting == .time && self.additionState == self.setType ? tintColor : .black)
         }
-        .cornerRadius(Constant.cornerRadius)
-        .frame(width: Constant.width, height: Constant.height)
+        .cornerRadius(Constraint.cornerRadius)
+        .frame(width: Constraint.width, height: Constraint.height)
         .onTapGesture {
             self.additionState = self.setType
             switch self.setting {

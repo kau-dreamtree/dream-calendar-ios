@@ -13,9 +13,9 @@ struct DreamCalendarApp: App {
 
     var body: some Scene {
         WindowGroup {
-//            MainView(viewModel: MainViewModel(self.persistenceController.container.viewContext))
-//                .environment(\.managedObjectContext, persistenceController.container.viewContext)
-            LoginView(viewModel: LoginViewModel())
+            MainView(viewModel: MainViewModel(self.persistenceController.container.viewContext))
+                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+//            LoginView(viewModel: LoginViewModel())
         }
     }
 }

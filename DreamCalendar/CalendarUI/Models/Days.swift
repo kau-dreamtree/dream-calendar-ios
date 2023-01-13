@@ -7,9 +7,30 @@
 
 import Foundation
 
-public enum Days: Int, CustomStringConvertible, CaseIterable, Codable {
+public enum Days: Int, CustomStringConvertible, CaseIterable, Codable, Strideable, Comparable {
+    
+    public typealias Stride = Int
     
     case sun = 1, mon, tue, wed, thu, fri, sat
+    
+    public static func ==(lhs: Self, rhs: Self) -> Bool {
+      return lhs.rawValue == rhs.rawValue
+    }
+    
+    public static func <(lhs: Self, rhs: Self) -> Bool {
+      return lhs.rawValue < rhs.rawValue
+    }
+    
+    public static var allCases: [Days] {
+        var days = [Days]()
+        (Calendar.current.firstWeekday...7).forEach {
+            days.append(Days(rawValue: $0) ?? firstWeekday)
+        }
+        (1..<Calendar.current.firstWeekday).forEach {
+            days.append(Days(rawValue: $0) ?? firstWeekday)
+        }
+        return days
+    }
     
     public var description: String {
         switch self {
@@ -23,18 +44,16 @@ public enum Days: Int, CustomStringConvertible, CaseIterable, Codable {
         }
     }
     
+    public func distance(to other: Days) -> Int {
+        return self.rawValue - other.rawValue
+    }
+    
+    public func advanced(by n: Int) -> Days {
+        return Days(rawValue: self.rawValue + n) ?? .sat
+    }
+    
     static var firstWeekday: Days {
         return Days(rawValue: Calendar.current.firstWeekday) ?? .sun
     }
     
-    public static var allCases: [Days] {
-        var days = [Days]()
-        (Calendar.current.firstWeekday...7).forEach {
-            days.append(Days(rawValue: $0) ?? firstWeekday)
-        }
-        (1..<Calendar.current.firstWeekday).forEach {
-            days.append(Days(rawValue: $0) ?? firstWeekday)
-        }
-        return days
-    }
 }

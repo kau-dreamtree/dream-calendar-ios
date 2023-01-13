@@ -7,18 +7,7 @@
 
 import Foundation
 
-public let testSchedules: [Schedule] = [Schedule(id: UUID(),
-                                                 serverId: 1111,
-                                                 title: "Test1",
-                                                 isAllDay: true,
-                                                 startTime: Date.now,
-                                                 endTime: Calendar.current.date(byAdding: .day,
-                                                                                value: 1,
-                                                                                to: Date.now) ?? Date.now,
-                                                 tag: .babyBlue,
-                                                 isValid: true)]
-
-public struct Schedule: Codable {
+public struct Schedule: Codable, Comparable {
     let id: UUID
     let serverId: Int
     let title: String
@@ -27,6 +16,22 @@ public struct Schedule: Codable {
     let endTime: Date
     let tag: TagUI
     let isValid: Bool
+    
+    public static func ==(lhs: Self, rhs: Self) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
+    public static func <(lhs: Self, rhs: Self) -> Bool {
+        if lhs.startTime.year != rhs.startTime.year || lhs.startTime.month != rhs.startTime.month || lhs.startTime.day != rhs.startTime.day {
+            return lhs.startTime < rhs.startTime
+        } else if lhs.endTime.year != rhs.endTime.year || lhs.endTime.month != rhs.endTime.month || lhs.endTime.day != rhs.endTime.day {
+            return lhs.endTime > rhs.endTime
+        } else if lhs.isAllDay != rhs.isAllDay {
+            return rhs.isAllDay
+        } else {
+            return lhs.serverId < rhs.serverId
+        }
+    }
     
     public init(id: UUID, serverId: Int, title: String, isAllDay: Bool, startTime: Date, endTime: Date, tag: TagUI, isValid: Bool) {
         self.id = id
@@ -42,15 +47,15 @@ public struct Schedule: Codable {
     var length: Int {
         guard let startDay = Calendar.current.date(from: DateComponents(
             calendar: Calendar.current,
-            year: startTime.year,
-            month: startTime.month,
-            day: startTime.day)),
+            year: self.startTime.year,
+            month: self.startTime.month,
+            day: self.startTime.day)),
               let endDay = Calendar.current.date(from: DateComponents(
             calendar: Calendar.current,
-            year: endTime.year,
-            month: endTime.month,
-            day: endTime.day)) else { return 0 }
-        return Calendar.current.dateComponents([.day], from: endDay, to: startDay).day ?? 0
+            year: self.endTime.year,
+            month: self.endTime.month,
+            day: self.endTime.day)) else { return 1 }
+        return (Calendar.current.dateComponents([.day], from: startDay, to: endDay).day ?? 0) + 1
     }
     
     func includedWithIn(start baseStartDate: Date, end baseEndDate: Date) -> Bool {
@@ -62,9 +67,40 @@ public struct Schedule: Codable {
 
 public struct ScheduleBlock: Codable {
     let schedule: Schedule
-    let length: Int
     let week: Week
+    let length: Int
     let startDay: Days
+    let endDay: Days
+    
+    init(schedule: Schedule, week: Week) {
+        self.schedule = schedule
+        self.week = week
+        
+        switch (self.week.isIncluded(date: self.schedule.startTime), self.week.isIncluded(date: self.schedule.endTime)) {
+        case (true, true) :     // [n주차 시작, n주차 종료]
+            self.length = self.schedule.length
+        case (true, false) :    // [n주차 시작, n+1주차 종료],
+            self.length = Days.allCases.count - self.schedule.startTime.weekday.rawValue + 1
+        case (false, true) :    // [n-1주차 시작, n주차 종료]
+            self.length = self.schedule.endTime.weekday.rawValue
+        case (false, false):    // [n-1주차 시작, n+1주차 종료]
+            self.length = Days.allCases.count
+        }
+        
+        switch self.week.isIncluded(date: self.schedule.startTime) {
+        case true :
+            self.startDay = self.schedule.startTime.weekday
+        case false :
+            self.startDay = .sun
+        }
+        
+        switch self.week.isIncluded(date: self.schedule.endTime) {
+        case true :
+            self.endDay = self.schedule.endTime.weekday
+        case false :
+            self.endDay = .sat
+        }
+    }
     
     var isFullColor: Bool {
         return schedule.isAllDay
@@ -73,67 +109,95 @@ public struct ScheduleBlock: Codable {
     var title: String {
         return self.schedule.title
     }
+    
+    func scheduleLine(withFilledMap filledMap: [Days: [Int: Bool]]) -> Int? {
+//        let maximumSeenableScheduleLineCount: Int = 7
+        
+        for line in (0..<WeekView.maximumLineCount) where filledMap[self.startDay]?[line] == false {
+            guard (self.startDay...self.endDay).filter({ filledMap[$0]?[line] == true }).isEmpty else { continue }
+            return line
+        }
+        
+        return nil
+    }
 }
 
 public struct Schedules: Codable, Collection {
-    let schedules: [Days: [ScheduleBlock]]
+    let schedulesPerLine: [Int: [ScheduleBlock?]]
+    let hasMoreInfo: [Days: Bool]
     
     public var startIndex : Int { return 0 }
-    public var endIndex: Int { return schedules.count - 1 }
+    public var endIndex: Int { return schedulesPerLine.keys.count - 1}
     
     static func sortingSchedules(_ schedules: [Schedule], on monthInfo: Month) -> [Schedules] {
-        var schedulesPerWeek: [[Days: [ScheduleBlock]]] = monthInfo.weeks.map({ week in
-            var weekSchedule: [Days: [ScheduleBlock]] = [:]
-            week.days.keys.forEach() {
-                weekSchedule[$0] = []
-            }
-            return weekSchedule
-        })
-        for weekIndex in (0..<monthInfo.count) {
-            let week = monthInfo.weeks[weekIndex]
-            for schedule in schedules where schedule.includedWithIn(start: week.first, end: week.lastTime) {
-                // [n주차 시작, n주차 종료]
-                if week.isIncluded(date: schedule.startTime) && week.isIncluded(date: schedule.endTime) {
-                    schedulesPerWeek[weekIndex][schedule.startTime.weekday]?
-                        .append(ScheduleBlock(schedule: schedule,
-                                              length: schedule.length,
-                                              week: week,
-                                              startDay: schedule.startTime.weekday))
-                } else if week.isIncluded(date: schedule.startTime) && !week.isIncluded(date: schedule.endTime) {
-                    // [n주차 시작, n+1주차 종료],
-                    let length = 8 - schedule.startTime.weekday.rawValue
-                    schedulesPerWeek[weekIndex][schedule.startTime.weekday]?
-                        .append(ScheduleBlock(schedule: schedule,
-                                              length: length,
-                                              week: week,
-                                              startDay: schedule.startTime.weekday))
-                } else if week.isIncluded(date: schedule.endTime) {
-                    // [n-1주차 시작, n주차 종료]
-                    schedulesPerWeek[weekIndex][.sun]?
-                        .append(ScheduleBlock(schedule: schedule,
-                                              length: schedule.endTime.weekday.rawValue,
-                                              week: week,
-                                              startDay: .sun))
-                } else {
-                    // [n-1주차 시작, n+1주차 종료]
-                    schedulesPerWeek[weekIndex][.sun]?
-                        .append(ScheduleBlock(schedule: schedule,
-                                              length: 7,
-                                              week: week,
-                                              startDay: .sun))
+        
+        let maximumSeenableScheduleLineCount: Int = 7
+        
+        var isFilledMap: [[Days: [Int: Bool]]] = monthInfo.weeks.map({ _ in [:] })
+        (0..<monthInfo.weeks.count).forEach { week in
+            Days.allCases.forEach { day in
+                isFilledMap[week].updateValue([:], forKey: day)
+                (0..<maximumSeenableScheduleLineCount).forEach { line in
+                    isFilledMap[week][day]?.updateValue(false, forKey: line)
                 }
             }
         }
-        return schedulesPerWeek.map({ Schedules(schedules: $0) })
+        
+        var schedulesPerWeekOrderByLine: [[Int: [ScheduleBlock]]] = monthInfo.weeks.map({ _ in [:] })
+        var hasMoreInfo: [[Days: Bool]] = monthInfo.weeks.map({ _ in [:] })
+        
+        for schedule in schedules.sorted() {
+            for week in monthInfo.weeks where schedule.includedWithIn(start: week.first, end: week.lastTime) {
+                let weekIndex = week.week
+                let scheduleBlock = ScheduleBlock(schedule: schedule, week: week)
+                if let line = scheduleBlock.scheduleLine(withFilledMap: isFilledMap[weekIndex]) {
+                    if schedulesPerWeekOrderByLine[weekIndex][line] == nil {
+                        schedulesPerWeekOrderByLine[weekIndex].updateValue([], forKey: line)
+                    }
+                    schedulesPerWeekOrderByLine[weekIndex][line]?.append(scheduleBlock)
+                    (scheduleBlock.startDay...scheduleBlock.endDay).forEach { day in
+                        isFilledMap[weekIndex][day]?.updateValue(true, forKey: line)
+                    }
+                } else {
+                    hasMoreInfo[weekIndex][scheduleBlock.startDay] = true
+                }
+            }
+        }
+        
+        let optionalSchedulesPerWeekOrderByLine: [[Int: [ScheduleBlock?]]]
+        optionalSchedulesPerWeekOrderByLine = schedulesPerWeekOrderByLine.map({ lineSchedulesList in
+            var weekSchedules: [Int: [ScheduleBlock?]] = [:]
+            lineSchedulesList.forEach({ line, schedules in
+                var currentDay = Days.allCases.first ?? .sun
+                var lineSchedules: [ScheduleBlock?] = []
+                schedules.forEach { schedule in
+                    (currentDay..<schedule.startDay).forEach { _ in
+                        lineSchedules.append(nil)
+                    }
+                    lineSchedules.append(schedule)
+                    currentDay = schedule.endDay.advanced(by: 1)
+                }
+                if lineSchedules.last??.endDay != .sat {
+                    (currentDay...(Days.allCases.last ?? .sat)).forEach { _ in
+                        lineSchedules.append(nil)
+                    }
+                }
+                weekSchedules.updateValue(lineSchedules, forKey: line)
+            })
+            return weekSchedules
+        })
+        
+        return (0..<monthInfo.weeks.count).map({ week in
+            Schedules(schedulesPerLine: optionalSchedulesPerWeekOrderByLine[week], hasMoreInfo: hasMoreInfo[week])
+        })
     }
     
     public func index(after n: Int) -> Int {
         return n + 1
     }
     
-    public subscript(i: Int) -> [ScheduleBlock] {
-        let weekday = Days.allCases[i]
-        return self.schedules[weekday] ?? []
+    public subscript(i: Int) -> [ScheduleBlock?] {
+        return self.schedulesPerLine[i] ?? []
     }
 }
 

@@ -12,12 +12,21 @@ struct MainView: View, MainTopViewDelegate {
     @ObservedObject private var viewModel: MainViewModel
     @State private var scheduleAdditionViewIsPresented: Bool = false
     
+    private struct Constraint {
+        static let zeroPadding: CGFloat = 0
+        static let leadingTrailingPadding: CGFloat = 10
+    }
+    
     var body: some View {
         VStack(spacing: 0) {
             MainTopView(topTitle: self.viewModel.currentTopTitle,
                         delegate: self)
             CalendarView(date: self.viewModel.selectedDate,
                          schedules: self.viewModel.schedules.map({$0.scheduleForUI}))
+            .padding(EdgeInsets(top: Constraint.zeroPadding,
+                                leading: Constraint.leadingTrailingPadding,
+                                bottom: Constraint.zeroPadding,
+                                trailing: Constraint.leadingTrailingPadding))
             .sheet(isPresented: $scheduleAdditionViewIsPresented,
                    content: presentScheduleAdditionModalView)
         }

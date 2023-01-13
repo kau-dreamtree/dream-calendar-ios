@@ -14,7 +14,7 @@ protocol DateManipulationDelegate {
     mutating func goToNextMonth()
 }
 
-class MainViewModel: ObservableObject, DateManipulationDelegate {
+final class MainViewModel: ObservableObject, DateManipulationDelegate {
     
     @Published private(set) var selectedDate: Date
     private(set) var scheduleAdditionViewModel: ScheduleAdditionViewModel? = nil
@@ -73,7 +73,11 @@ class MainViewModel: ObservableObject, DateManipulationDelegate {
     private func binding() {
         self.$selectedDate
             .map({ [weak self] date -> [Schedule] in
+                let schedule = self?.fetchSchedule(withCurrentPage: date) ?? []
+                print(date, schedule)
+                return schedule
                 return self?.fetchSchedule(withCurrentPage: date) ?? []
+                
             })
             .assign(to: &self.$schedules)
     }
@@ -167,7 +171,7 @@ class MainViewModel: ObservableObject, DateManipulationDelegate {
     private func fetchSchedule(withCurrentPage date: Date) -> [Schedule] {
         do {
             let request = Schedule.fetchRequest()
-            request.predicate = self.monthRangePredicate(withDate: self.selectedDate)
+            request.predicate = self.monthRangePredicate(withDate: date)
             return try self.viewContext.fetch(request)
         } catch {
             self.changeError(error)

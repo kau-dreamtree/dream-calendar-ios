@@ -17,7 +17,7 @@ struct ScheduleAdditionView: View {
         case none, startDate, endDate, tag
     }
     
-    private struct Constant {
+    private struct Constraint {
         static let bottomInputViewPadding: CGFloat = 10
     }
     
@@ -47,7 +47,7 @@ struct ScheduleAdditionTitleInputView: View {
     @Binding private(set) var schedule: Schedule
     @Binding private(set) var additionState: ScheduleAdditionView.SettingState
     
-    private struct Constant {
+    private struct Constraint {
         static let topPadding: CGFloat = 40
         static let leadingPadding: CGFloat = 30
         static let bottomPadding: CGFloat = 30
@@ -57,10 +57,10 @@ struct ScheduleAdditionTitleInputView: View {
     var body: some View {
         TextField("제목", text: self.$schedule.title)
             .font(.AppleSDBold16)
-            .padding(EdgeInsets(top: Constant.topPadding,
-                                leading: Constant.leadingPadding,
-                                bottom: Constant.bottomPadding,
-                                trailing: Constant.trailingPadding))
+            .padding(EdgeInsets(top: Constraint.topPadding,
+                                leading: Constraint.leadingPadding,
+                                bottom: Constraint.bottomPadding,
+                                trailing: Constraint.trailingPadding))
     }
 }
 
@@ -73,7 +73,7 @@ struct ScheduleAdditionBottomInputView: View {
     private let defaultEndTime: TimeInfo
     private let viewModel: ScheduleAdditionViewModel
     
-    private struct Constant {
+    private struct Constraint {
         static let cornerRadius: CGFloat = 30
         static let innerLeadingTrailingPadding: CGFloat = 20
         static let innerTopBottomPadding: CGFloat = 15
@@ -111,16 +111,16 @@ struct ScheduleAdditionBottomInputView: View {
             blockField(.endTime)
             blockField(.tag)
         }
-        .padding(EdgeInsets(top: Constant.innerTopBottomPadding,
-                            leading: Constant.innerLeadingTrailingPadding,
-                            bottom: Constant.innerTopBottomPadding,
-                            trailing: Constant.innerLeadingTrailingPadding))
+        .padding(EdgeInsets(top: Constraint.innerTopBottomPadding,
+                            leading: Constraint.innerLeadingTrailingPadding,
+                            bottom: Constraint.innerTopBottomPadding,
+                            trailing: Constraint.innerLeadingTrailingPadding))
         .background(.white)
-        .cornerRadius(Constant.cornerRadius)
-        .padding(EdgeInsets(top: Constant.outerPadding,
-                            leading: Constant.outerPadding,
-                            bottom: Constant.outerPadding,
-                            trailing: Constant.outerPadding))
+        .cornerRadius(Constraint.cornerRadius)
+        .padding(EdgeInsets(top: Constraint.outerPadding,
+                            leading: Constraint.outerPadding,
+                            bottom: Constraint.outerPadding,
+                            trailing: Constraint.outerPadding))
     }
     
     @ViewBuilder
@@ -133,10 +133,10 @@ struct ScheduleAdditionBottomInputView: View {
             case .tag :         tagField
             }
         }
-        .padding(EdgeInsets(top: Constant.blockTopBottomPadding,
-                            leading: Constant.blockLeadingTrailingPadding,
-                            bottom: Constant.blockTopBottomPadding,
-                            trailing: Constant.blockLeadingTrailingPadding))
+        .padding(EdgeInsets(top: Constraint.blockTopBottomPadding,
+                            leading: Constraint.blockLeadingTrailingPadding,
+                            bottom: Constraint.blockTopBottomPadding,
+                            trailing: Constraint.blockLeadingTrailingPadding))
     }
     
     @ViewBuilder
@@ -152,11 +152,11 @@ struct ScheduleAdditionBottomInputView: View {
                 .font(.AppleSDRegular14)
                 .tint(self.schedule.tagType.color)
         }
-        .frame(height: Constant.height)
-        .padding(EdgeInsets(top: Constant.blockTopBottomPadding,
-                            leading: Constant.blockLeadingTrailingPadding,
-                            bottom: Constant.blockTopBottomPadding,
-                            trailing: Constant.blockLeadingTrailingPadding))
+        .frame(height: Constraint.height)
+        .padding(EdgeInsets(top: Constraint.blockTopBottomPadding,
+                            leading: Constraint.blockLeadingTrailingPadding,
+                            bottom: Constraint.blockTopBottomPadding,
+                            trailing: Constraint.blockLeadingTrailingPadding))
     }
     
     @ViewBuilder
