@@ -78,11 +78,12 @@ struct WeekView: View {
                 if let schedules = self.schedules[day] {
                     blockView(schedules: schedules)
                 } else {
-                    blockView(schedules: [])
+                    Spacer()
                 }
             }
             Spacer()
         }
+        .border(.red)
     }
     
     func blockView(schedules: [ScheduleBlock?]) -> some View {
@@ -119,15 +120,14 @@ struct BlockView: View {
     }
     
     var body: some View {
-        ZStack {
-            Text(schedule?.title ?? "공백")
-                .font(.AppleSDBold12)
-                .foregroundColor(schedule?.fontColor ?? .clear)
-                .frame(height: Constraint.height, alignment: .center)
-        }
-        .frame(width: self.width, height: Constraint.height)
-        .background(schedule?.backgroundColor ?? .clear)
-        .cornerRadius(Constraint.cornerRadius)
+        Text(schedule?.title ?? "공백")
+            .font(.AppleSDBold12)
+            .foregroundColor(schedule?.fontColor ?? .clear)
+            .frame(height: Constraint.height, alignment: .center)
+            .frame(minWidth: self.width, maxWidth: .infinity)
+//            .frame(width: self.width, height: Constraint.height)
+            .background(schedule?.backgroundColor ?? .clear)
+            .cornerRadius(Constraint.cornerRadius)
     }
 }
 

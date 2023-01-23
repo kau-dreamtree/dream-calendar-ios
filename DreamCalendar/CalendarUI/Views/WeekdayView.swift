@@ -8,6 +8,14 @@
 import SwiftUI
 
 struct WeekdayView: View {
+    private struct Constraint {
+        static let height: CGFloat = 13
+        static let leadingTrailingPadding: CGFloat = 10
+        static let topPadding: CGFloat = 7
+        static let bottomPadding: CGFloat = 6
+        static let zeroPadding: CGFloat = 0
+    }
+    
     var body: some View {
         HStack {
             Spacer()
@@ -15,11 +23,14 @@ struct WeekdayView: View {
                 Text(String(describing: day))
                     .foregroundColor(Color.dayGray)
                     .font(Font.AppleSDSemiBold12)
-                    .frame(maxWidth: .infinity, minHeight: 13, maxHeight: 13, alignment: .center)
+                    .frame(maxWidth: .infinity, minHeight: Constraint.height, maxHeight: Constraint.height, alignment: .center)
             }
             Spacer()
         }
-        .frame(height: 13, alignment: .bottom)
-        .padding(EdgeInsets(top: 7, leading: 0, bottom: 6, trailing: 0))
+        .frame(height: Constraint.height, alignment: .bottom)
+        .padding(EdgeInsets(top: Constraint.topPadding,
+                            leading: Constraint.leadingTrailingPadding,
+                            bottom: Constraint.bottomPadding,
+                            trailing: Constraint.leadingTrailingPadding))
     }
 }
