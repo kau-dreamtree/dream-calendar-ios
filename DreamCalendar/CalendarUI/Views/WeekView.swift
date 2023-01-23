@@ -16,6 +16,8 @@ struct WeekView: View {
     private struct Constraint {
         
         static let weekHeight: CGFloat = 11
+        static let weekBlockWidth: CGFloat = 46
+        static let weekBlockHeight: CGFloat = 13
         static let weekTopPadding: CGFloat = 5
         
         static let zeroPadding: CGFloat = 0
@@ -52,22 +54,24 @@ struct WeekView: View {
     
     @ViewBuilder
     var weekView: some View {
-        HStack(spacing: 0){
-            Spacer()
+        HStack(spacing: Constraint.blockHorizontalInterval){
             ForEach(0..<7) { day in
                 if let day = self.week[day] {
                     Text("\(day.day)")
                         .font(.AppleSDSemiBold12)
                         .foregroundColor(day.dayColor)
-                        .frame(maxWidth: .infinity, minHeight: 13, maxHeight: 13, alignment: .center)
+                        .frame(width: Constraint.weekBlockWidth,
+                               height: Constraint.weekBlockHeight,
+                               alignment: .center)
                 } else {
                     Text("0")
                         .font(.AppleSDSemiBold12)
                         .foregroundColor(.clear)
-                        .frame(maxWidth: .infinity, minHeight: 13, maxHeight: 13, alignment: .center)
+                        .frame(width: Constraint.weekBlockWidth,
+                               height: Constraint.weekBlockHeight,
+                               alignment: .center)
                 }
             }
-            Spacer()
         }
     }
     
