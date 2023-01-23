@@ -34,17 +34,22 @@ struct WeekView: View {
     
     var body: some View {
         ZStack {
-            VStack(spacing: 0) {
-                weekView
-                    .frame(height: Constraint.weekHeight, alignment: .top)
-                    .padding(EdgeInsets(top: Constraint.weekTopPadding,
-                                        leading: Constraint.zeroPadding,
-                                        bottom: Constraint.zeroPadding,
-                                        trailing: Constraint.zeroPadding))
-                Spacer()
-            }
+            self.hiddenTouchButtonView
+                .padding(EdgeInsets(top: Constraint.zeroPadding,
+                                    leading: Constraint.leadingTrailingPadding,
+                                    bottom: Constraint.zeroPadding,
+                                    trailing: Constraint.leadingTrailingPadding))
             
-            weekBlockView
+            self.weekView
+                .frame(minHeight: Constraint.weekHeight,
+                       maxHeight: .infinity,
+                       alignment: .top)
+                .padding(EdgeInsets(top: Constraint.weekTopPadding,
+                                    leading: Constraint.zeroPadding,
+                                    bottom: Constraint.zeroPadding,
+                                    trailing: Constraint.zeroPadding))
+            
+            self.weekBlockView
                 .padding(EdgeInsets(top: Constraint.weekBlockTopPadding,
                                     leading: Constraint.leadingTrailingPadding,
                                     bottom: Constraint.zeroPadding,
@@ -86,6 +91,21 @@ struct WeekView: View {
                 }
             }
             Spacer()
+        }
+    }
+    
+    @ViewBuilder
+    var hiddenTouchButtonView: some View {
+        HStack(spacing: Constraint.blockHorizontalInterval) {
+            ForEach(0..<7) { day in
+                Rectangle()
+                    .frame(maxWidth: Constraint.weekBlockWidth, maxHeight: .infinity)
+                    .foregroundColor(.clear)
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        print(day, "clicked")
+                    }
+            }
         }
     }
     
