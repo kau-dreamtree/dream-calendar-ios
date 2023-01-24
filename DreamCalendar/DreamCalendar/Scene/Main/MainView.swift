@@ -21,7 +21,8 @@ struct MainView: View, MainTopViewDelegate {
         VStack(spacing: 0) {
             MainTopView(topTitle: self.viewModel.currentTopTitle,
                         delegate: self)
-            CalendarView(date: self.viewModel.selectedDate,
+            CalendarView(defaultDate: self.viewModel.date,
+                         selectedDate: self.$viewModel.selectedDate,
                          schedules: self.viewModel.schedules.map({$0.scheduleForUI}))
             .padding(EdgeInsets(top: Constraint.zeroPadding,
                                 leading: Constraint.leadingTrailingPadding,

@@ -16,7 +16,8 @@ protocol DateManipulationDelegate {
 
 final class MainViewModel: ObservableObject, DateManipulationDelegate {
     
-    @Published private(set) var selectedDate: Date
+    @Published var selectedDate: Date
+    @Published private(set) var date: Date
     private(set) var scheduleAdditionViewModel: ScheduleAdditionViewModel? = nil
     private let viewContext: NSManagedObjectContext
     
@@ -30,7 +31,7 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate {
         self.viewContext = context
         
         let year: Int, month: Int, day: Int
-        let date = Date()
+        var date = Date()
         
         if let selectedYear = selectedYear {
             year = selectedYear
@@ -50,52 +51,54 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate {
             day = date.day
         }
         
-        self.selectedDate = Calendar.current.date(from: DateComponents(
+        date = Calendar.current.date(from: DateComponents(
             calendar: Calendar.current,
             year: year,
             month: month,
-            day: day)
+            day: day,
+            hour: 0,
+            minute: 0,
+            second: 0)
         ) ?? Date()
         
+        self.selectedDate = date
+        self.date = date
         self.schedules = []
         self.binding()
     }
     
     var currentTopTitle: String {
-        return "\(String(self.selectedDate.year))년 \(self.selectedDate.month)월"
+        return "\(String(self.date.year))년 \(self.date.month)월"
     }
     
     var isToday: Bool {
         let today = Date()
-        return self.selectedDate.year == today.year && self.selectedDate.month == today.month
+        return self.date.year == today.year && self.date.month == today.month
     }
     
     private func binding() {
-        self.$selectedDate
+        self.$date
             .map({ [weak self] date -> [Schedule] in
-                let schedule = self?.fetchSchedule(withCurrentPage: date) ?? []
-                print(date, schedule)
-                return schedule
                 return self?.fetchSchedule(withCurrentPage: date) ?? []
-                
             })
             .assign(to: &self.$schedules)
     }
     
     func goToToday() {
-        self.selectedDate = Date()
+        self.selectedDate = Date.today
+        self.date = Date.today
     }
     
     func goToPreviousMonth() {
-        self.selectedDate = Calendar.current.date(byAdding: .month,
-                                                  value: -1,
-                                                  to: self.selectedDate) ?? Date.now
+        self.date = Calendar.current.date(byAdding: .month,
+                                          value: -1,
+                                          to: self.date) ?? Date.now
     }
     
     func goToNextMonth() {
-        self.selectedDate = Calendar.current.date(byAdding: .month,
-                                                  value: +1,
-                                                  to: self.selectedDate) ?? Date.now
+        self.date = Calendar.current.date(byAdding: .month,
+                                          value: +1,
+                                          to: self.date) ?? Date.now
     }
     
     private func monthRangePredicate(withDate date: Date) -> NSPredicate {
@@ -118,15 +121,6 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate {
         let lastDayCVar = lastDay as CVarArg
         
         return NSPredicate(format: "%@ <= startTime AND startTime <= %@ AND %@ <= endTime AND endTime <= %@", firstDayCVar, lastDayCVar, firstDayCVar, lastDayCVar)
-    }
-    
-    func chooseSpecificDay(year: Int? = nil, month: Int? = nil, day: Int? = nil) {
-        self.selectedDate = Calendar.current.date(from: DateComponents(
-            calendar: Calendar.current,
-            year: year ?? self.selectedDate.year,
-            month: month ?? self.selectedDate.month,
-            day: day ?? self.selectedDate.day)
-        ) ?? Date()
     }
     
     func getScheduleAdditionViewModel() -> ScheduleAdditionViewModel? {
@@ -162,7 +156,7 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate {
         schedule.createLog(self.viewContext, type: .create)
         do {
             try self.viewContext.save()
-            self.schedules = self.fetchSchedule(withCurrentPage: self.selectedDate)
+            self.schedules = self.fetchSchedule(withCurrentPage: self.date)
         } catch {
             self.changeError(error)
         }
@@ -178,4 +172,22 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate {
             return []
         }
     }
+}
+
+fileprivate extension Date {
+    static let today: Date = {
+        var date = Date()
+        
+        date = Calendar.current.date(from: DateComponents(
+            calendar: Calendar.current,
+            year: date.year,
+            month: date.month,
+            day: date.day,
+            hour: 0,
+            minute: 0,
+            second: 0)
+        ) ?? Date()
+        
+        return date
+    }()
 }

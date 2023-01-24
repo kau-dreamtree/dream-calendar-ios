@@ -12,6 +12,7 @@ struct WeekView: View {
     
     private let week: Week
     private let schedules: Schedules
+    @Binding private(set) var selectedDate: Date
     
     private struct Constraint {
         
@@ -27,7 +28,8 @@ struct WeekView: View {
         static let weekBlockTopPadding: CGFloat = 21
     }
     
-    init(week: Week, schedules: Schedules) {
+    init(selectedDate: Binding<Date>, week: Week, schedules: Schedules) {
+        self._selectedDate = selectedDate
         self.week = week
         self.schedules = schedules
     }
@@ -98,13 +100,19 @@ struct WeekView: View {
     var hiddenTouchButtonView: some View {
         HStack(spacing: Constraint.blockHorizontalInterval) {
             ForEach(0..<7) { day in
-                Rectangle()
-                    .frame(maxWidth: Constraint.weekBlockWidth, maxHeight: .infinity)
-                    .foregroundColor(.clear)
-                    .contentShape(Rectangle())
-                    .onTapGesture {
-                        print(day, "clicked")
-                    }
+                if let day = self.week[day] {
+                    Rectangle()
+                        .frame(maxWidth: Constraint.weekBlockWidth, maxHeight: .infinity)
+                        .foregroundColor(self.selectedDate == day ? .dayBackgroundGray : .clear)
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            self.selectedDate = day
+                        }
+                } else {
+                    Rectangle()
+                        .frame(maxWidth: Constraint.weekBlockWidth, maxHeight: .infinity)
+                        .foregroundColor(.clear)
+                }
             }
         }
     }
