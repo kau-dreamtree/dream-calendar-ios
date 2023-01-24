@@ -15,8 +15,9 @@ enum CalendarUIError: Error {
 public struct CalendarView: View {
     private let monthInfo: Month?
     private let schedules: [Schedules]
+    @Binding private(set) var selectedDate: Date
     
-    public init(date: Date, schedules: [Schedule]) {
+    public init(defaultDate date: Date, selectedDate: Binding<Date>, schedules: [Schedule]) {
         let year = date.year
         let month = date.month
         
@@ -27,6 +28,8 @@ public struct CalendarView: View {
         } else {
             self.schedules = []
         }
+        
+        self._selectedDate = selectedDate
     }
     
     public var body: some View {
@@ -38,11 +41,10 @@ public struct CalendarView: View {
                     ForEach(0..<monthInfo.count, id: \.hashValue) { weekIndex in
                         Divider()
                         if let week = monthInfo[weekIndex] {
-                            WeekView(week: week, schedules: schedules[weekIndex])
+                            WeekView(selectedDate: self.$selectedDate, week: week, schedules: schedules[weekIndex])
                         } else {
                             Text("")
                         }
-                        Spacer()
                     }
                 }
             } else {
@@ -52,21 +54,5 @@ public struct CalendarView: View {
         .background(Color.white)
         .cornerRadius(15)
         .shadow(color: Color.shadowGray, radius: 15, x: 0.2, y: 0.2)
-    }
-}
-
-struct CalendarView_Previews: PreviewProvider {
-    static var previews: some View {
-        try? CalendarView(date: Date(),
-                          schedules: [Schedule(id: UUID(),
-                                               serverId: 1234,
-                                               title: "heelo",
-                                               isAllDay: true,
-                                               startTime: Date.now,
-                                               endTime: Calendar.current.date(byAdding: .day, value: 1, to: Date.now) ?? Date.now,
-                                               tag: .babyBlue,
-                                               isValid: true)])
-            .previewDevice("iPhone 11")
-            .padding(EdgeInsets(top: 10, leading: 10, bottom: 20, trailing: 10))
     }
 }
