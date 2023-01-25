@@ -10,11 +10,11 @@ import CalendarUI
 
 struct MainView: View, MainTopViewDelegate {
     @ObservedObject private var viewModel: MainViewModel
-    @State private var scheduleAdditionViewIsPresented: Bool = false
     
     private struct Constraint {
         static let zeroPadding: CGFloat = 0
         static let leadingTrailingPadding: CGFloat = 10
+        static let bottomPadding: CGFloat = CalendarView.bottomViewHeight + 10
     }
     
     var body: some View {
@@ -23,14 +23,23 @@ struct MainView: View, MainTopViewDelegate {
                         delegate: self)
             CalendarView(defaultDate: self.viewModel.date,
                          selectedDate: self.$viewModel.selectedDate,
-                         schedules: self.viewModel.schedules.map({$0.scheduleForUI}))
+                         schedules: self.viewModel.schedules.map({$0.scheduleForUI}),
+                         isShortMode: self.viewModel.isDetailMode)
             .padding(EdgeInsets(top: Constraint.zeroPadding,
                                 leading: Constraint.leadingTrailingPadding,
-                                bottom: Constraint.zeroPadding,
+                                bottom: self.viewModel.isDetailMode ? Constraint.bottomPadding : Constraint.zeroPadding,
                                 trailing: Constraint.leadingTrailingPadding))
-            .sheet(isPresented: $scheduleAdditionViewIsPresented,
+            .sheet(isPresented: self.$viewModel.isDetailMode,
+                   content: self.presentDetailScheduleBottomView)
+            .sheet(isPresented: self.$viewModel.isWritingMode,
                    content: presentScheduleAdditionModalView)
+            Spacer()
         }
+        .onAppear(perform: {
+            if self.viewModel.mode == .detail {
+                self.openDetailSheet()
+            }
+        })
     }
     
     var notNeedTodayButton: Bool {
@@ -58,7 +67,25 @@ struct MainView: View, MainTopViewDelegate {
     }
     
     func writeButtonDidTouched() {
-        self.scheduleAdditionViewIsPresented.toggle()
+        self.viewModel.changeMode(.addition)
+        if self.viewModel.isDetailMode {
+            self.closeAllSheet()
+        } else {
+            self.openAdditionSheet()
+        }
+    }
+    
+    private func presentDetailScheduleBottomView() -> some View {
+        return HalfSheet(content: {})
+            .onAppear(perform: {
+                self.viewModel.changeMode(.detail)
+            })
+            .onDisappear(perform: {
+                if self.viewModel.mode == .addition {
+                    self.openAdditionSheet()
+                    self.viewModel.changeMode(.detail)
+                }
+            })
     }
     
     private func presentScheduleAdditionModalView() -> some View {
@@ -72,7 +99,7 @@ struct MainView: View, MainTopViewDelegate {
                     .toolbar {
                         ToolbarItem(placement: .cancellationAction) {
                             Button(closeButtonTitle) {
-                                self.closeSchduleAdditionButtonDidTouched()
+                                self.closeScheduleAdditionButtonDidTouched()
                             }
                             .foregroundColor(TagType.babyBlue.color)
                             .font(.AppleSDSemiBold14)
@@ -91,23 +118,31 @@ struct MainView: View, MainTopViewDelegate {
         }
         .alert(DCError.title, isPresented: self.$viewModel.isShowAlert) {
             Button("확인") {
-                self.scheduleAdditionViewIsPresented.toggle()
+                self.viewModel.changeMode(.main)
+                self.closeAllSheet()
                 self.viewModel.removeScheduleAdditionViewModel()
                 self.viewModel.changeError()
             }
         } message : {
             Text((self.viewModel.error as? DCError)?.message ?? Alert.failMessage)
         }
+        .onDisappear(perform: {
+            switch self.viewModel.mode {
+            case .detail :  self.openDetailSheet()
+            default :       self.viewModel.changeMode(.main)
+            }
+        })
     }
     
-    private func closeSchduleAdditionButtonDidTouched() {
+    private func closeScheduleAdditionButtonDidTouched() {
         guard let schedule = self.viewModel.scheduleAdditionViewModel?.schedule else {
-            self.scheduleAdditionViewIsPresented.toggle()
+            self.viewModel.changeMode(.main)
+            self.closeAllSheet()
             return
         }
         self.viewModel.removeScheduleAdditionViewModel()
-        self.scheduleAdditionViewIsPresented.toggle()
         self.viewModel.cancelScheduleAddition(schedule)
+        self.closeAllSheet()
     }
     
     private func uploadScheduleButtionDidTouched() {
@@ -115,9 +150,22 @@ struct MainView: View, MainTopViewDelegate {
             self.viewModel.changeError(DCError.unknown)
             return
         }
-        self.scheduleAdditionViewIsPresented.toggle()
         self.viewModel.removeScheduleAdditionViewModel()
         self.viewModel.addSchedule(schedule)
+        self.closeAllSheet()
+    }
+    
+    private func closeAllSheet() {
+        self.viewModel.isWritingMode = false
+        self.viewModel.isDetailMode = false
+    }
+    
+    private func openDetailSheet() {
+        self.viewModel.isDetailMode = true
+    }
+    
+    private func openAdditionSheet() {
+        self.viewModel.isWritingMode = true
     }
 }
 
@@ -131,5 +179,43 @@ enum DCError: Error {
         case .unknown : return "알 수 없는 오류로 실패했습니다.\n재시도 해주세요."
         case .coreData : return "코어 데이터 접근에 실패했습니다.\n재시도 해주세요."
         }
+    }
+}
+
+
+class HalfSheetController<Content>: UIHostingController<Content> where Content : View {
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if let presentation = sheetPresentationController {
+            presentation.detents = [.dcMedium, .large()]
+            presentation.prefersGrabberVisible = true
+            presentation.largestUndimmedDetentIdentifier = .dcMedium
+        }
+    }
+}
+
+struct HalfSheet<Content>: UIViewControllerRepresentable where Content : View {
+
+    private let content: Content
+    
+    @inlinable init(@ViewBuilder content: () -> Content) {
+        self.content = content()
+    }
+    
+    func makeUIViewController(context: Context) -> HalfSheetController<Content> {
+        return HalfSheetController(rootView: content)
+    }
+    
+    func updateUIViewController(_: HalfSheetController<Content>, context: Context) {
+    }
+}
+
+extension UISheetPresentationController.Detent.Identifier {
+    static let dcMedium = UISheetPresentationController.Detent.Identifier("dcMedium")
+}
+extension UISheetPresentationController.Detent {
+    static let dcMedium = UISheetPresentationController.Detent.custom(identifier: .dcMedium) { context in
+        return CalendarView.bottomViewHeight
     }
 }

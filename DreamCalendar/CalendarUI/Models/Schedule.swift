@@ -110,10 +110,8 @@ public struct ScheduleBlock: Codable {
         return self.schedule.title
     }
     
-    func scheduleLine(withFilledMap filledMap: [Days: [Int: Bool]]) -> Int? {
-//        let maximumSeenableScheduleLineCount: Int = 7
-        
-        for line in (0..<WeekView.maximumLineCount) where filledMap[self.startDay]?[line] == false {
+    func scheduleLine(withFilledMap filledMap: [Days: [Int: Bool]], maximumLineCount: Int) -> Int? {
+        for line in (0..<maximumLineCount) where filledMap[self.startDay]?[line] == false {
             guard (self.startDay...self.endDay).filter({ filledMap[$0]?[line] == true }).isEmpty else { continue }
             return line
         }
@@ -129,15 +127,12 @@ public struct Schedules: Codable, Collection {
     public var startIndex : Int { return 0 }
     public var endIndex: Int { return schedulesPerLine.keys.count - 1}
     
-    static func sortingSchedules(_ schedules: [Schedule], on monthInfo: Month) -> [Schedules] {
-        
-        let maximumSeenableScheduleLineCount: Int = 7
-        
+    static func sortingSchedules(_ schedules: [Schedule], on monthInfo: Month, maximumLineCount: Int) -> [Schedules] {
         var isFilledMap: [[Days: [Int: Bool]]] = monthInfo.weeks.map({ _ in [:] })
         (0..<monthInfo.weeks.count).forEach { week in
             Days.allCases.forEach { day in
                 isFilledMap[week].updateValue([:], forKey: day)
-                (0..<maximumSeenableScheduleLineCount).forEach { line in
+                (0..<maximumLineCount).forEach { line in
                     isFilledMap[week][day]?.updateValue(false, forKey: line)
                 }
             }
@@ -150,7 +145,7 @@ public struct Schedules: Codable, Collection {
             for week in monthInfo.weeks where schedule.includedWithIn(start: week.first, end: week.lastTime) {
                 let weekIndex = week.week
                 let scheduleBlock = ScheduleBlock(schedule: schedule, week: week)
-                if let line = scheduleBlock.scheduleLine(withFilledMap: isFilledMap[weekIndex]) {
+                if let line = scheduleBlock.scheduleLine(withFilledMap: isFilledMap[weekIndex], maximumLineCount: maximumLineCount) {
                     if schedulesPerWeekOrderByLine[weekIndex][line] == nil {
                         schedulesPerWeekOrderByLine[weekIndex].updateValue([], forKey: line)
                     }

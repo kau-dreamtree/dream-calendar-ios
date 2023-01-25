@@ -38,7 +38,6 @@ struct Month {
                 weeks.append(week)
             }
         }
-        print(weeks.first?.first)
         self.weeks = weeks
     }
 }

@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreData
+import Combine
 
 protocol DateManipulationDelegate {
     mutating func goToToday()
@@ -16,10 +17,19 @@ protocol DateManipulationDelegate {
 
 final class MainViewModel: ObservableObject, DateManipulationDelegate {
     
+    enum Mode {
+        case main, detail, addition
+    }
+    
+    @Published var isDetailMode: Bool = false
+    @Published var isWritingMode: Bool = false
+    
     @Published var selectedDate: Date
+    @Published private(set) var mode: Mode = .main
     @Published private(set) var date: Date
     private(set) var scheduleAdditionViewModel: ScheduleAdditionViewModel? = nil
     private let viewContext: NSManagedObjectContext
+    private var cancellables: Set<AnyCancellable> = Set<AnyCancellable>()
     
     @Published private(set) var schedules: [Schedule]
     
@@ -73,7 +83,7 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate {
     
     var isToday: Bool {
         let today = Date()
-        return self.date.year == today.year && self.date.month == today.month
+        return self.date.year == today.year && self.date.month == today.month && self.date.day == today.day
     }
     
     private func binding() {
@@ -81,7 +91,19 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate {
             .map({ [weak self] date -> [Schedule] in
                 return self?.fetchSchedule(withCurrentPage: date) ?? []
             })
-            .assign(to: &self.$schedules)
+            .sink(receiveValue: { schedules in
+                self.schedules = schedules
+            })
+            .store(in: &self.cancellables)
+        
+        self.$selectedDate
+            .afterSet(with: { [weak self] date1, date2 in
+                guard date1 == date2 else { return }
+                self?.changeMode(.detail)
+                self?.isDetailMode.toggle()
+            })
+            .sink(receiveValue: { _ in })
+            .store(in: &self.cancellables)
     }
     
     func goToToday() {
@@ -162,6 +184,10 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate {
         }
     }
     
+    func changeMode(_ mode: Mode) {
+        self.mode = mode
+    }
+    
     private func fetchSchedule(withCurrentPage date: Date) -> [Schedule] {
         do {
             let request = Schedule.fetchRequest()
@@ -171,6 +197,7 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate {
             self.changeError(error)
             return []
         }
+        
     }
 }
 
@@ -190,4 +217,13 @@ fileprivate extension Date {
         
         return date
     }()
+}
+
+fileprivate extension Published<Date>.Publisher where Output == Date {
+    func afterSet(with compare: @escaping (Date, Date) -> Void) -> AnyPublisher<Date, Never> {
+        return self.removeDuplicates(by: { date1, date2 in
+            compare(date1, date2)
+            return false
+        }).eraseToAnyPublisher()
+    }
 }

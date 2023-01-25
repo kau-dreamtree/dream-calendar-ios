@@ -43,6 +43,7 @@
 		4A7F783429682DEB00DA543B /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A7F783329682DEB00DA543B /* LoginViewModel.swift */; };
 		4A7F78362968311500DA543B /* AccountConfirmButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A7F78352968311500DA543B /* AccountConfirmButton.swift */; };
 		4A7F78382968312C00DA543B /* AccountInputField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A7F78372968312C00DA543B /* AccountInputField.swift */; };
+		4A7F783A297FC19700DA543B /* UIScreen+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A7F7839297FC19700DA543B /* UIScreen+Extension.swift */; };
 		4AAC0A452931D9DB009CB29C /* TimeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAC0A442931D9DB009CB29C /* TimeInfo.swift */; };
 		4AAC0A472931DA06009CB29C /* DateStringView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAC0A462931DA06009CB29C /* DateStringView.swift */; };
 		4AAC0A492931DBB5009CB29C /* Tag+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAC0A482931DBB5009CB29C /* Tag+Extension.swift */; };
@@ -156,6 +157,7 @@
 		4A7F783329682DEB00DA543B /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		4A7F78352968311500DA543B /* AccountConfirmButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountConfirmButton.swift; sourceTree = "<group>"; };
 		4A7F78372968312C00DA543B /* AccountInputField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInputField.swift; sourceTree = "<group>"; };
+		4A7F7839297FC19700DA543B /* UIScreen+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+Extension.swift"; sourceTree = "<group>"; };
 		4AAC0A442931D9DB009CB29C /* TimeInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeInfo.swift; sourceTree = "<group>"; };
 		4AAC0A462931DA06009CB29C /* DateStringView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateStringView.swift; sourceTree = "<group>"; };
 		4AAC0A482931DBB5009CB29C /* Tag+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tag+Extension.swift"; sourceTree = "<group>"; };
@@ -365,6 +367,7 @@
 				4A62B23E28EBEDE600FBE1F6 /* Date+Extension.swift */,
 				4A62B24028EBEE0400FBE1F6 /* Font+Extension.swift */,
 				4AAC0A4A2931DCDE009CB29C /* Tag+Extension.swift */,
+				4A7F7839297FC19700DA543B /* UIScreen+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -703,6 +706,7 @@
 				4A62B23D28EBEDD000FBE1F6 /* Color+Extension.swift in Sources */,
 				4A62B24128EBEE0400FBE1F6 /* Font+Extension.swift in Sources */,
 				4A62B24528EBEE6200FBE1F6 /* Month.swift in Sources */,
+				4A7F783A297FC19700DA543B /* UIScreen+Extension.swift in Sources */,
 				4A62B24928EBEE6C00FBE1F6 /* Days.swift in Sources */,
 				4A62B24E28EBEF0500FBE1F6 /* WeekView.swift in Sources */,
 				4A62B23F28EBEDE600FBE1F6 /* Date+Extension.swift in Sources */,

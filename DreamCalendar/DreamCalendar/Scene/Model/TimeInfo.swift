@@ -44,7 +44,8 @@ struct TimeInfo {
             month: self.date.month,
             day: self.date.day,
             hour: actualHour,
-            minute: self.minute)
+            minute: self.minute,
+            second: self.date.second)
         )
         return date ?? Date()
     }

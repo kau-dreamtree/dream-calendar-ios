@@ -16,6 +16,10 @@ extension Date {
         return Calendar.current.component(.minute, from: self)
     }
     
+    var second: Int {
+        return Calendar.current.component(.second, from: self)
+    }
+    
     func toTimeInfo() -> TimeInfo {
         let hour: Int
         let type: TimeInfo.TimeType = self.hour < 12 ? .am : .pm
