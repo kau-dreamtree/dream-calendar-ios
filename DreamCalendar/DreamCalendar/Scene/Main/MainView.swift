@@ -77,7 +77,9 @@ struct MainView: View, MainTopViewDelegate {
     
     private func presentDetailScheduleBottomView() -> some View {
         return HalfSheet(content: {
-            DayScheduleListView(schedules: self.viewModel.schedulesForSelectedDate)
+            DayScheduleListView(viewModel: self.viewModel,
+                                date: self.$viewModel.selectedDate,
+                                schedules: self.$viewModel.schedulesForSelectedDate)
         })
         .onAppear(perform: {
             self.viewModel.changeMode(.detail)

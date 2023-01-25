@@ -37,7 +37,7 @@ struct WeekView: View {
     
     var body: some View {
         ZStack {
-            self.hiddenTouchButtonView
+            self.backgroundView
                 .padding(EdgeInsets(top: Constraint.zeroPadding,
                                     leading: Constraint.leadingTrailingPadding,
                                     bottom: Constraint.zeroPadding,
@@ -54,6 +54,12 @@ struct WeekView: View {
             
             self.weekBlockView
                 .padding(EdgeInsets(top: self.mode.blockCollectionTopPadding,
+                                    leading: Constraint.leadingTrailingPadding,
+                                    bottom: Constraint.zeroPadding,
+                                    trailing: Constraint.leadingTrailingPadding))
+            
+            self.hiddenTouchButtonView
+                .padding(EdgeInsets(top: Constraint.zeroPadding,
                                     leading: Constraint.leadingTrailingPadding,
                                     bottom: Constraint.zeroPadding,
                                     trailing: Constraint.leadingTrailingPadding))
@@ -98,13 +104,30 @@ struct WeekView: View {
     }
     
     @ViewBuilder
-    var hiddenTouchButtonView: some View {
+    var backgroundView: some View {
         HStack(spacing: Constraint.blockHorizontalInterval) {
             ForEach(0..<7) { day in
                 if let day = self.week[day] {
                     Rectangle()
                         .frame(maxWidth: Constraint.weekBlockWidth, maxHeight: mode.weekHeight)
                         .foregroundColor(self.selectedDate == day ? .dayBackgroundGray : .clear)
+                } else {
+                    Rectangle()
+                        .frame(maxWidth: Constraint.weekBlockWidth, maxHeight: mode.weekHeight)
+                        .foregroundColor(.clear)
+                }
+            }
+        }
+    }
+    
+    @ViewBuilder
+    var hiddenTouchButtonView: some View {
+        HStack(spacing: Constraint.blockHorizontalInterval) {
+            ForEach(0..<7) { day in
+                if let day = self.week[day] {
+                    Rectangle()
+                        .frame(maxWidth: Constraint.weekBlockWidth, maxHeight: mode.weekHeight)
+                        .foregroundColor(.clear)
                         .contentShape(Rectangle())
                         .onTapGesture {
                             self.selectedDate = day

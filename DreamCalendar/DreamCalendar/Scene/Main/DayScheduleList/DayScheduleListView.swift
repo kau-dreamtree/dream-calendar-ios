@@ -8,7 +8,11 @@
 import SwiftUI
 
 struct DayScheduleListView: View {
-    let schedules: [Schedule]
+    // TODO: ObservedObject 외 다른 방법 찾기
+    @ObservedObject var viewModel: MainViewModel
+    
+    @Binding private(set) var date: Date
+    @Binding private(set) var schedules: [Schedule]
     
     private struct Constraint {
         static let zeroPadding: CGFloat = 0
@@ -16,6 +20,12 @@ struct DayScheduleListView: View {
         
         static let blockLeadingTrailingPadding: CGFloat = 20
         static let blockTopBottomPadding: CGFloat = 5
+    }
+    
+    init(viewModel: MainViewModel, date: Binding<Date>, schedules: Binding<[Schedule]>) {
+        self.viewModel = viewModel
+        self._date = date
+        self._schedules = schedules
     }
     
     var body: some View {
@@ -26,10 +36,9 @@ struct DayScheduleListView: View {
                                               leading: Constraint.blockLeadingTrailingPadding,
                                               bottom: Constraint.blockTopBottomPadding,
                                               trailing: Constraint.blockLeadingTrailingPadding))
+                    .listRowSeparator(.hidden)
             }
         }
-        .background(.white)
-        .scrollContentBackground(.hidden)
         .listStyle(PlainListStyle())
         .padding(EdgeInsets(top: Constraint.topPadding,
                             leading: Constraint.zeroPadding,

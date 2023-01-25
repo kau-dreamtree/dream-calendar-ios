@@ -32,6 +32,7 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate {
     private var cancellables: Set<AnyCancellable> = Set<AnyCancellable>()
     
     @Published private(set) var schedules: [Schedule]
+    @Published var schedulesForSelectedDate: [Schedule]
     
     private(set) var error: Error? = nil
     @Published var isShowAlert: Bool = false
@@ -74,6 +75,7 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate {
         self.selectedDate = date
         self.date = date
         self.schedules = []
+        self.schedulesForSelectedDate = []
         self.binding()
     }
     
@@ -84,12 +86,6 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate {
     var isToday: Bool {
         let today = Date()
         return self.date.year == today.year && self.date.month == today.month && self.date.day == today.day
-    }
-    
-    var schedulesForSelectedDate: [Schedule] {
-        return self.schedules.filter({ schedule in
-            schedule.isInclude(with: self.selectedDate)
-        })
     }
     
     private func binding() {
@@ -109,6 +105,21 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate {
                 self?.isDetailMode.toggle()
             })
             .sink(receiveValue: { _ in })
+            .store(in: &self.cancellables)
+        
+        self.$mode.combineLatest(self.$selectedDate)
+            .filter({ mode, _ in
+                return mode == .detail
+            })
+            .map({ [weak self] _, date -> [Schedule] in
+                guard let self = self else { return [] }
+                return self.schedules.filter({ schedule in
+                    schedule.isInclude(with: date)
+                })
+            })
+            .sink(receiveValue: { [weak self] schedules in
+                self?.schedulesForSelectedDate = schedules
+            })
             .store(in: &self.cancellables)
     }
     
