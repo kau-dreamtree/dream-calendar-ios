@@ -33,4 +33,20 @@ extension Date {
                         minute: self.minute,
                         type: type)
     }
+    
+    func isSameDay(with comparisionDate: Date) -> Bool {
+        return comparisionDate.year == self.year
+        && comparisionDate.month == self.month
+        && comparisionDate.day == self.day
+    }
+    
+    func toString(with comparisonDate : Date) -> String {
+        let timeInfo = self.toTimeInfo()
+        switch self.isSameDay(with: comparisonDate) {
+        case true :
+            return String(format: "\(timeInfo.type.title) %02d:%02d", timeInfo.hour, timeInfo.minute)
+        case false :
+            return String(format: "%2d월 %2d일 \(timeInfo.type.title) %02d:%02d", self.month, self.day, timeInfo.hour, timeInfo.minute)
+        }
+    }
 }

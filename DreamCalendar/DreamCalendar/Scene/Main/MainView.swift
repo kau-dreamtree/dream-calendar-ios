@@ -76,16 +76,18 @@ struct MainView: View, MainTopViewDelegate {
     }
     
     private func presentDetailScheduleBottomView() -> some View {
-        return HalfSheet(content: {})
-            .onAppear(perform: {
+        return HalfSheet(content: {
+            DayScheduleListView(schedules: self.viewModel.schedulesForSelectedDate)
+        })
+        .onAppear(perform: {
+            self.viewModel.changeMode(.detail)
+        })
+        .onDisappear(perform: {
+            if self.viewModel.mode == .addition {
+                self.openAdditionSheet()
                 self.viewModel.changeMode(.detail)
-            })
-            .onDisappear(perform: {
-                if self.viewModel.mode == .addition {
-                    self.openAdditionSheet()
-                    self.viewModel.changeMode(.detail)
-                }
-            })
+            }
+        })
     }
     
     private func presentScheduleAdditionModalView() -> some View {
@@ -179,43 +181,5 @@ enum DCError: Error {
         case .unknown : return "알 수 없는 오류로 실패했습니다.\n재시도 해주세요."
         case .coreData : return "코어 데이터 접근에 실패했습니다.\n재시도 해주세요."
         }
-    }
-}
-
-
-class HalfSheetController<Content>: UIHostingController<Content> where Content : View {
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        if let presentation = sheetPresentationController {
-            presentation.detents = [.dcMedium, .large()]
-            presentation.prefersGrabberVisible = true
-            presentation.largestUndimmedDetentIdentifier = .dcMedium
-        }
-    }
-}
-
-struct HalfSheet<Content>: UIViewControllerRepresentable where Content : View {
-
-    private let content: Content
-    
-    @inlinable init(@ViewBuilder content: () -> Content) {
-        self.content = content()
-    }
-    
-    func makeUIViewController(context: Context) -> HalfSheetController<Content> {
-        return HalfSheetController(rootView: content)
-    }
-    
-    func updateUIViewController(_: HalfSheetController<Content>, context: Context) {
-    }
-}
-
-extension UISheetPresentationController.Detent.Identifier {
-    static let dcMedium = UISheetPresentationController.Detent.Identifier("dcMedium")
-}
-extension UISheetPresentationController.Detent {
-    static let dcMedium = UISheetPresentationController.Detent.custom(identifier: .dcMedium) { context in
-        return CalendarView.bottomViewHeight
     }
 }

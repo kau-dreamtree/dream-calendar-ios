@@ -86,6 +86,12 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate {
         return self.date.year == today.year && self.date.month == today.month && self.date.day == today.day
     }
     
+    var schedulesForSelectedDate: [Schedule] {
+        return self.schedules.filter({ schedule in
+            schedule.isInclude(with: self.selectedDate)
+        })
+    }
+    
     private func binding() {
         self.$date
             .map({ [weak self] date -> [Schedule] in
