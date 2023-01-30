@@ -8,7 +8,12 @@
 import SwiftUI
 import CalendarUI
 
-struct MainView: View, MainTopViewDelegate {
+protocol MainViewDelegate {
+    func closeAdditionSheet()
+    func openAdditionSheet()
+}
+
+struct MainView: View, MainViewDelegate, MainTopViewDelegate {
     @ObservedObject private var viewModel: MainViewModel
     
     private struct Constraint {
@@ -30,16 +35,11 @@ struct MainView: View, MainTopViewDelegate {
                                 bottom: self.viewModel.isDetailMode ? Constraint.bottomPadding : Constraint.zeroPadding,
                                 trailing: Constraint.leadingTrailingPadding))
             .sheet(isPresented: self.$viewModel.isDetailMode,
-                   content: self.presentDetailScheduleBottomView)
+                   content: self.detailScheduleBottomView)
             .sheet(isPresented: self.$viewModel.isWritingMode,
-                   content: presentScheduleAdditionModalView)
+                   content: self.scheduleAdditionModalView)
             Spacer()
         }
-        .onAppear(perform: {
-            if self.viewModel.mode == .detail {
-                self.openDetailSheet()
-            }
-        })
     }
     
     var notNeedTodayButton: Bool {
@@ -67,108 +67,51 @@ struct MainView: View, MainTopViewDelegate {
     }
     
     func writeButtonDidTouched() {
-        self.viewModel.changeMode(.addition)
         if self.viewModel.isDetailMode {
-            self.closeAllSheet()
+            self.viewModel.isDetailWritingMode = true
         } else {
-            self.openAdditionSheet()
+            self.viewModel.isWritingMode = true
         }
     }
     
-    private func presentDetailScheduleBottomView() -> some View {
-        return HalfSheet(content: {
-            DayScheduleListView(viewModel: self.viewModel,
-                                date: self.$viewModel.selectedDate,
-                                schedules: self.$viewModel.schedulesForSelectedDate)
-        })
-        .onAppear(perform: {
-            self.viewModel.changeMode(.detail)
-        })
-        .onDisappear(perform: {
-            if self.viewModel.mode == .addition {
-                self.openAdditionSheet()
-                self.viewModel.changeMode(.detail)
-            }
+    private func detailScheduleBottomView() -> some View {
+        return HalfSheet(content: { detent in
+            DayScheduleListView(delegate: self,
+                                viewModel: self._viewModel,
+                                schedules: self.viewModel.schedulesForSelectedDate,
+                                detent: detent)
         })
     }
     
-    private func presentScheduleAdditionModalView() -> some View {
-        
-        let closeButtonTitle = "닫기"
-        let completeButtonTitle = "완료"
-        
-        return NavigationView {
-            if let viewModel = self.viewModel.getScheduleAdditionViewModel() {
-                ScheduleAdditionView(viewModel: viewModel)
-                    .toolbar {
-                        ToolbarItem(placement: .cancellationAction) {
-                            Button(closeButtonTitle) {
-                                self.closeScheduleAdditionButtonDidTouched()
-                            }
-                            .foregroundColor(TagType.babyBlue.color)
-                            .font(.AppleSDSemiBold14)
-                        }
-                        ToolbarItem(placement: .destructiveAction) {
-                            Button(completeButtonTitle) {
-                                self.uploadScheduleButtionDidTouched()
-                            }
-                            .foregroundColor(TagType.babyBlue.color)
-                            .font(.AppleSDSemiBold14)
-                        }
-                    }
+    private func scheduleAdditionModalView() -> some View {
+        VStack {
+            if let scheduleAdditionViewModel = self.viewModel.getScheduleAdditionViewModel() {
+                ScheduleAdditionInterfaceView(mainViewDelegate: self,
+                                                      mainViewModel: self.viewModel,
+                                                      scheduleAdditionViewModel: scheduleAdditionViewModel)
             } else {
                 Text("")
             }
         }
-        .alert(DCError.title, isPresented: self.$viewModel.isShowAlert) {
-            Button("확인") {
-                self.viewModel.changeMode(.main)
-                self.closeAllSheet()
-                self.viewModel.removeScheduleAdditionViewModel()
-                self.viewModel.changeError()
-            }
-        } message : {
-            Text((self.viewModel.error as? DCError)?.message ?? Alert.failMessage)
-        }
-        .onDisappear(perform: {
-            switch self.viewModel.mode {
-            case .detail :  self.openDetailSheet()
-            default :       self.viewModel.changeMode(.main)
-            }
-        })
     }
     
-    private func closeScheduleAdditionButtonDidTouched() {
-        guard let schedule = self.viewModel.scheduleAdditionViewModel?.schedule else {
-            self.viewModel.changeMode(.main)
-            self.closeAllSheet()
-            return
-        }
-        self.viewModel.removeScheduleAdditionViewModel()
-        self.viewModel.cancelScheduleAddition(schedule)
-        self.closeAllSheet()
-    }
-    
-    private func uploadScheduleButtionDidTouched() {
-        guard let schedule = self.viewModel.scheduleAdditionViewModel?.schedule else {
-            self.viewModel.changeError(DCError.unknown)
-            return
-        }
-        self.viewModel.removeScheduleAdditionViewModel()
-        self.viewModel.addSchedule(schedule)
-        self.closeAllSheet()
-    }
-    
-    private func closeAllSheet() {
-        self.viewModel.isWritingMode = false
+    func closeDetailSheet() {
         self.viewModel.isDetailMode = false
     }
     
-    private func openDetailSheet() {
+    func closeAdditionSheet() {
+        if self.viewModel.isDetailMode {
+            self.viewModel.isDetailWritingMode = false
+        } else {
+            self.viewModel.isWritingMode = false
+        }
+    }
+    
+    func openDetailSheet() {
         self.viewModel.isDetailMode = true
     }
     
-    private func openAdditionSheet() {
+    func openAdditionSheet() {
         self.viewModel.isWritingMode = true
     }
 }

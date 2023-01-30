@@ -9,12 +9,19 @@ import SwiftUI
 
 struct DayScheduleListView: View {
     // TODO: ObservedObject 외 다른 방법 찾기
-    @ObservedObject var viewModel: MainViewModel
+    @ObservedObject private(set) var viewModel: MainViewModel
+    private let delegate: MainViewDelegate
     
-    @Binding private(set) var date: Date
-    @Binding private(set) var schedules: [Schedule]
+    private(set) var date: Date
+    private(set) var schedules: [Schedule]
+    private let detent: HalfSheet<Self>.Detent
     
     private struct Constraint {
+        static let titleTopPadding: CGFloat = 48
+        static let writeButtonTopPadding: CGFloat = 50
+        static let topMenuLeadingTrailingPadding: CGFloat = 30
+        static let titleListInterval: CGFloat = 18
+        
         static let zeroPadding: CGFloat = 0
         static let topPadding: CGFloat = 40
         
@@ -22,13 +29,50 @@ struct DayScheduleListView: View {
         static let blockTopBottomPadding: CGFloat = 5
     }
     
-    init(viewModel: MainViewModel, date: Binding<Date>, schedules: Binding<[Schedule]>) {
-        self.viewModel = viewModel
-        self._date = date
-        self._schedules = schedules
+    init(delegate: MainViewDelegate, viewModel: ObservedObject<MainViewModel>, schedules: [Schedule], detent: HalfSheet<Self>.Detent) {
+        self.delegate = delegate
+        self._viewModel = viewModel
+        self.date = viewModel.wrappedValue.selectedDate
+        self.schedules = schedules
+        self.detent = detent
     }
     
     var body: some View {
+        VStack(alignment: .leading) {
+            if detent == .large {
+                self.topMenu
+            }
+            self.scheduleList
+        }
+        .sheet(isPresented: self.$viewModel.isDetailWritingMode,
+               content: self.scheduleAdditionModalView)
+    }
+    
+    private var topMenu: some View {
+        HStack(alignment: .center) {
+            Text(self.date.toString())
+                .font(.AppleSDBold20)
+                .foregroundColor(.black)
+                .padding(EdgeInsets(top: Constraint.titleTopPadding,
+                                    leading: Constraint.topMenuLeadingTrailingPadding,
+                                    bottom: Constraint.zeroPadding,
+                                    trailing: Constraint.zeroPadding))
+            Spacer()
+            Button {
+                self.writeButtonDidTouched()
+            } label: {
+                Image(systemName: "square.and.pencil")
+                    .foregroundColor(.buttonGray)
+            }
+            .frame(height: 20)
+            .padding(EdgeInsets(top: Constraint.writeButtonTopPadding,
+                                leading: Constraint.zeroPadding,
+                                bottom: Constraint.zeroPadding,
+                                trailing: Constraint.topMenuLeadingTrailingPadding))
+        }
+    }
+    
+    private var scheduleList: some View {
         List {
             ForEach(self.schedules) { schedule in
                 ScheduleDetailBlock(schedule: schedule)
@@ -40,10 +84,26 @@ struct DayScheduleListView: View {
             }
         }
         .listStyle(PlainListStyle())
-        .padding(EdgeInsets(top: Constraint.topPadding,
+        .padding(EdgeInsets(top: self.detent == .medium ? Constraint.topPadding : Constraint.titleListInterval,
                             leading: Constraint.zeroPadding,
                             bottom: Constraint.zeroPadding,
                             trailing: Constraint.zeroPadding))
+    }
+    
+    private func scheduleAdditionModalView() -> some View {
+        VStack {
+            if let scheduleAdditionViewModel = self.viewModel.getScheduleAdditionViewModel() {
+                ScheduleAdditionInterfaceView(mainViewDelegate: self.delegate,
+                                              mainViewModel: self.viewModel,
+                                              scheduleAdditionViewModel: scheduleAdditionViewModel)
+            } else {
+                Text("")
+            }
+        }
+    }
+    
+    private func writeButtonDidTouched() {
+        self.viewModel.isDetailWritingMode = true
     }
 }
 

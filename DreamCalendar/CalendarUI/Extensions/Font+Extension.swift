@@ -23,4 +23,6 @@ public extension Font {
     static let AppleSDBold12 = Font.custom("Apple SD Gothic Neo", size: 12).weight(.bold)
     static let AppleSDBold14 = Font.custom("Apple SD Gothic Neo", size: 14).weight(.bold)
     static let AppleSDBold16 = Font.custom("Apple SD Gothic Neo", size: 16).weight(.bold)
+    static let AppleSDBold18 = Font.custom("Apple SD Gothic Neo", size: 18).weight(.bold)
+    static let AppleSDBold20 = Font.custom("Apple SD Gothic Neo", size: 20).weight(.bold)
 }

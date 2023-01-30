@@ -12,8 +12,8 @@ struct DateStringView: View {
     private let setType: ScheduleAdditionView.SettingState
     private let title: String
     private(set) var time: TimeInfo
+    private(set) var timeFieldIsNotPresented: Bool
     @Binding private(set) var actualDate: Date
-    @Binding private(set) var timeFieldIsNotPresented: Bool
     @Binding private(set) var additionState: ScheduleAdditionView.SettingState
     @State private var setting: SettingState = .none
     
@@ -30,12 +30,12 @@ struct DateStringView: View {
         static let backgroundColor: Color = .dateStringViewBackgroundGrey
     }
     
-    init(type: ScheduleAdditionView.SettingState, title: String, defaultTime: TimeInfo, date: Binding<Date>, timeFieldIsNotPresented: Binding<Bool>, additionState: Binding<ScheduleAdditionView.SettingState>, tintColor: Color) {
+    init(type: ScheduleAdditionView.SettingState, title: String, defaultTime: TimeInfo, timeFieldIsNotPresented: Bool, date: Binding<Date>, additionState: Binding<ScheduleAdditionView.SettingState>, tintColor: Color) {
         self.setType = type
         self.title = title
         self.time = defaultTime
         self._actualDate = date
-        self._timeFieldIsNotPresented = timeFieldIsNotPresented
+        self.timeFieldIsNotPresented = timeFieldIsNotPresented
         self._additionState = additionState
         self.tintColor = tintColor
     }

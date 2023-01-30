@@ -8,6 +8,69 @@
 import SwiftUI
 import CalendarUI
 
+struct ScheduleAdditionInterfaceView: View {
+    
+    let mainViewDelegate: MainViewDelegate
+    
+    @ObservedObject private(set) var mainViewModel: MainViewModel
+    let scheduleAdditionViewModel: ScheduleAdditionViewModel
+    
+    private struct Constraint {
+        static let closeButtonTitle = "닫기"
+        static let completeButtonTitle = "완료"
+    }
+    
+    var body: some View {
+        NavigationView {
+            ScheduleAdditionView(viewModel: self.scheduleAdditionViewModel)
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button(Constraint.closeButtonTitle) {
+                            self.closeScheduleAdditionButtonDidTouched()
+                        }
+                        .foregroundColor(TagType.babyBlue.color)
+                        .font(.AppleSDSemiBold14)
+                    }
+                    ToolbarItem(placement: .destructiveAction) {
+                        Button(Constraint.completeButtonTitle) {
+                            self.uploadScheduleButtionDidTouched()
+                        }
+                        .foregroundColor(TagType.babyBlue.color)
+                        .font(.AppleSDSemiBold14)
+                    }
+                }
+        }
+        .alert(DCError.title, isPresented: self.$mainViewModel.isShowAlert) {
+            Button("확인") {
+                self.mainViewDelegate.closeAdditionSheet()
+                self.mainViewModel.removeScheduleAdditionViewModel()
+                self.mainViewModel.changeError()
+            }
+        } message : {
+            Text((self.mainViewModel.error as? DCError)?.message ?? Alert.failMessage)
+        }
+    }
+    
+    private func uploadScheduleButtionDidTouched() {
+        guard let schedule = self.mainViewModel.scheduleAdditionViewModel?.schedule else {
+            self.mainViewModel.changeError(DCError.unknown)
+            return
+        }
+        self.mainViewModel.removeScheduleAdditionViewModel()
+        self.mainViewModel.addSchedule(schedule)
+        self.mainViewDelegate.closeAdditionSheet()
+    }
+    
+    private func closeScheduleAdditionButtonDidTouched() {
+        guard let schedule = self.mainViewModel.scheduleAdditionViewModel?.schedule else {
+            return
+        }
+        self.mainViewModel.removeScheduleAdditionViewModel()
+        self.mainViewModel.cancelScheduleAddition(schedule)
+        self.mainViewDelegate.closeAdditionSheet()
+    }
+}
+
 struct ScheduleAdditionView: View {
     
     @ObservedObject private var viewModel: ScheduleAdditionViewModel
@@ -30,7 +93,7 @@ struct ScheduleAdditionView: View {
             Color.additionViewBackgroundGray
                 .edgesIgnoringSafeArea(.all)
             VStack(spacing: 0) {
-                ScheduleAdditionTitleInputView(schedule: self.$viewModel.schedule, additionState: self.$setting)
+                ScheduleAdditionTitleInputView(schedule: self.$viewModel.schedule)
                 Divider()
                 ScheduleAdditionBottomInputView(viewModel: self.viewModel,
                                                 schedule: self.$viewModel.schedule,
@@ -45,7 +108,6 @@ struct ScheduleAdditionView: View {
 
 struct ScheduleAdditionTitleInputView: View {
     @Binding private(set) var schedule: Schedule
-    @Binding private(set) var additionState: ScheduleAdditionView.SettingState
     
     private struct Constraint {
         static let topPadding: CGFloat = 40
@@ -166,8 +228,8 @@ struct ScheduleAdditionBottomInputView: View {
         DateStringView(type: .startDate,
                        title: type.title,
                        defaultTime: self.defaultStartTime,
+                       timeFieldIsNotPresented: self.schedule.isAllDay,
                        date: self._schedule.startTime,
-                       timeFieldIsNotPresented: self._schedule.isAllDay,
                        additionState: self._additionState,
                        tintColor: self.schedule.tagType.color)
             .foregroundColor(.black)
@@ -181,8 +243,8 @@ struct ScheduleAdditionBottomInputView: View {
         DateStringView(type: .endDate,
                         title: type.title,
                        defaultTime: self.defaultEndTime,
+                       timeFieldIsNotPresented: self.schedule.isAllDay,
                        date: self._schedule.endTime,
-                       timeFieldIsNotPresented: self._schedule.isAllDay,
                        additionState: self._additionState,
                        tintColor: self.schedule.tagType.color)
             .foregroundColor(.black)

@@ -20,6 +20,10 @@ extension Date {
         return Calendar.current.component(.second, from: self)
     }
     
+    private var weekday: Int {
+        return Calendar.current.component(.weekday, from: self)
+    }
+    
     func toTimeInfo() -> TimeInfo {
         let hour: Int
         let type: TimeInfo.TimeType = self.hour < 12 ? .am : .pm
@@ -48,5 +52,19 @@ extension Date {
         case false :
             return String(format: "%2d월 %2d일 \(timeInfo.type.title) %02d:%02d", self.month, self.day, timeInfo.hour, timeInfo.minute)
         }
+    }
+    
+    func toString() -> String {
+        let weekday: String
+        switch self.weekday {
+        case 1 : weekday = "일"
+        case 2 : weekday = "월"
+        case 3 : weekday = "화"
+        case 4 : weekday = "수"
+        case 5 : weekday = "목"
+        case 6 : weekday = "금"
+        default : weekday = "토"
+        }
+        return String(format: "%02d월 %02d일 \(weekday)요일", self.month, self.day)
     }
 }
