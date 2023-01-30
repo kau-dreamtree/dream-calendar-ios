@@ -50,7 +50,7 @@ extension Date {
         case true :
             return String(format: "\(timeInfo.type.title) %02d:%02d", timeInfo.hour, timeInfo.minute)
         case false :
-            return String(format: "%2d월 %2d일 \(timeInfo.type.title) %02d:%02d", self.month, self.day, timeInfo.hour, timeInfo.minute)
+            return String(format: "%02d월 %02d일 \(timeInfo.type.title) %02d:%02d", self.month, self.day, timeInfo.hour, timeInfo.minute)
         }
     }
     

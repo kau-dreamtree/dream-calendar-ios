@@ -13,4 +13,5 @@ extension Color {
     static var dateButtonLightGray = Color(red: 0.933, green: 0.933, blue: 0.937)
     static var tagTitleGray = Color(red: 0.541, green: 0.541, blue: 0.553)
     static var additionViewBackgroundGray = Color(red: 0.971, green: 0.971, blue: 0.971)
+    static var timeGray = Color(red: 0.729, green: 0.725, blue: 0.725, opacity: 1)
 }

@@ -158,7 +158,7 @@ struct ScheduleDetailBlock: View {
                 .frame(height: Constraint.timeInfoHeight)
             Text(self.schedule.endTime.toString(with: self.schedule.startTime))
                 .font(.AppleSDMedium12)
-                .foregroundColor(.black)
+                .foregroundColor(.timeGray)
                 .frame(height: Constraint.timeInfoHeight)
         }
         .frame(width: self.schedule.needToDisplayDate ? Constraint.longTimeInfoWidth : Constraint.shortTimeInfoWidth)
