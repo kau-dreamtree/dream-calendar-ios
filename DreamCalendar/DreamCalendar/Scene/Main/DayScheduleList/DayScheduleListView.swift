@@ -122,13 +122,19 @@ struct ScheduleDetailBlock: View {
         static let timeInfoHeight: CGFloat = 18
         static let shortTimeInfoWidth: CGFloat = 60
         static let longTimeInfoWidth: CGFloat = 115
+        
+        static let isAllDayTitle: String = "종일"
     }
     
     var body: some View {
         HStack(spacing: Constraint.zeroPadding) {
             self.leftBar
             self.title
-            self.timeInfo
+            if self.schedule.isAllDay {
+                self.allDayInfo
+            } else {
+                self.timeInfo
+            }
         }
     }
     
@@ -149,18 +155,26 @@ struct ScheduleDetailBlock: View {
             .frame(maxWidth: .infinity, alignment: .leading)
     }
     
+    private var allDayInfo: some View {
+        Text(Constraint.isAllDayTitle)
+            .font(.AppleSDMedium12)
+            .foregroundColor(.black)
+            .frame(height: Constraint.timeInfoHeight, alignment: .trailing)
+    }
+    
     private var timeInfo: some View {
-        VStack(alignment: .trailing, spacing: Constraint.zeroPadding) {
+        VStack(spacing: Constraint.zeroPadding) {
             Text(self.schedule.startTime.toString(with: self.schedule.endTime))
                 .font(.AppleSDMedium12)
                 .foregroundColor(.black)
-                .frame(height: Constraint.timeInfoHeight)
+                .frame(height: Constraint.timeInfoHeight, alignment: .trailing)
             Text(self.schedule.endTime.toString(with: self.schedule.startTime))
                 .font(.AppleSDMedium12)
                 .foregroundColor(.timeGray)
-                .frame(height: Constraint.timeInfoHeight)
+                .frame(height: Constraint.timeInfoHeight, alignment: .trailing)
         }
-        .frame(width: self.schedule.needToDisplayDate ? Constraint.longTimeInfoWidth : Constraint.shortTimeInfoWidth)
+        .frame(width: self.schedule.needToDisplayDate ? Constraint.longTimeInfoWidth : Constraint.shortTimeInfoWidth,
+               alignment: .trailing)
     }
 }
 
