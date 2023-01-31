@@ -12,8 +12,12 @@ import CoreData
 final class ScheduleAdditionViewModel: ObservableObject {
     
     @Published var schedule: Schedule
+    @Published private var error: Error? = nil
     let viewContext: NSManagedObjectContext
+    private let delegate: AdditionViewPresentDelegate & RefreshMainViewDelegate
+    private let scheduleManager: ScheduleManager
     private var cancellables: Set<AnyCancellable> = []
+    let date: Date
     
     var defaultStartTime: TimeInfo {
         return self.schedule.startTime.toTimeInfo()
@@ -23,20 +27,12 @@ final class ScheduleAdditionViewModel: ObservableObject {
         return self.schedule.endTime.toTimeInfo()
     }
     
-    init?(_ context: NSManagedObjectContext, title: String = "", isAllDay: Bool = false, date: Date, tag: TagInfo = (type: TagType.babyBlue, title: TagType.babyBlue.defaultTitle)) {
-        let startTime = TimeInfo.defaultTime(.start, date: date).toDate()
-        let endTime = TimeInfo.defaultTime(.end, date: date).toDate()
-        
-        self.viewContext = context
-        self.schedule = Schedule(context: context)
-        
-        schedule.id = UUID()
-        schedule.title = title
-        schedule.isAllDay = isAllDay
-        schedule.startTime = startTime
-        schedule.endTime = endTime
-        schedule.tagId = Int16(tag.type.rawValue)
-        
+    init(_ manager: ScheduleManager, delegate: AdditionViewPresentDelegate & RefreshMainViewDelegate, schedule: Schedule, date: Date) {
+        self.scheduleManager = manager
+        self.viewContext = manager.viewContext
+        self.delegate = delegate
+        self.schedule = schedule
+        self.date = date
         self.setScheduleTimeConstraint()
     }
     
@@ -72,7 +68,32 @@ final class ScheduleAdditionViewModel: ObservableObject {
             .store(in: &self.cancellables)
     }
     
-    func removeAllBinding() {
+    private func removeAllBinding() {
         self.cancellables.removeAll()
+    }
+    
+    func uploadScheduleButtonDidTouched() {
+        do {
+            self.removeAllBinding()
+            try self.scheduleManager.addSchedule(self.schedule)
+            self.scheduleManager.removeScheduleAdditionViewModel()
+            
+            self.delegate.refreshMainViewSchedule()
+            self.delegate.closeAdditionSheet()
+        } catch {
+            self.error = error
+        }
+    }
+    
+    func closeScheduleButtonDidTouched() {
+        do {
+            self.removeAllBinding()
+            try self.scheduleManager.cancelScheduleAddition(self.schedule)
+            self.scheduleManager.removeScheduleAdditionViewModel()
+            
+            self.delegate.closeAdditionSheet()
+        } catch {
+            self.error = error
+        }
     }
 }

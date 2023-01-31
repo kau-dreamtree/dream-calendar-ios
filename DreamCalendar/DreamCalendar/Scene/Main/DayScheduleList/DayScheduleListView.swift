@@ -10,7 +10,7 @@ import SwiftUI
 struct DayScheduleListView: View {
     // TODO: ObservedObject 외 다른 방법 찾기
     @ObservedObject private(set) var viewModel: MainViewModel
-    private let delegate: MainViewDelegate
+    private let delegate: AdditionViewPresentDelegate
     
     private(set) var date: Date
     private(set) var schedules: [Schedule]
@@ -29,7 +29,7 @@ struct DayScheduleListView: View {
         static let blockTopBottomPadding: CGFloat = 5
     }
     
-    init(delegate: MainViewDelegate, viewModel: ObservedObject<MainViewModel>, schedules: [Schedule], detent: HalfSheet<Self>.Detent) {
+    init(delegate: AdditionViewPresentDelegate, viewModel: ObservedObject<MainViewModel>, schedules: [Schedule], detent: HalfSheet<Self>.Detent) {
         self.delegate = delegate
         self._viewModel = viewModel
         self.date = viewModel.wrappedValue.selectedDate
@@ -93,9 +93,8 @@ struct DayScheduleListView: View {
     private func scheduleAdditionModalView() -> some View {
         VStack {
             if let scheduleAdditionViewModel = self.viewModel.getScheduleAdditionViewModel() {
-                ScheduleAdditionInterfaceView(mainViewDelegate: self.delegate,
-                                              mainViewModel: self.viewModel,
-                                              scheduleAdditionViewModel: scheduleAdditionViewModel)
+                ScheduleAdditionView(viewModel: scheduleAdditionViewModel,
+                                     delegate: self.delegate)
             } else {
                 Text("")
             }

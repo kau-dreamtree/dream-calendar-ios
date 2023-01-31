@@ -8,99 +8,61 @@
 import SwiftUI
 import CalendarUI
 
-struct ScheduleAdditionInterfaceView: View {
-    
-    let mainViewDelegate: MainViewDelegate
-    
-    @ObservedObject private(set) var mainViewModel: MainViewModel
-    let scheduleAdditionViewModel: ScheduleAdditionViewModel
-    
-    private struct Constraint {
-        static let closeButtonTitle = "닫기"
-        static let completeButtonTitle = "완료"
-    }
-    
-    var body: some View {
-        NavigationView {
-            ScheduleAdditionView(viewModel: self.scheduleAdditionViewModel)
-                .toolbar {
-                    ToolbarItem(placement: .cancellationAction) {
-                        Button(Constraint.closeButtonTitle) {
-                            self.closeScheduleAdditionButtonDidTouched()
-                        }
-                        .foregroundColor(TagType.babyBlue.color)
-                        .font(.AppleSDSemiBold14)
-                    }
-                    ToolbarItem(placement: .destructiveAction) {
-                        Button(Constraint.completeButtonTitle) {
-                            self.uploadScheduleButtionDidTouched()
-                        }
-                        .foregroundColor(TagType.babyBlue.color)
-                        .font(.AppleSDSemiBold14)
-                    }
-                }
-        }
-        .alert(DCError.title, isPresented: self.$mainViewModel.isShowAlert) {
-            Button("확인") {
-                self.mainViewDelegate.closeAdditionSheet()
-                self.mainViewModel.removeScheduleAdditionViewModel()
-                self.mainViewModel.changeError()
-            }
-        } message : {
-            Text((self.mainViewModel.error as? DCError)?.message ?? Alert.failMessage)
-        }
-    }
-    
-    private func uploadScheduleButtionDidTouched() {
-        guard let schedule = self.mainViewModel.scheduleAdditionViewModel?.schedule else {
-            self.mainViewModel.changeError(DCError.unknown)
-            return
-        }
-        self.mainViewModel.removeScheduleAdditionViewModel()
-        self.mainViewModel.addSchedule(schedule)
-        self.mainViewDelegate.closeAdditionSheet()
-    }
-    
-    private func closeScheduleAdditionButtonDidTouched() {
-        guard let schedule = self.mainViewModel.scheduleAdditionViewModel?.schedule else {
-            return
-        }
-        self.mainViewModel.removeScheduleAdditionViewModel()
-        self.mainViewModel.cancelScheduleAddition(schedule)
-        self.mainViewDelegate.closeAdditionSheet()
-    }
-}
-
 struct ScheduleAdditionView: View {
     
     @ObservedObject private var viewModel: ScheduleAdditionViewModel
     @State private(set) var setting: SettingState = .none
+    let delegate: AdditionViewPresentDelegate
     
     enum SettingState {
         case none, startDate, endDate, tag
     }
     
     private struct Constraint {
+        static let closeButtonTitle = "닫기"
+        static let completeButtonTitle = "완료"
+        
+        static let okButtonTitle = "확인"
+        
         static let bottomInputViewPadding: CGFloat = 10
     }
     
-    init(viewModel: ScheduleAdditionViewModel) {
+    init(viewModel: ScheduleAdditionViewModel, delegate: AdditionViewPresentDelegate) {
         self.viewModel = viewModel
+        self.delegate = delegate
     }
     
     var body: some View {
-        ZStack {
-            Color.additionViewBackgroundGray
-                .edgesIgnoringSafeArea(.all)
-            VStack(spacing: 0) {
-                ScheduleAdditionTitleInputView(schedule: self.$viewModel.schedule)
-                Divider()
-                ScheduleAdditionBottomInputView(viewModel: self.viewModel,
-                                                schedule: self.$viewModel.schedule,
-                                                additionState: self.$setting,
-                                                defaultStartTime: self.viewModel.defaultStartTime,
-                                                defaultEndTime: self.viewModel.defaultEndTime)
-                Spacer()
+        NavigationView {
+            ZStack {
+                Color.additionViewBackgroundGray
+                    .edgesIgnoringSafeArea(.all)
+                VStack(spacing: 0) {
+                    ScheduleAdditionTitleInputView(schedule: self.$viewModel.schedule)
+                    Divider()
+                    ScheduleAdditionBottomInputView(viewModel: self.viewModel,
+                                                    schedule: self.$viewModel.schedule,
+                                                    additionState: self.$setting,
+                                                    defaultStartTime: self.viewModel.defaultStartTime,
+                                                    defaultEndTime: self.viewModel.defaultEndTime)
+                    Spacer()
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button(Constraint.closeButtonTitle) {
+                        self.viewModel.closeScheduleButtonDidTouched()
+                    }
+                    .foregroundColor(self.viewModel.schedule.tagType.color)
+                    .font(.AppleSDSemiBold14)
+                }
+                ToolbarItem(placement: .destructiveAction) {
+                    Button(Constraint.completeButtonTitle) {
+                        self.viewModel.uploadScheduleButtonDidTouched()
+                    }
+                    .foregroundColor(self.viewModel.schedule.tagType.color)
+                    .font(.AppleSDSemiBold14)
+                }
             }
         }
     }

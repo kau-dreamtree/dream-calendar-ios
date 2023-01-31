@@ -8,12 +8,12 @@
 import SwiftUI
 import CalendarUI
 
-protocol MainViewDelegate {
+protocol AdditionViewPresentDelegate {
     func closeAdditionSheet()
     func openAdditionSheet()
 }
 
-struct MainView: View, MainViewDelegate, MainTopViewDelegate {
+struct MainView: View, MainTopViewDelegate {
     @ObservedObject private var viewModel: MainViewModel
     
     private struct Constraint {
@@ -67,16 +67,12 @@ struct MainView: View, MainViewDelegate, MainTopViewDelegate {
     }
     
     func writeButtonDidTouched() {
-        if self.viewModel.isDetailMode {
-            self.viewModel.isDetailWritingMode = true
-        } else {
-            self.viewModel.isWritingMode = true
-        }
+        self.viewModel.openAdditionSheet()
     }
     
     private func detailScheduleBottomView() -> some View {
         return HalfSheet(content: { detent in
-            DayScheduleListView(delegate: self,
+            DayScheduleListView(delegate: self.viewModel,
                                 viewModel: self._viewModel,
                                 schedules: self.viewModel.schedulesForSelectedDate,
                                 detent: detent)
@@ -86,33 +82,11 @@ struct MainView: View, MainViewDelegate, MainTopViewDelegate {
     private func scheduleAdditionModalView() -> some View {
         VStack {
             if let scheduleAdditionViewModel = self.viewModel.getScheduleAdditionViewModel() {
-                ScheduleAdditionInterfaceView(mainViewDelegate: self,
-                                                      mainViewModel: self.viewModel,
-                                                      scheduleAdditionViewModel: scheduleAdditionViewModel)
+                ScheduleAdditionView(viewModel: scheduleAdditionViewModel, delegate: self.viewModel)
             } else {
                 Text("")
             }
         }
-    }
-    
-    func closeDetailSheet() {
-        self.viewModel.isDetailMode = false
-    }
-    
-    func closeAdditionSheet() {
-        if self.viewModel.isDetailMode {
-            self.viewModel.isDetailWritingMode = false
-        } else {
-            self.viewModel.isWritingMode = false
-        }
-    }
-    
-    func openDetailSheet() {
-        self.viewModel.isDetailMode = true
-    }
-    
-    func openAdditionSheet() {
-        self.viewModel.isWritingMode = true
     }
 }
 

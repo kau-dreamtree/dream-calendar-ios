@@ -53,32 +53,27 @@ struct TimeInfo {
     static func defaultTime(_ type: DefaultTimeType, date: Date) -> TimeInfo {
         let addValue: Int = type == .start ? 1 : 2
         
-        var currentDate = Date()
+        let currentDate = Date()
         var hour: Int = currentDate.hour
         let type: TimeType
         
         switch (currentDate.minute > 0, currentDate.hour < 12, currentDate.hour + addValue < 12, currentDate.hour + addValue < 24) {
         case (true, _, true, _) :
-            currentDate = date
             hour += addValue
             type = .am
         case (true, _, false, true) :
-            currentDate = date
             hour += addValue
             type = .pm
         case (true, _, false, false) :
-            currentDate = Calendar.current.date(byAdding: .day, value: 1, to: date) ?? date
             hour = (hour + addValue) % 24
             type = .am
         case (false, true, _, _) :
-            currentDate = date
             type = .am
         case (false, false, _, _) :
-            currentDate = date
             type = .pm
         }
         hour = (hour % 12 == 0) ? 12 : (hour % 12)
-        return TimeInfo(date: currentDate, hour: hour, minute: 0, type: type)
+        return TimeInfo(date: date, hour: hour, minute: 0, type: type)
     }
 }
 
