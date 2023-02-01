@@ -7,7 +7,8 @@
 
 import SwiftUI
 
-struct DayScheduleListView: View {
+struct DayScheduleListView: View, ScheduleDetailViewDelegate {
+    
     // TODO: ObservedObject 외 다른 방법 찾기
     @ObservedObject private(set) var viewModel: MainViewModel
     private let delegate: AdditionViewPresentDelegate
@@ -15,6 +16,8 @@ struct DayScheduleListView: View {
     private(set) var date: Date
     private(set) var schedules: [Schedule]
     private let detent: HalfSheet<Self>.Detent
+    
+    @State private var selectedSchedule: Schedule? = nil
     
     private struct Constraint {
         static let titleTopPadding: CGFloat = 48
@@ -46,11 +49,12 @@ struct DayScheduleListView: View {
         }
         .sheet(isPresented: self.$viewModel.isDetailWritingMode,
                content: self.scheduleAdditionModalView)
+        .fullScreenCover(item: self.$selectedSchedule, content: self.detailView)
     }
     
     private var topMenu: some View {
         HStack(alignment: .center) {
-            Text(self.date.toString())
+            Text("\(self.date.toString()) \(self.date.weekday)요일")
                 .font(.AppleSDBold20)
                 .foregroundColor(.black)
                 .padding(EdgeInsets(top: Constraint.titleTopPadding,
@@ -81,8 +85,13 @@ struct DayScheduleListView: View {
                                               bottom: Constraint.blockTopBottomPadding,
                                               trailing: Constraint.blockLeadingTrailingPadding))
                     .listRowSeparator(.hidden)
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        self.selectedSchedule = schedule
+                    }
             }
         }
+        .id(UUID()) // ForEach update를 위해 UUID 부여
         .listStyle(PlainListStyle())
         .padding(EdgeInsets(top: self.detent == .medium ? Constraint.topPadding : Constraint.titleListInterval,
                             leading: Constraint.zeroPadding,
@@ -101,8 +110,17 @@ struct DayScheduleListView: View {
         }
     }
     
+    private func detailView(about schedule: Schedule) -> some View {
+        return ScheduleDetailView(viewModel: self.viewModel.getDetailViewModel(about: schedule,
+                                                                               with: self))
+    }
+    
     private func writeButtonDidTouched() {
         self.viewModel.isDetailWritingMode = true
+    }
+    
+    func closeDetailView() {
+        self.selectedSchedule = nil
     }
 }
 

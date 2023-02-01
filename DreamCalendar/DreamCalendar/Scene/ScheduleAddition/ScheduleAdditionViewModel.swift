@@ -17,7 +17,22 @@ final class ScheduleAdditionViewModel: ObservableObject {
     private let delegate: AdditionViewPresentDelegate & RefreshMainViewDelegate
     private let scheduleManager: ScheduleManager
     private var cancellables: Set<AnyCancellable> = []
+    private let mode: Mode
     let date: Date
+    
+    private let temporarySchedule: TemporarySchedule
+    
+    private struct TemporarySchedule {
+        let title: String
+        let isAllDay: Bool
+        let startTime: Date
+        let endTime: Date
+        let tagId: Int16
+    }
+    
+    enum Mode {
+        case create, modify
+    }
     
     var defaultStartTime: TimeInfo {
         return self.schedule.startTime.toTimeInfo()
@@ -27,12 +42,18 @@ final class ScheduleAdditionViewModel: ObservableObject {
         return self.schedule.endTime.toTimeInfo()
     }
     
-    init(_ manager: ScheduleManager, delegate: AdditionViewPresentDelegate & RefreshMainViewDelegate, schedule: Schedule, date: Date) {
+    init(_ manager: ScheduleManager, delegate: AdditionViewPresentDelegate & RefreshMainViewDelegate, schedule: Schedule, mode: Mode, date: Date) {
         self.scheduleManager = manager
         self.viewContext = manager.viewContext
         self.delegate = delegate
         self.schedule = schedule
+        self.temporarySchedule = TemporarySchedule(title: schedule.title,
+                                                   isAllDay: schedule.isValid,
+                                                   startTime: schedule.startTime,
+                                                   endTime: schedule.endTime,
+                                                   tagId: schedule.tagId)
         self.date = date
+        self.mode = mode
         self.setScheduleTimeConstraint()
     }
     
@@ -75,7 +96,12 @@ final class ScheduleAdditionViewModel: ObservableObject {
     func uploadScheduleButtonDidTouched() {
         do {
             self.removeAllBinding()
-            try self.scheduleManager.addSchedule(self.schedule)
+            switch self.mode {
+            case .modify :
+                try self.scheduleManager.modifySchedule(self.schedule)
+            case .create :
+                try self.scheduleManager.addSchedule(self.schedule)
+            }
             self.scheduleManager.removeScheduleAdditionViewModel()
             
             self.delegate.refreshMainViewSchedule()
@@ -88,12 +114,25 @@ final class ScheduleAdditionViewModel: ObservableObject {
     func closeScheduleButtonDidTouched() {
         do {
             self.removeAllBinding()
-            try self.scheduleManager.cancelScheduleAddition(self.schedule)
+            switch self.mode {
+            case .modify :
+                self.restoreChanges()
+            case .create :
+                try self.scheduleManager.cancelScheduleAddition(self.schedule)
+            }
             self.scheduleManager.removeScheduleAdditionViewModel()
             
             self.delegate.closeAdditionSheet()
         } catch {
             self.error = error
         }
+    }
+    
+    private func restoreChanges() {
+        self.schedule.title = self.temporarySchedule.title
+        self.schedule.isAllDay = self.temporarySchedule.isAllDay
+        self.schedule.startTime = self.temporarySchedule.startTime
+        self.schedule.endTime = self.temporarySchedule.endTime
+        self.schedule.tagId = self.temporarySchedule.tagId
     }
 }

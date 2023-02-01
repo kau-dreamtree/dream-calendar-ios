@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Schedule: Codable, Comparable {
+public struct Schedule: Codable {
     let id: UUID
     let serverId: Int
     let title: String
@@ -19,18 +19,6 @@ public struct Schedule: Codable, Comparable {
     
     public static func ==(lhs: Self, rhs: Self) -> Bool {
         return lhs.id == rhs.id
-    }
-    
-    public static func <(lhs: Self, rhs: Self) -> Bool {
-        if lhs.startTime.year != rhs.startTime.year || lhs.startTime.month != rhs.startTime.month || lhs.startTime.day != rhs.startTime.day {
-            return lhs.startTime < rhs.startTime
-        } else if lhs.endTime.year != rhs.endTime.year || lhs.endTime.month != rhs.endTime.month || lhs.endTime.day != rhs.endTime.day {
-            return lhs.endTime > rhs.endTime
-        } else if lhs.isAllDay != rhs.isAllDay {
-            return rhs.isAllDay
-        } else {
-            return lhs.serverId < rhs.serverId
-        }
     }
     
     public init(id: UUID, serverId: Int, title: String, isAllDay: Bool, startTime: Date, endTime: Date, tag: TagUI, isValid: Bool) {
@@ -141,7 +129,7 @@ public struct Schedules: Codable, Collection {
         var schedulesPerWeekOrderByLine: [[Int: [ScheduleBlock]]] = monthInfo.weeks.map({ _ in [:] })
         var hasMoreInfo: [[Days: Bool]] = monthInfo.weeks.map({ _ in [:] })
         
-        for schedule in schedules.sorted() {
+        for schedule in schedules.filter({ $0.isValid }) {
             for week in monthInfo.weeks where schedule.includedWithIn(start: week.first, end: week.lastTime) {
                 let weekIndex = week.week
                 let scheduleBlock = ScheduleBlock(schedule: schedule, week: week)

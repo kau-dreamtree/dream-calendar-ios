@@ -19,6 +19,7 @@ extension ScheduleUpdateLog {
     @NSManaged public var id: UUID
     @NSManaged public var type: Int16
     @NSManaged public var synchronization: Bool
+    @NSManaged public var createdDate: Date
     @NSManaged public var schedule: Schedule
 
 }

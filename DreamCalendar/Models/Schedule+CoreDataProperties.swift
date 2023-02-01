@@ -56,7 +56,21 @@ extension Schedule {
         log.schedule = self
         log.type = Int16(type.rawValue)
         log.synchronization = false
+        log.createdDate = Date()
         return log
     }
 }
 
+extension Schedule: Comparable {
+    public static func <(lhs: Schedule, rhs: Schedule) -> Bool {
+        if lhs.startTime.year != rhs.startTime.year || lhs.startTime.month != rhs.startTime.month || lhs.startTime.day != rhs.startTime.day {
+            return lhs.startTime < rhs.startTime
+        } else if lhs.endTime.year != rhs.endTime.year || lhs.endTime.month != rhs.endTime.month || lhs.endTime.day != rhs.endTime.day {
+            return lhs.endTime > rhs.endTime
+        } else if lhs.isAllDay != rhs.isAllDay {
+            return lhs.isAllDay
+        } else {
+            return lhs.startTime < rhs.startTime
+        }
+    }
+}

@@ -37,7 +37,7 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate, AdditionV
     
     var schedulesForSelectedDate: [Schedule] {
         self.schedules.filter({ schedule in
-            schedule.isInclude(with: self.selectedDate)
+            schedule.isValid && schedule.isInclude(with: self.selectedDate)
         })
     }
     
@@ -122,12 +122,6 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate, AdditionV
                 self?.isShowAlert = result
             })
             .store(in: &self.cancellables)
-        
-        self.$isWritingMode
-            .sink(receiveValue: { a in
-                print("writing mode ", a)
-            })
-            .store(in: &self.cancellables)
     }
     
     func goToToday() {
@@ -175,6 +169,14 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate, AdditionV
     
     func getScheduleAdditionViewModel() -> ScheduleAdditionViewModel {
         return self.scheduleManager.getScheduleAdditionViewModel(withDate: self.selectedDate, andDelegate: self)
+    }
+    
+    func getDetailViewModel(about schedule: Schedule, with delegate: ScheduleDetailViewDelegate) -> ScheduleDetailViewModel {
+        return ScheduleDetailViewModel(schedule: schedule,
+                                       scheduleManager: self.scheduleManager,
+                                       date: self.selectedDate,
+                                       delegate: delegate,
+                                       scheduleEditingDelegate: self)
     }
     
     func changeError(_ error: Error? = nil) {

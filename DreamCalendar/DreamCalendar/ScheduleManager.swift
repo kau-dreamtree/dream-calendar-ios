@@ -42,7 +42,7 @@ final class ScheduleManager {
         return NSPredicate(format: "%@ <= startTime AND startTime <= %@ AND %@ <= endTime AND endTime <= %@", firstDayCVar, lastDayCVar, firstDayCVar, lastDayCVar)
     }
     
-    func getScheduleAdditionViewModel(withDate date: Date, schedule: Schedule? = nil, andDelegate delegate: AdditionViewPresentDelegate & RefreshMainViewDelegate) -> ScheduleAdditionViewModel {
+    func getScheduleAdditionViewModel(withDate date: Date, schedule: Schedule? = nil, mode: ScheduleAdditionViewModel.Mode = .create, andDelegate delegate: AdditionViewPresentDelegate & RefreshMainViewDelegate) -> ScheduleAdditionViewModel {
         let viewModel: ScheduleAdditionViewModel
         if let scheduleViewModel = self.scheduleAdditionViewModel {
             viewModel = scheduleViewModel
@@ -50,12 +50,14 @@ final class ScheduleManager {
             viewModel = ScheduleAdditionViewModel(self,
                                                   delegate: delegate,
                                                   schedule: schedule,
+                                                  mode: mode,
                                                   date: date)
         } else {
             let schedule = getNewSchedule(in: date)
             viewModel = ScheduleAdditionViewModel(self,
                                                   delegate: delegate,
                                                   schedule: schedule,
+                                                  mode: mode,
                                                   date: date)
         }
         self.scheduleAdditionViewModel = viewModel
@@ -73,6 +75,17 @@ final class ScheduleManager {
     
     func addSchedule(_ schedule: Schedule) throws {
         schedule.createLog(self.viewContext, type: .create)
+        try self.viewContext.save()
+    }
+    
+    func modifySchedule(_ schedule: Schedule) throws {
+        schedule.createLog(self.viewContext, type: .update)
+        try self.viewContext.save()
+    }
+    
+    func deleteSchedule(_ schedule: Schedule) throws {
+        schedule.createLog(self.viewContext, type: .delete)
+        schedule.isValid = false
         try self.viewContext.save()
     }
     
@@ -97,7 +110,9 @@ final class ScheduleManager {
     private func fetchSchedule(withCurrentPage date: Date) throws -> [Schedule] {
         let request = Schedule.fetchRequest()
         request.predicate = self.monthRangePredicate(withDate: date)
-        return try self.viewContext.fetch(request)
+        request.sortDescriptors = [NSSortDescriptor(key: "startTime", ascending: true),
+                                   NSSortDescriptor(key: "endTime", ascending: false)]
+        return try self.viewContext.fetch(request).sorted()
     }
 }
 

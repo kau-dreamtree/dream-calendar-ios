@@ -19,6 +19,7 @@
         <attribute name="title" attributeType="String" defaultValueString=" "/>
     </entity>
     <entity name="ScheduleUpdateLog" representedClassName=".ScheduleUpdateLog" syncable="YES">
+        <attribute name="createdDate" optional="YES" attributeType="Date" defaultDateTimeInterval="-3187326472" usesScalarValueType="NO"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="synchronization" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="type" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
@@ -30,6 +31,7 @@
         <attribute name="title" optional="YES" attributeType="String" defaultValueString=""/>
     </entity>
     <entity name="TagUpdateLog" representedClassName=".TagUpdateLog" syncable="YES">
+        <attribute name="createdDate" optional="YES" attributeType="Date" defaultDateTimeInterval="-3187326472" usesScalarValueType="NO"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="synchronization" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <relationship name="tag" maxCount="1" deletionRule="Nullify" destinationEntity="Tag"/>
