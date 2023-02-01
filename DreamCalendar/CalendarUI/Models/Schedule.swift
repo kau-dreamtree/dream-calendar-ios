@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Schedule: Codable, Comparable {
+public struct Schedule: Codable {
     let id: UUID
     let serverId: Int
     let title: String
@@ -19,18 +19,6 @@ public struct Schedule: Codable, Comparable {
     
     public static func ==(lhs: Self, rhs: Self) -> Bool {
         return lhs.id == rhs.id
-    }
-    
-    public static func <(lhs: Self, rhs: Self) -> Bool {
-        if lhs.startTime.year != rhs.startTime.year || lhs.startTime.month != rhs.startTime.month || lhs.startTime.day != rhs.startTime.day {
-            return lhs.startTime < rhs.startTime
-        } else if lhs.endTime.year != rhs.endTime.year || lhs.endTime.month != rhs.endTime.month || lhs.endTime.day != rhs.endTime.day {
-            return lhs.endTime > rhs.endTime
-        } else if lhs.isAllDay != rhs.isAllDay {
-            return rhs.isAllDay
-        } else {
-            return lhs.serverId < rhs.serverId
-        }
     }
     
     public init(id: UUID, serverId: Int, title: String, isAllDay: Bool, startTime: Date, endTime: Date, tag: TagUI, isValid: Bool) {
@@ -110,10 +98,8 @@ public struct ScheduleBlock: Codable {
         return self.schedule.title
     }
     
-    func scheduleLine(withFilledMap filledMap: [Days: [Int: Bool]]) -> Int? {
-//        let maximumSeenableScheduleLineCount: Int = 7
-        
-        for line in (0..<WeekView.maximumLineCount) where filledMap[self.startDay]?[line] == false {
+    func scheduleLine(withFilledMap filledMap: [Days: [Int: Bool]], maximumLineCount: Int) -> Int? {
+        for line in (0..<maximumLineCount) where filledMap[self.startDay]?[line] == false {
             guard (self.startDay...self.endDay).filter({ filledMap[$0]?[line] == true }).isEmpty else { continue }
             return line
         }
@@ -129,15 +115,12 @@ public struct Schedules: Codable, Collection {
     public var startIndex : Int { return 0 }
     public var endIndex: Int { return schedulesPerLine.keys.count - 1}
     
-    static func sortingSchedules(_ schedules: [Schedule], on monthInfo: Month) -> [Schedules] {
-        
-        let maximumSeenableScheduleLineCount: Int = 7
-        
+    static func sortingSchedules(_ schedules: [Schedule], on monthInfo: Month, maximumLineCount: Int) -> [Schedules] {
         var isFilledMap: [[Days: [Int: Bool]]] = monthInfo.weeks.map({ _ in [:] })
         (0..<monthInfo.weeks.count).forEach { week in
             Days.allCases.forEach { day in
                 isFilledMap[week].updateValue([:], forKey: day)
-                (0..<maximumSeenableScheduleLineCount).forEach { line in
+                (0..<maximumLineCount).forEach { line in
                     isFilledMap[week][day]?.updateValue(false, forKey: line)
                 }
             }
@@ -146,11 +129,11 @@ public struct Schedules: Codable, Collection {
         var schedulesPerWeekOrderByLine: [[Int: [ScheduleBlock]]] = monthInfo.weeks.map({ _ in [:] })
         var hasMoreInfo: [[Days: Bool]] = monthInfo.weeks.map({ _ in [:] })
         
-        for schedule in schedules.sorted() {
+        for schedule in schedules.filter({ $0.isValid }) {
             for week in monthInfo.weeks where schedule.includedWithIn(start: week.first, end: week.lastTime) {
                 let weekIndex = week.week
                 let scheduleBlock = ScheduleBlock(schedule: schedule, week: week)
-                if let line = scheduleBlock.scheduleLine(withFilledMap: isFilledMap[weekIndex]) {
+                if let line = scheduleBlock.scheduleLine(withFilledMap: isFilledMap[weekIndex], maximumLineCount: maximumLineCount) {
                     if schedulesPerWeekOrderByLine[weekIndex][line] == nil {
                         schedulesPerWeekOrderByLine[weekIndex].updateValue([], forKey: line)
                     }

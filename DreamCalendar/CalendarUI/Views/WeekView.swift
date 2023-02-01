@@ -8,35 +8,36 @@
 import SwiftUI
 
 struct WeekView: View {
-    static let maximumLineCount = 7
+    static let longMaximumLineCount = 7
+    static let shortMaximumLineCount = 3
     
     private let week: Week
     private let schedules: Schedules
     @Binding private(set) var selectedDate: Date
+    private let mode: CalendarView.Mode
     
     private struct Constraint {
         
         static let weekHeight: CGFloat = 11
         static let weekBlockWidth: CGFloat = 46
         static let weekBlockHeight: CGFloat = 13
-        static let weekTopPadding: CGFloat = 5
         
         static let zeroPadding: CGFloat = 0
         static let blockHorizontalInterval: CGFloat = 2
         static let blockVerticalInterval: CGFloat = 1
         static let leadingTrailingPadding: CGFloat = 10
-        static let weekBlockTopPadding: CGFloat = 21
     }
     
-    init(selectedDate: Binding<Date>, week: Week, schedules: Schedules) {
+    init(selectedDate: Binding<Date>, week: Week, schedules: Schedules, mode: CalendarView.Mode) {
         self._selectedDate = selectedDate
         self.week = week
         self.schedules = schedules
+        self.mode = mode
     }
     
     var body: some View {
         ZStack {
-            self.hiddenTouchButtonView
+            self.backgroundView
                 .padding(EdgeInsets(top: Constraint.zeroPadding,
                                     leading: Constraint.leadingTrailingPadding,
                                     bottom: Constraint.zeroPadding,
@@ -46,13 +47,19 @@ struct WeekView: View {
                 .frame(minHeight: Constraint.weekHeight,
                        maxHeight: .infinity,
                        alignment: .top)
-                .padding(EdgeInsets(top: Constraint.weekTopPadding,
+                .padding(EdgeInsets(top: mode.dayTopPadding,
                                     leading: Constraint.zeroPadding,
                                     bottom: Constraint.zeroPadding,
                                     trailing: Constraint.zeroPadding))
             
             self.weekBlockView
-                .padding(EdgeInsets(top: Constraint.weekBlockTopPadding,
+                .padding(EdgeInsets(top: self.mode.blockCollectionTopPadding,
+                                    leading: Constraint.leadingTrailingPadding,
+                                    bottom: Constraint.zeroPadding,
+                                    trailing: Constraint.leadingTrailingPadding))
+            
+            self.hiddenTouchButtonView
+                .padding(EdgeInsets(top: Constraint.zeroPadding,
                                     leading: Constraint.leadingTrailingPadding,
                                     bottom: Constraint.zeroPadding,
                                     trailing: Constraint.leadingTrailingPadding))
@@ -85,7 +92,7 @@ struct WeekView: View {
     @ViewBuilder
     var weekBlockView: some View {
         VStack(spacing: Constraint.blockVerticalInterval) {
-            ForEach(0..<Self.maximumLineCount, id: \.hashValue) { day in
+            ForEach(0..<self.mode.maximumLineCount, id: \.hashValue) { day in
                 if let schedules = self.schedules[day] {
                     blockView(schedules: schedules)
                 } else {
@@ -97,20 +104,37 @@ struct WeekView: View {
     }
     
     @ViewBuilder
+    var backgroundView: some View {
+        HStack(spacing: Constraint.blockHorizontalInterval) {
+            ForEach(0..<7) { day in
+                if let day = self.week[day] {
+                    Rectangle()
+                        .frame(maxWidth: Constraint.weekBlockWidth, maxHeight: mode.weekHeight)
+                        .foregroundColor(self.selectedDate == day ? .dayBackgroundGray : .clear)
+                } else {
+                    Rectangle()
+                        .frame(maxWidth: Constraint.weekBlockWidth, maxHeight: mode.weekHeight)
+                        .foregroundColor(.clear)
+                }
+            }
+        }
+    }
+    
+    @ViewBuilder
     var hiddenTouchButtonView: some View {
         HStack(spacing: Constraint.blockHorizontalInterval) {
             ForEach(0..<7) { day in
                 if let day = self.week[day] {
                     Rectangle()
-                        .frame(maxWidth: Constraint.weekBlockWidth, maxHeight: .infinity)
-                        .foregroundColor(self.selectedDate == day ? .dayBackgroundGray : .clear)
+                        .frame(maxWidth: Constraint.weekBlockWidth, maxHeight: mode.weekHeight)
+                        .foregroundColor(.clear)
                         .contentShape(Rectangle())
                         .onTapGesture {
                             self.selectedDate = day
                         }
                 } else {
                     Rectangle()
-                        .frame(maxWidth: Constraint.weekBlockWidth, maxHeight: .infinity)
+                        .frame(maxWidth: Constraint.weekBlockWidth, maxHeight: mode.weekHeight)
                         .foregroundColor(.clear)
                 }
             }

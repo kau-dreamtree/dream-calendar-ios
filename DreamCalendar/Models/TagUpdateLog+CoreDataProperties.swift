@@ -19,6 +19,7 @@ extension TagUpdateLog {
     @NSManaged public var id: UUID
     @NSManaged public var synchronization: Bool
     @NSManaged public var tag: Tag
+    @NSManaged public var createdDate: Date
 
 }
 

@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreData
+import Combine
 
 protocol DateManipulationDelegate {
     mutating func goToToday()
@@ -14,21 +15,35 @@ protocol DateManipulationDelegate {
     mutating func goToNextMonth()
 }
 
-final class MainViewModel: ObservableObject, DateManipulationDelegate {
+protocol RefreshMainViewDelegate {
+    func refreshMainViewSchedule()
+}
+
+final class MainViewModel: ObservableObject, DateManipulationDelegate, AdditionViewPresentDelegate, RefreshMainViewDelegate {
+    
+    @Published var isDetailMode: Bool = false
+    @Published var isWritingMode: Bool
+    @Published var isDetailWritingMode: Bool = false
     
     @Published var selectedDate: Date
     @Published private(set) var date: Date
-    private(set) var scheduleAdditionViewModel: ScheduleAdditionViewModel? = nil
-    private let viewContext: NSManagedObjectContext
+    private var cancellables: Set<AnyCancellable> = Set<AnyCancellable>()
+    private let scheduleManager: ScheduleManager
     
     @Published private(set) var schedules: [Schedule]
     
-    private(set) var error: Error? = nil
+    @Published private(set) var error: Error? = nil
     @Published var isShowAlert: Bool = false
+    
+    var schedulesForSelectedDate: [Schedule] {
+        self.schedules.filter({ schedule in
+            schedule.isValid && schedule.isInclude(with: self.selectedDate)
+        })
+    }
     
     init(_ context: NSManagedObjectContext, selectedYear: Int? = nil, month selectedMonth: Int? = nil, day selectedDay: Int? = 32) {
         
-        self.viewContext = context
+        self.scheduleManager = ScheduleManager(viewContext: context)
         
         let year: Int, month: Int, day: Int
         var date = Date()
@@ -64,7 +79,12 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate {
         self.selectedDate = date
         self.date = date
         self.schedules = []
+        self.isWritingMode = false
         self.binding()
+    }
+    
+    deinit {
+        self.cancellables.removeAll()
     }
     
     var currentTopTitle: String {
@@ -73,15 +93,35 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate {
     
     var isToday: Bool {
         let today = Date()
-        return self.date.year == today.year && self.date.month == today.month
+        return self.date.year == today.year && self.date.month == today.month && self.date.day == today.day
     }
     
     private func binding() {
         self.$date
             .map({ [weak self] date -> [Schedule] in
-                return self?.fetchSchedule(withCurrentPage: date) ?? []
+                return (try? self?.scheduleManager.getSchedule(in: date) ?? []) ?? []
             })
-            .assign(to: &self.$schedules)
+            .sink(receiveValue: { schedules in
+                self.schedules = schedules
+            })
+            .store(in: &self.cancellables)
+        
+        self.$selectedDate
+            .afterSet(with: { [weak self] date1, date2 in
+                guard date1 == date2 else { return }
+                self?.isDetailMode.toggle()
+            })
+            .sink(receiveValue: { _ in })
+            .store(in: &self.cancellables)
+        
+        self.$error
+            .map({
+                return $0 != nil
+            })
+            .sink(receiveValue: { [weak self] result in
+                self?.isShowAlert = result
+            })
+            .store(in: &self.cancellables)
     }
     
     func goToToday() {
@@ -106,14 +146,18 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate {
             calendar: Calendar.current,
             year: date.year,
             month: date.month,
-            day: 1
+            day: 1,
+            hour: 0,
+            minute: 0,
+            second: 0,
+            nanosecond: 0
         )) ?? Date.now
         
         let nextMonthFirstDay = Calendar.current.date(byAdding: .month,
                                                       value: +1,
                                                       to: firstDay) ?? Date.now
         
-        let lastDay = Calendar.current.date(byAdding: .day,
+        let lastDay = Calendar.current.date(byAdding: .nanosecond,
                                             value: -1,
                                             to: nextMonthFirstDay) ?? Date.now
         
@@ -123,53 +167,51 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate {
         return NSPredicate(format: "%@ <= startTime AND startTime <= %@ AND %@ <= endTime AND endTime <= %@", firstDayCVar, lastDayCVar, firstDayCVar, lastDayCVar)
     }
     
-    func getScheduleAdditionViewModel() -> ScheduleAdditionViewModel? {
-        guard let viewModel = ScheduleAdditionViewModel(self.viewContext, date: self.selectedDate) else {
-            self.error = DCError.coreData
-            return nil
-        }
-        self.scheduleAdditionViewModel = viewModel
-        return viewModel
+    func getScheduleAdditionViewModel() -> ScheduleAdditionViewModel {
+        return self.scheduleManager.getScheduleAdditionViewModel(withDate: self.selectedDate, andDelegate: self)
     }
     
-    func removeScheduleAdditionViewModel() {
-        self.scheduleAdditionViewModel?.removeAllBinding()
-        self.scheduleAdditionViewModel = nil
+    func getDetailViewModel(about schedule: Schedule, with delegate: ScheduleDetailViewDelegate) -> ScheduleDetailViewModel {
+        return ScheduleDetailViewModel(schedule: schedule,
+                                       scheduleManager: self.scheduleManager,
+                                       date: self.selectedDate,
+                                       delegate: delegate,
+                                       scheduleEditingDelegate: self)
     }
     
     func changeError(_ error: Error? = nil) {
         self.error = error
-        self.isShowAlert = error != nil
     }
     
-    func cancelScheduleAddition(_ schedule: Schedule) {
-        self.viewContext.delete(schedule)
-        do {
-            // TODO: save app crash 해결 필요
-            try self.viewContext.save()
-        } catch {
-            self.changeError(error)
+    func closeDetailSheet() {
+        self.isDetailMode = false
+    }
+    
+    func closeAdditionSheet() {
+        if self.isDetailMode {
+            self.isDetailWritingMode = false
+        } else {
+            self.isWritingMode = false
         }
     }
     
-    func addSchedule(_ schedule: Schedule) {
-        schedule.createLog(self.viewContext, type: .create)
-        do {
-            try self.viewContext.save()
-            self.schedules = self.fetchSchedule(withCurrentPage: self.date)
-        } catch {
-            self.changeError(error)
+    func openDetailSheet() {
+        self.isDetailMode = true
+    }
+    
+    func openAdditionSheet() {
+        if self.isDetailMode {
+            self.isDetailWritingMode = true
+        } else {
+            self.isWritingMode = true
         }
     }
     
-    private func fetchSchedule(withCurrentPage date: Date) -> [Schedule] {
+    func refreshMainViewSchedule() {
         do {
-            let request = Schedule.fetchRequest()
-            request.predicate = self.monthRangePredicate(withDate: date)
-            return try self.viewContext.fetch(request)
+            self.schedules = try self.scheduleManager.getSchedule(in: self.date)
         } catch {
-            self.changeError(error)
-            return []
+            self.error = error
         }
     }
 }
@@ -190,4 +232,13 @@ fileprivate extension Date {
         
         return date
     }()
+}
+
+fileprivate extension Published<Date>.Publisher where Output == Date {
+    func afterSet(with compare: @escaping (Date, Date) -> Void) -> AnyPublisher<Date, Never> {
+        return self.removeDuplicates(by: { date1, date2 in
+            compare(date1, date2)
+            return false
+        }).eraseToAnyPublisher()
+    }
 }
