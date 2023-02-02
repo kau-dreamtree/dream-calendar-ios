@@ -28,6 +28,7 @@
 		4A301CC829897275005ACE70 /* ScheduleDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A301CC729897274005ACE70 /* ScheduleDetailViewModel.swift */; };
 		4A301CCA298B91A3005ACE70 /* DCRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A301CC9298B91A3005ACE70 /* DCRequest.swift */; };
 		4A301CCC298BB224005ACE70 /* DCAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A301CCB298BB224005ACE70 /* DCAPI.swift */; };
+		4A301CCF298BB2EA005ACE70 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A301CCE298BB2EA005ACE70 /* User.swift */; };
 		4A3CFC1B2910B0780034F4BA /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A3CFC1A2910B0780034F4BA /* MainView.swift */; };
 		4A3CFC1E2910B4730034F4BA /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A3CFC1D2910B4730034F4BA /* Color+Extension.swift */; };
 		4A62B22528EAA04500FBE1F6 /* CalendarUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A62B21D28EAA04500FBE1F6 /* CalendarUI.framework */; };
@@ -150,6 +151,7 @@
 		4A301CC729897274005ACE70 /* ScheduleDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleDetailViewModel.swift; sourceTree = "<group>"; };
 		4A301CC9298B91A3005ACE70 /* DCRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DCRequest.swift; sourceTree = "<group>"; };
 		4A301CCB298BB224005ACE70 /* DCAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DCAPI.swift; sourceTree = "<group>"; };
+		4A301CCE298BB2EA005ACE70 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		4A3CFC1A2910B0780034F4BA /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		4A3CFC1D2910B4730034F4BA /* Color+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
 		4A62B21D28EAA04500FBE1F6 /* CalendarUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CalendarUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -286,11 +288,10 @@
 		4A08420E28EA99FA003E70A4 /* DreamCalendar */ = {
 			isa = PBXGroup;
 			children = (
-				4AD0059429598B9D00041173 /* Network */,
+				4A301CCD298BB2DF005ACE70 /* Global */,
 				4A0724512918B5E7005AA8B7 /* Scene */,
 				4A3CFC1C2910B45D0034F4BA /* Extensions */,
 				4A08420F28EA99FA003E70A4 /* DreamCalendarApp.swift */,
-				4A301CC52989528B005ACE70 /* ScheduleManager.swift */,
 				4A08421128EA99FA003E70A4 /* ContentView.swift */,
 				4A08421828EA99FB003E70A4 /* Persistence.swift */,
 				4A08421328EA99FB003E70A4 /* Assets.xcassets */,
@@ -353,6 +354,23 @@
 				4A301CC729897274005ACE70 /* ScheduleDetailViewModel.swift */,
 			);
 			path = ScheduleDetail;
+			sourceTree = "<group>";
+		};
+		4A301CCD298BB2DF005ACE70 /* Global */ = {
+			isa = PBXGroup;
+			children = (
+				4A301CD0298BB2FB005ACE70 /* Model */,
+				4AD0059429598B9D00041173 /* Network */,
+			);
+			path = Global;
+			sourceTree = "<group>";
+		};
+		4A301CD0298BB2FB005ACE70 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				4A301CCE298BB2EA005ACE70 /* User.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		4A3CFC1C2910B45D0034F4BA /* Extensions */ = {
@@ -435,6 +453,7 @@
 			children = (
 				4AD0058E2954290500041173 /* TagType.swift */,
 				4AAC0A442931D9DB009CB29C /* TimeInfo.swift */,
+				4A301CC52989528B005ACE70 /* ScheduleManager.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -721,6 +740,7 @@
 				4A7F783229640C8B00DA543B /* LoginView.swift in Sources */,
 				4AAC0A472931DA06009CB29C /* DateStringView.swift in Sources */,
 				4A301CC62989528B005ACE70 /* ScheduleManager.swift in Sources */,
+				4A301CCF298BB2EA005ACE70 /* User.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,77 +7,13 @@
 
 import SwiftUI
 
-struct User {
-    
-    static var global: User = User()
-    
-    private init() {}
-    
-    private struct Keys {
-        static let accessTokenKey = "accessToken"
-        static let refreshTokenKey = "refreshToken"
-        static let username = "username"
-        static let email = "email"
-        static let password = "password"
-    }
-    
-    var didSetAutoLogin: Bool {
-        let autoLoginKey = "autoLogin"
-        return UserDefaults.standard.bool(forKey: autoLoginKey)
-    }
-    
-    var accessToken: String? {
-        get {
-            return UserDefaults.standard.string(forKey: Keys.accessTokenKey)
-        }
-        set {
-            UserDefaults.standard.set(newValue, forKey: Keys.accessTokenKey)
-        }
-    }
-    
-    var refreshToken: String? {
-        get {
-            return UserDefaults.standard.string(forKey: Keys.refreshTokenKey)
-        }
-        set {
-            UserDefaults.standard.set(newValue, forKey: Keys.refreshTokenKey)
-        }
-    }
-    
-    var username: String? {
-        get {
-            return UserDefaults.standard.string(forKey: Keys.username)
-        }
-        set {
-            UserDefaults.standard.set(newValue, forKey: Keys.username)
-        }
-    }
-    
-    var email: String? {
-        get {
-            return UserDefaults.standard.string(forKey: Keys.email)
-        }
-        set {
-            UserDefaults.standard.set(newValue, forKey: Keys.email)
-        }
-    }
-    
-    var password: String? {
-        get {
-            return UserDefaults.standard.string(forKey: Keys.password)
-        }
-        set {
-            UserDefaults.standard.set(newValue, forKey: Keys.password)
-        }
-    }
-}
-
 @main
 struct DreamCalendarApp: App {
     let persistenceController = PersistenceController.shared
-    @State private var didLogin: Bool? = nil
-    @State private var error: Error? = nil
     
+    @State private var didLogin: Bool? = nil
+    @State private var didError: Bool = false
+    @State private var error: Error? = nil
 
     var body: some Scene {
         WindowGroup {
@@ -89,6 +25,14 @@ struct DreamCalendarApp: App {
                 LoginView(viewModel: LoginViewModel(), didLogin: self.$didLogin)
             default :
                 ActivityIndicator(isAnimating: self.$didLogin, style: .large)
+                    .alert(DCError.title, isPresented: self.$didError) {
+                        Button("재시도") {
+                            self.didError = false
+                            self.startAutoLogin()
+                        }
+                    } message : {
+                        Text((self.error as? DCError)?.message ?? Alert.failMessage)
+                    }
                     .onAppear(perform: self.startAutoLogin)
             }
         }
@@ -101,7 +45,7 @@ struct DreamCalendarApp: App {
             self.didLogin = false
             return
         }
-        presentFirstPage(accessToken: accessToken)
+        self.presentFirstPage(accessToken: accessToken)
     }
     
     private func presentFirstPage(accessToken: String) {
@@ -115,10 +59,12 @@ struct DreamCalendarApp: App {
                 default : self.didLogin = false
                 }
             } catch {
+                self.didError = true
                 self.error = error
             }
         }
     }
+    
 }
 
 fileprivate struct ActivityIndicator: UIViewRepresentable {
