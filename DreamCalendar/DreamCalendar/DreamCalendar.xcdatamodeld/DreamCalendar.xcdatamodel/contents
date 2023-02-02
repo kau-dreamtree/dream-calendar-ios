@@ -3,7 +3,7 @@
     <entity name="HolidayAnniversary" representedClassName=".HolidayAnniversary" syncable="YES">
         <attribute name="endDate" optional="YES" attributeType="Date" defaultDateTimeInterval="-3187326472" usesScalarValueType="NO"/>
         <attribute name="repeated" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
-        <attribute name="server_id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="serverId" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="startDate" attributeType="Date" defaultDateTimeInterval="-3187308472" usesScalarValueType="NO"/>
         <attribute name="title" attributeType="String"/>
         <attribute name="type" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
@@ -13,7 +13,7 @@
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="isAllDay" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="isValid" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
-        <attribute name="server_id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="serverId" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="startTime" attributeType="Date" defaultDateTimeInterval="-3187326472" usesScalarValueType="NO"/>
         <attribute name="tagId" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="title" attributeType="String" defaultValueString=" "/>
