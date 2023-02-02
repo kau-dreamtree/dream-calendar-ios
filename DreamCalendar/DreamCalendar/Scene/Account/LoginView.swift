@@ -102,9 +102,11 @@ struct LoginView: View {
     }
     
     @ObservedObject private var viewModel: LoginViewModel
+    @Binding private var didLogin: Bool?
     
-    init(viewModel: LoginViewModel) {
+    init(viewModel: LoginViewModel, didLogin: Binding<Bool?>) {
         self.viewModel = viewModel
+        self._didLogin = didLogin
     }
     
     var body: some View {

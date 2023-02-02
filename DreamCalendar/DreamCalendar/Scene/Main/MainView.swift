@@ -93,12 +93,16 @@ struct MainView: View, MainTopViewDelegate {
 enum DCError: Error {
     static let title: String = "오류"
     
-    case unknown, coreData
+    case unknown, coreData(Error), network(URLResponse), urlError, requestError(Error), decodingError(Error)
     
     var message: String {
         switch self {
         case .unknown : return "알 수 없는 오류로 실패했습니다.\n재시도 해주세요."
         case .coreData : return "코어 데이터 접근에 실패했습니다.\n재시도 해주세요."
+        case .network : return "네트워크 요청에 실패했습니다.\n관리자에게 문의해주세요."
+        case .urlError : return "잘못된 URL입니다.\n관리자에게 문의해주세요."
+        case .requestError : return "잘못된 요청입니다. \n관리자에게 문의해주세요."
+        case .decodingError: return "서버 오류입니다. \n관리자에게 문의해주세요."
         }
     }
 }
