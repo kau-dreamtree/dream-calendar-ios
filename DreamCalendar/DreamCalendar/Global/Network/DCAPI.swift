@@ -57,10 +57,10 @@ struct DCAPI {
 
         var header: [(key: String, value: String)]? {
             switch self {
+            case .signup, .login :
+                return [("Content-Type", "application/json")]
             case .tokenLogin(let authorization), .logout(let authorization), .leave(let authorization) :
                 return [("Authorization", authorization)]
-            default :
-                return nil
             }
         }
         
