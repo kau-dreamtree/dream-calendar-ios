@@ -34,6 +34,7 @@ struct AccountConfirmButton: View {
             Text(self.fieldName)
                 .font(.AppleSDRegular12)
                 .foregroundColor(.white)
+                .frame(width: Constraint.width)
         }
         .frame(width: Constraint.width, height: Constraint.height)
         .background(Color.black)

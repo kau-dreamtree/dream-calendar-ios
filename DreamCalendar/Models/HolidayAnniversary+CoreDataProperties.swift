@@ -16,7 +16,7 @@ extension HolidayAnniversary {
         return NSFetchRequest<HolidayAnniversary>(entityName: "HolidayAnniversary")
     }
 
-    @NSManaged public var server_id: Int64
+    @NSManaged public var serverId: Int64
     @NSManaged public var title: String
     @NSManaged public var startDate: Date
     @NSManaged public var type: Int16

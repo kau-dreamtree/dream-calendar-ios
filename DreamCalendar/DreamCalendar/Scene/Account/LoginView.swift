@@ -27,6 +27,8 @@ struct LoginView: View {
         static let inputFieldTopPadding: CGFloat = 110
         static let inputFieldHeight: CGFloat = 127
         
+        static let defaultErrorMessage: String = "로그인 중 오류가 발생했습니다."
+        
         static let buttonName: String = "로그인"
         static let buttonTopPadding: CGFloat = 34
         
@@ -80,7 +82,7 @@ struct LoginView: View {
         
         func bindingValue(with viewModel: ObservedObject<LoginViewModel>.Wrapper) -> Binding<String> {
             switch self {
-            case .email : return viewModel.id
+            case .email : return viewModel.email
             case .password : return viewModel.password
             }
         }
@@ -102,20 +104,34 @@ struct LoginView: View {
     }
     
     @ObservedObject private var viewModel: LoginViewModel
+    @Binding private var didLogin: Bool?
     
-    init(viewModel: LoginViewModel) {
+    init(viewModel: LoginViewModel, didLogin: Binding<Bool?>) {
         self.viewModel = viewModel
+        self._didLogin = didLogin
     }
     
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
             self.logo
             self.inputField
-            self.loginButton
+            ZStack(alignment: .top) {
+                if self.viewModel.didLogin == false {
+                    self.loginMessage
+                }
+                self.loginButton
+            }
             self.accountOptionButtons
             
             Spacer()
         }
+        .alert(DCError.title, isPresented: self.$viewModel.didError, actions: {
+            Button("확인") {
+                self.viewModel.didError = false
+            }
+        }, message: {
+            Text(self.viewModel.error?.localizedDescription ?? DCError.unknown.message)
+        })
     }
     
     private var logo: some View {
@@ -147,6 +163,14 @@ struct LoginView: View {
                             trailing: Constraint.zeroPadding))
     }
     
+    private var loginMessage: some View {
+        Text(self.viewModel.loginMessage ?? Constraint.defaultErrorMessage)
+            .font(.AppleSDRegular10)
+            .foregroundColor(.black)
+            .frame(alignment: .center)
+            .padding(EdgeInsets(top: 5, leading: Constraint.zeroPadding, bottom: Constraint.zeroPadding, trailing: Constraint.zeroPadding))
+    }
+    
     private var loginButton: some View {
         AccountConfirmButton(fieldName: Constraint.buttonName, action: self.loginButtonDidTouched)
             .padding(EdgeInsets(top: Constraint.buttonTopPadding,
@@ -168,9 +192,12 @@ struct LoginView: View {
                             trailing: Constraint.zeroPadding))
     }
     
-    // TODO: login 버튼 동작 구현 필요
     private func loginButtonDidTouched() {
-        print("login \(self.viewModel.id) \(self.viewModel.password)")
+        Task {
+            guard await self.viewModel.login() == true else { return }
+            self.didLogin = true
+        }
+        print("login \(self.viewModel.email) \(self.viewModel.password)")
     }
     
     // TODO: 아이디 비밀번호 찾기 버튼 동작 구현 필요

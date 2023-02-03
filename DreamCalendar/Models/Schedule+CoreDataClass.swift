@@ -40,7 +40,7 @@ import CalendarUI
 extension Schedule {
     var scheduleForUI: CalendarUI.Schedule {
         let schedule = CalendarUI.Schedule(id: self.id,
-                                           serverId: Int(self.server_id),
+                                           serverId: Int(self.serverId),
                                            title: self.title,
                                            isAllDay: self.isAllDay,
                                            startTime: self.startTime,

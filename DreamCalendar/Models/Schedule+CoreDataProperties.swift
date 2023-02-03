@@ -17,7 +17,7 @@ extension Schedule {
     }
 
     @NSManaged public var id: UUID
-    @NSManaged public var server_id: Int64
+    @NSManaged public var serverId: Int64
     @NSManaged public var title: String
     @NSManaged public var isAllDay: Bool
     @NSManaged public var startTime: Date
