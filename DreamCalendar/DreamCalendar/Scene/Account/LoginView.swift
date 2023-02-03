@@ -18,22 +18,22 @@ extension TextField: InputableField where Label == Text { }
 struct LoginView: View {
     
     private struct Constraint {
-        static let imageName: String = "Logo"
-        static let imageTopPadding: CGFloat = 38
-        static let imageHeight: CGFloat = 146
-        static let imageWidth: CGFloat = 214
         static let zeroPadding: CGFloat = 0
+        
+        static let fields: [InputFieldType] = [.email, .password]
         
         static let inputFieldTopPadding: CGFloat = 110
         static let inputFieldHeight: CGFloat = 127
         
+        static let loginMessageTopPadding: CGFloat = 5
+        static let alertButtonName: String = "확인"
         static let defaultErrorMessage: String = "로그인 중 오류가 발생했습니다."
         
         static let buttonName: String = "로그인"
         static let buttonTopPadding: CGFloat = 34
         
         static let findIdPwButtonName: String = "아이디/비밀번호 찾기"
-        static let signUpButtonName: String = "회원가입"
+        static let signupButtonName: String = "회원가입"
         
         static let accountOptionButtonsTopPadding: CGFloat = 8
         static let accountOptionButtonsHeight: CGFloat = 25
@@ -70,50 +70,19 @@ struct LoginView: View {
         }
     }
     
-    private enum InputFieldType: CaseIterable {
-        case email, password
-        
-        var name: String {
-            switch self {
-            case .email : return "이메일"
-            case .password : return "비밀번호"
-            }
-        }
-        
-        func bindingValue(with viewModel: ObservedObject<LoginViewModel>.Wrapper) -> Binding<String> {
-            switch self {
-            case .email : return viewModel.email
-            case .password : return viewModel.password
-            }
-        }
-        
-        private var needSecurity: Bool {
-            switch self {
-            case .email : return false
-            case .password : return true
-            }
-        }
-        
-        @ViewBuilder
-        func fieldView(with inputValue: Binding<String>) -> some View {
-            switch self.needSecurity {
-            case true: AccountInputField<SecureField<Text>>(fieldName: self.name, inputValue: inputValue)
-            case false: AccountInputField<TextField<Text>>(fieldName: self.name, inputValue: inputValue)
-            }
-        }
-    }
-    
     @ObservedObject private var viewModel: LoginViewModel
     @Binding private var didLogin: Bool?
+    @State private var doSignup: Bool
     
     init(viewModel: LoginViewModel, didLogin: Binding<Bool?>) {
         self.viewModel = viewModel
         self._didLogin = didLogin
+        self.doSignup = false
     }
     
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
-            self.logo
+            Logo()
             self.inputField
             ZStack(alignment: .top) {
                 if self.viewModel.didLogin == false {
@@ -126,31 +95,23 @@ struct LoginView: View {
             Spacer()
         }
         .alert(DCError.title, isPresented: self.$viewModel.didError, actions: {
-            Button("확인") {
+            Button(Constraint.alertButtonName) {
                 self.viewModel.didError = false
             }
         }, message: {
             Text(self.viewModel.error?.localizedDescription ?? DCError.unknown.message)
         })
-    }
-    
-    private var logo: some View {
-        Image(Constraint.imageName)
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-            .frame(width: Constraint.imageWidth,
-                   height: Constraint.imageHeight,
-                   alignment: .center)
-            .padding(EdgeInsets(top: Constraint.imageTopPadding,
-                                leading: Constraint.zeroPadding,
-                                bottom: Constraint.zeroPadding,
-                                trailing: Constraint.zeroPadding))
+        .fullScreenCover(isPresented: self.$doSignup, content: {
+            SignupView(doSignup: self.$doSignup)
+        })
     }
     
     private var inputField: some View {
         VStack(spacing: 0) {
-            ForEach(InputFieldType.allCases, id: \.hashValue) { field in
-                field.fieldView(with: field.bindingValue(with: self.$viewModel))
+            ForEach(Constraint.fields, id: \.hashValue) { field in
+                if let bindingValue = field.bindingValue(with: self.$viewModel) {
+                    field.fieldView(with: bindingValue)
+                }
                 if (field != InputFieldType.allCases.last) {
                     Spacer()
                 }
@@ -168,7 +129,10 @@ struct LoginView: View {
             .font(.AppleSDRegular10)
             .foregroundColor(.black)
             .frame(alignment: .center)
-            .padding(EdgeInsets(top: 5, leading: Constraint.zeroPadding, bottom: Constraint.zeroPadding, trailing: Constraint.zeroPadding))
+            .padding(EdgeInsets(top: Constraint.loginMessageTopPadding,
+                                leading: Constraint.zeroPadding,
+                                bottom: Constraint.zeroPadding,
+                                trailing: Constraint.zeroPadding))
     }
     
     private var loginButton: some View {
@@ -183,7 +147,7 @@ struct LoginView: View {
         HStack(alignment: .center) {
             SmallTextButton(title: Constraint.findIdPwButtonName, action: self.findIdPwButtonDidTouched)
             Spacer()
-            SmallTextButton(title: Constraint.signUpButtonName, action: self.signUpButtonDidTouched)
+            SmallTextButton(title: Constraint.signupButtonName, action: self.signupButtonDidTouched)
         }
         .frame(width: Constraint.accountOptionButtonsWidth, height: Constraint.accountOptionButtonsHeight)
         .padding(EdgeInsets(top: Constraint.accountOptionButtonsTopPadding,
@@ -197,7 +161,6 @@ struct LoginView: View {
             guard await self.viewModel.login() == true else { return }
             self.didLogin = true
         }
-        print("login \(self.viewModel.email) \(self.viewModel.password)")
     }
     
     // TODO: 아이디 비밀번호 찾기 버튼 동작 구현 필요
@@ -205,9 +168,17 @@ struct LoginView: View {
         print("find Id/Pw button touched")
     }
     
-    // TODO: 회원가입 버튼 동작 구현 필요
-    private func signUpButtonDidTouched() {
-        print("sign up button touched")
+    private func signupButtonDidTouched() {
+        self.doSignup = true
     }
-    
+}
+
+fileprivate extension InputFieldType {
+    func bindingValue(with viewModel: ObservedObject<LoginViewModel>.Wrapper) -> Binding<String>? {
+        switch self {
+        case .email : return viewModel.email
+        case .password : return viewModel.password
+        default : return nil
+        }
+    }
 }
