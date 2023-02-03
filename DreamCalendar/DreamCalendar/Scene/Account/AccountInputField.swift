@@ -34,6 +34,7 @@ struct AccountInputField<InputField: InputableField>: View {
                 .frame(height: Constraint.titleHeight)
             
             InputField.init("", text: self.$inputValue)
+                .textInputAutocapitalization(.never)
                 .font(.AppleSDBold12)
                 .padding(EdgeInsets(top: Constraint.inputFieldTopPadding,
                                     leading: Constraint.zeroPadding,
@@ -45,5 +46,33 @@ struct AccountInputField<InputField: InputableField>: View {
                 .frame(minWidth: Constraint.lineHeight)
         }
         .frame(width: Constraint.width, height: Constraint.height)
+    }
+}
+
+enum InputFieldType: CaseIterable {
+    case name, email, password, passwordCheck
+    
+    var name: String {
+        switch self {
+        case .name : return "사용자 이름"
+        case .email : return "이메일"
+        case .password : return "비밀번호"
+        case .passwordCheck : return "비밀번호 확인"
+        }
+    }
+    
+    private var needSecurity: Bool {
+        switch self {
+        case .name, .email : return false
+        case .password, .passwordCheck : return true
+        }
+    }
+    
+    @ViewBuilder
+    func fieldView(with inputValue: Binding<String>) -> some View {
+        switch self.needSecurity {
+        case true: AccountInputField<SecureField<Text>>(fieldName: self.name, inputValue: inputValue)
+        case false: AccountInputField<TextField<Text>>(fieldName: self.name, inputValue: inputValue)
+        }
     }
 }

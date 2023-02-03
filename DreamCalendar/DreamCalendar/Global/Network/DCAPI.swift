@@ -17,6 +17,16 @@ protocol APIInfo {
     func response(_ data: Data) throws -> Decodable?
 }
 
+fileprivate struct MessageResponse: Decodable {
+    let message: String
+}
+
+extension APIInfo {
+    func message(data: Data) -> String? {
+        return try? JSONDecoder().decode(MessageResponse.self, from: data).message
+    }
+}
+
 enum HttpMethod {
     case post, get, delete
     
@@ -31,7 +41,7 @@ enum HttpMethod {
 
 struct DCAPI {
     enum Account: APIInfo {
-        case signup(email: String, password: String, username: String)
+        case signup(email: String, password: String, name: String)
         case login(email: String, password: String)
         case tokenLogin(authorization: String)
         case refreshToken(refreshToken: String)
@@ -39,11 +49,13 @@ struct DCAPI {
         case leave(authorization: String)
         
         var route: String {
+            let route = "/user/auth"
+            
             switch self {
-            case .signup: return "/user/create"
-            case .login, .tokenLogin, .refreshToken: return "/user/auth/login"
-            case .logout : return "/user/auth/logout"
-            case .leave : return "/user/auth/delete"
+            case .signup: return route + "/create"
+            case .login, .tokenLogin, .refreshToken: return route + "/login"
+            case .logout : return route + "/logout"
+            case .leave : return route + "/delete"
             }
         }
         
@@ -68,7 +80,7 @@ struct DCAPI {
             let body: [String: Any]
             switch self {
             case .signup(let email, let password, let username) :
-                body = ["email": email, "password": password, "username": username]
+                body = ["email": email, "password": password, "name": username]
             case .login(let email, let password) :
                 body = ["email": email, "password": password]
             default :
@@ -100,8 +112,9 @@ struct DCAPI {
         }
         
         struct Response: Decodable {
-            var access_token: String
-            var refresh_token: String
+            let access_token: String
+            let refresh_token: String
         }
     }
 }
+
