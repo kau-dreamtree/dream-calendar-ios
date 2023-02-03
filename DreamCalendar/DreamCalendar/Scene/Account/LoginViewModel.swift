@@ -32,7 +32,7 @@ final class LoginViewModel: ObservableObject {
             let (statusCode, data) = try await DCRequest().request(with: apiInfo)
             switch statusCode {
             case 200 :
-                if let response = try apiInfo.response(data) as? DCAPI.Account.LoginResponse {
+                if let response = try apiInfo.response(data) as? DCAPI.Account.Response {
                     self.saveLoginResponse(response)
                 }
                 return true
@@ -54,7 +54,7 @@ final class LoginViewModel: ObservableObject {
         return false
     }
     
-    private func saveLoginResponse(_ data: DCAPI.Account.LoginResponse) {
+    private func saveLoginResponse(_ data: DCAPI.Account.Response) {
         User.global.accessToken = data.access_token
         User.global.refreshToken = data.refresh_token
     }

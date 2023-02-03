@@ -40,15 +40,15 @@ struct DreamCalendarApp: App {
     
     private func startAutoLogin() {
         let user = User.global
-        guard User.global.didSetAutoLogin == true,
-              let accessToken = user.accessToken else {
+        guard let accessToken = user.accessToken,
+              let refreshToken = user.refreshToken else {
             self.didLogin = false
             return
         }
-        self.presentFirstPage(accessToken: accessToken)
+        self.presentFirstPage(accessToken: accessToken, refreshToken: refreshToken)
     }
     
-    private func presentFirstPage(accessToken: String) {
+    private func presentFirstPage(accessToken: String, refreshToken: String) {
         let apiInfo = DCAPI.Account.tokenLogin(authorization: accessToken)
         
         Task {
@@ -56,6 +56,7 @@ struct DreamCalendarApp: App {
                 let (statusCode, _) = try await DCRequest().request(with: apiInfo)
                 switch statusCode {
                 case 200 : self.didLogin = true
+                case 401 : self.refreshToken(refreshToken)
                 default : self.didLogin = false
                 }
             } catch {
@@ -65,6 +66,30 @@ struct DreamCalendarApp: App {
         }
     }
     
+    private func refreshToken(_ refreshToken: String) {
+        let apiInfo = DCAPI.Account.refreshToken(refreshToken: refreshToken)
+        
+        Task {
+            do {
+                let (statusCode, data) = try await DCRequest().request(with: apiInfo)
+                switch statusCode {
+                case 200 :
+                    if let response = try apiInfo.response(data) as? DCAPI.Account.Response {
+                        User.global.accessToken = response.access_token
+                        User.global.refreshToken = response.refresh_token
+                        self.didLogin = true
+                    } else {
+                        self.didLogin = false
+                    }
+                default :
+                    self.didLogin = false
+                }
+            } catch {
+                self.didError = true
+                self.error = error
+            }
+        }
+    }
 }
 
 fileprivate struct ActivityIndicator: UIViewRepresentable {

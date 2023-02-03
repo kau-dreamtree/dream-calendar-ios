@@ -34,14 +34,14 @@ struct DCAPI {
         case signup(email: String, password: String, username: String)
         case login(email: String, password: String)
         case tokenLogin(authorization: String)
+        case refreshToken(refreshToken: String)
         case logout(authorization: String)
         case leave(authorization: String)
         
         var route: String {
             switch self {
             case .signup: return "/user/create"
-            case .login: return "/user/auth/login"
-            case .tokenLogin : return "/user/auth/login"
+            case .login, .tokenLogin, .refreshToken: return "/user/auth/login"
             case .logout : return "/user/auth/logout"
             case .leave : return "/user/auth/delete"
             }
@@ -50,7 +50,7 @@ struct DCAPI {
         var method: HttpMethod {
             switch self {
             case .signup, .login : return .post
-            case .tokenLogin, .logout : return .get
+            case .tokenLogin, .refreshToken, .logout : return .get
             case .leave : return .delete
             }
         }
@@ -59,7 +59,7 @@ struct DCAPI {
             switch self {
             case .signup, .login :
                 return [("Content-Type", "application/json")]
-            case .tokenLogin(let authorization), .logout(let authorization), .leave(let authorization) :
+            case .tokenLogin(let authorization), .logout(let authorization), .leave(let authorization), .refreshToken(let authorization) :
                 return [("Authorization", authorization)]
             }
         }
@@ -84,7 +84,7 @@ struct DCAPI {
         var responseType: Decodable.Type? {
             switch self {
             case .login :
-                return LoginResponse.self
+                return Response.self
             default :
                 return nil
             }
@@ -99,7 +99,7 @@ struct DCAPI {
             }
         }
         
-        struct LoginResponse: Decodable {
+        struct Response: Decodable {
             var access_token: String
             var refresh_token: String
         }

@@ -21,11 +21,6 @@ struct User {
         static let password = "password"
     }
     
-    var didSetAutoLogin: Bool {
-        let autoLoginKey = "autoLogin"
-        return UserDefaults.standard.bool(forKey: autoLoginKey)
-    }
-    
     var accessToken: String? {
         get {
             return UserDefaults.standard.string(forKey: Keys.accessTokenKey)

@@ -10,14 +10,25 @@ import Foundation
 fileprivate struct NetworkContainer {
     func request(_ request: URLRequest) async throws -> (Int, Data) {
         print("""
+        
         Request >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         url \(request)
         method \(request.httpMethod ?? "")
         header \(request.allHTTPHeaderFields ?? [:])
-        body \(String(data: request.httpBody ?? Data(), encoding: String.Encoding.utf8))
+        body \(String(data: request.httpBody ?? Data(), encoding: String.Encoding.utf8) ?? "nil")
+        <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        
         """)
         
         let (data, response) = try await URLSession.shared.data(for: request)
+        print("""
+        
+        Response >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        statusCode \((response as? HTTPURLResponse)?.statusCode ?? 0)
+        data \(String(data: data, encoding: String.Encoding.utf8) ?? "nil")
+        <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        
+        """)
         guard let httpResponse = response as? HTTPURLResponse,
               (100..<500) ~= httpResponse.statusCode else {
             throw DCError.network(response)
