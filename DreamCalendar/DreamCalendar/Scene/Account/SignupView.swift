@@ -14,6 +14,7 @@ struct SignupView: View {
         
         static let fields: [InputFieldType] = [.name, .email, .password, .passwordCheck]
         
+        static let exitButtonLeadingPadding: CGFloat = 15
         static let alertButtonName: String = "확인"
         static let signupMessageTitle: String = "회원가입"
         static let signupSuccessMessage: String = "회원가입을 완료했습니다.\n로그인 페이지로 이동합니다."
@@ -37,16 +38,24 @@ struct SignupView: View {
     }
     
     var body: some View {
-        VStack(alignment: .center, spacing: 0) {
-            Logo()
-            self.inputField
-            ZStack(alignment: .top) {
-                if self.viewModel.didSignup == false && self.viewModel.signupMessage != nil {
-                    self.signupMessage
+        ZStack(alignment: .topLeading) {
+            ExitButton(isShow: self.$doSignup)
+                .padding(EdgeInsets(top: Constraint.zeroPadding,
+                                    leading: Constraint.exitButtonLeadingPadding,
+                                    bottom: Constraint.zeroPadding,
+                                    trailing: Constraint.zeroPadding))
+            VStack(alignment: .center, spacing: 0) {
+                Logo()
+                self.inputField
+                ZStack(alignment: .top) {
+                    if self.viewModel.didSignup == false && self.viewModel.signupMessage != nil {
+                        self.signupMessage
+                    }
+                    self.signupButton
                 }
-                self.signupButton
+                Spacer()
             }
-            Spacer()
+            .frame(maxWidth: .infinity)
         }
         .alert(Constraint.signupMessageTitle, isPresented: self.$viewModel.didSignup, actions: {
             Button(Constraint.alertButtonName) {
@@ -114,3 +123,4 @@ fileprivate extension InputFieldType {
         }
     }
 }
+

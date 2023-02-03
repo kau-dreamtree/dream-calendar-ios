@@ -31,6 +31,7 @@
 		4A301CCF298BB2EA005ACE70 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A301CCE298BB2EA005ACE70 /* User.swift */; };
 		4A301CD2298CD917005ACE70 /* SignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A301CD1298CD917005ACE70 /* SignupView.swift */; };
 		4A301CD4298CEC9A005ACE70 /* SignupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A301CD3298CEC9A005ACE70 /* SignupViewModel.swift */; };
+		4A301CD6298CF4FA005ACE70 /* ExitButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A301CD5298CF4FA005ACE70 /* ExitButton.swift */; };
 		4A3CFC1B2910B0780034F4BA /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A3CFC1A2910B0780034F4BA /* MainView.swift */; };
 		4A3CFC1E2910B4730034F4BA /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A3CFC1D2910B4730034F4BA /* Color+Extension.swift */; };
 		4A62B22528EAA04500FBE1F6 /* CalendarUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A62B21D28EAA04500FBE1F6 /* CalendarUI.framework */; };
@@ -156,6 +157,7 @@
 		4A301CCE298BB2EA005ACE70 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		4A301CD1298CD917005ACE70 /* SignupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupView.swift; sourceTree = "<group>"; };
 		4A301CD3298CEC9A005ACE70 /* SignupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupViewModel.swift; sourceTree = "<group>"; };
+		4A301CD5298CF4FA005ACE70 /* ExitButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExitButton.swift; sourceTree = "<group>"; };
 		4A3CFC1A2910B0780034F4BA /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		4A3CFC1D2910B4730034F4BA /* Color+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
 		4A62B21D28EAA04500FBE1F6 /* CalendarUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CalendarUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -249,6 +251,7 @@
 				4AD0058D295428FB00041173 /* Model */,
 				4A27D0D529288FB3007FC2DD /* ScheduleAddition */,
 				4A0724532918B607005AA8B7 /* Main */,
+				4A301CD5298CF4FA005ACE70 /* ExitButton.swift */,
 			);
 			path = Scene;
 			sourceTree = "<group>";
@@ -743,6 +746,7 @@
 				4A301CD4298CEC9A005ACE70 /* SignupViewModel.swift in Sources */,
 				4A0724572918B647005AA8B7 /* MainTopView.swift in Sources */,
 				4AD005F22959927100041173 /* TagUpdateLog+CoreDataClass.swift in Sources */,
+				4A301CD6298CF4FA005ACE70 /* ExitButton.swift in Sources */,
 				4AD005F32959927100041173 /* TagUpdateLog+CoreDataProperties.swift in Sources */,
 				4A301CC829897275005ACE70 /* ScheduleDetailViewModel.swift in Sources */,
 				4A7F783229640C8B00DA543B /* LoginView.swift in Sources */,
