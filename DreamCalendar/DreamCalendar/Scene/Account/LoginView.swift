@@ -168,33 +168,8 @@ struct LoginView: View {
         print("find Id/Pw button touched")
     }
     
-    // TODO: 회원가입 버튼 동작 구현 필요
     private func signupButtonDidTouched() {
         self.doSignup = true
-    }
-    
-}
-
-struct Logo: View {
-    private struct Constraint {
-        static let imageName: String = "Logo"
-        static let imageTopPadding: CGFloat = 38
-        static let imageHeight: CGFloat = 146
-        static let imageWidth: CGFloat = 214
-        static let zeroPadding: CGFloat = 0
-    }
-    
-    var body: some View {
-        Image(Constraint.imageName)
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-            .frame(width: Constraint.imageWidth,
-                   height: Constraint.imageHeight,
-                   alignment: .center)
-            .padding(EdgeInsets(top: Constraint.imageTopPadding,
-                                leading: Constraint.zeroPadding,
-                                bottom: Constraint.zeroPadding,
-                                trailing: Constraint.zeroPadding))
     }
 }
 
