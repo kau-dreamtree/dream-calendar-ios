@@ -35,10 +35,11 @@ final class LoginViewModel: ObservableObject {
                 if let response = try apiInfo.response(data) as? DCAPI.Account.Response {
                     self.saveLoginResponse(response)
                 }
+                self.didLogin = true
                 return true
             case 404 :
                 self.loginMessage = "이메일 또는 비밀번호가 틀렸습니다."
-                self.didLogin = true
+                self.didLogin = false
             default :
                 throw DCError.serverError
             }
@@ -57,5 +58,12 @@ final class LoginViewModel: ObservableObject {
     private func saveLoginResponse(_ data: DCAPI.Account.Response) {
         User.global.accessToken = data.access_token
         User.global.refreshToken = data.refresh_token
+    }
+    
+    func resetLoginStatus() {
+        self.error = nil
+        self.didError = false
+        self.loginMessage = nil
+        self.didLogin = false
     }
 }

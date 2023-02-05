@@ -18,6 +18,7 @@ final class ScheduleAdditionViewModel: ObservableObject {
     private let scheduleManager: ScheduleManager
     private var cancellables: Set<AnyCancellable> = []
     private let mode: Mode
+    let tags: [Tag]
     let date: Date
     
     private let temporarySchedule: TemporarySchedule
@@ -54,6 +55,7 @@ final class ScheduleAdditionViewModel: ObservableObject {
                                                    tagId: schedule.tagId)
         self.date = date
         self.mode = mode
+        self.tags = TagManager.global.tagCollection
         self.setScheduleTimeConstraint()
     }
     

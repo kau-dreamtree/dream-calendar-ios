@@ -127,7 +127,7 @@ struct LoginView: View {
     private var loginMessage: some View {
         Text(self.viewModel.loginMessage ?? Constraint.defaultErrorMessage)
             .font(.AppleSDRegular10)
-            .foregroundColor(.black)
+            .foregroundColor(.red)
             .frame(alignment: .center)
             .padding(EdgeInsets(top: Constraint.loginMessageTopPadding,
                                 leading: Constraint.zeroPadding,
@@ -170,6 +170,7 @@ struct LoginView: View {
     
     private func signupButtonDidTouched() {
         self.doSignup = true
+        self.viewModel.resetLoginStatus()
     }
 }
 

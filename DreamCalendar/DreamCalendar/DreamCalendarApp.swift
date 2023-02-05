@@ -45,7 +45,13 @@ struct DreamCalendarApp: App {
             self.didLogin = false
             return
         }
-        self.presentFirstPage(accessToken: accessToken, refreshToken: refreshToken)
+        do {
+            try TagManager.initializeGlobalTagManager(with: self.persistenceController.container.viewContext)
+            self.presentFirstPage(accessToken: accessToken, refreshToken: refreshToken)
+        } catch {
+            self.error = error
+            self.didError = true
+        }
     }
     
     private func presentFirstPage(accessToken: String, refreshToken: String) {

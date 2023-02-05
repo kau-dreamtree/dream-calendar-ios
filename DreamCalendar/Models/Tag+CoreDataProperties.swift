@@ -42,3 +42,10 @@ extension Tag {
         return TagType(rawValue: Int(self.id)) ?? .babyBlue
     }
 }
+
+
+extension Tag: Comparable {
+    public static func <(lhs: Tag, rhs: Tag) -> Bool {
+        return lhs.order < rhs.order
+    }
+}
