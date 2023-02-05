@@ -65,6 +65,9 @@ struct ScheduleAdditionView: View {
                 }
             }
         }
+        .onDisappear {
+            self.viewModel.implicitCloseButtonDidTouched()
+        }
     }
 }
 
