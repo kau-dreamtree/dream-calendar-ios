@@ -33,6 +33,44 @@ extension Date {
         }
     }
     
+    var nextMonth: Date {
+        return Calendar.current.date(byAdding: .month,
+                                          value: +1,
+                                          to: self) ?? self
+    }
+    
+    var previousMonth: Date {
+        return Calendar.current.date(byAdding: .month,
+                                          value: -1,
+                                          to: self) ?? self
+    }
+    
+    var firstDayOfMonth: Date {
+        return Calendar.current.date(from: DateComponents(
+            calendar: Calendar.current,
+            year: self.year,
+            month: self.month,
+            day: 1,
+            hour: 0,
+            minute: 0,
+            second: 0,
+            nanosecond: 0)
+        ) ?? Date()
+    }
+    
+    var startOfDay: Date {
+        return Calendar.current.date(from: DateComponents(
+            calendar: Calendar.current,
+            year: self.year,
+            month: self.month,
+            day: self.day,
+            hour: 0,
+            minute: 0,
+            second: 0,
+            nanosecond: 0)
+        ) ?? Date()
+    }
+    
     func toTimeInfo() -> TimeInfo {
         let hour: Int
         let type: TimeInfo.TimeType = self.hour < 12 ? .am : .pm
