@@ -48,14 +48,16 @@ struct Week: Codable, Collection {
     }
     
     var lastTime: Date {
-        let lastTime = Calendar.current.date(from: DateComponents(calendar: Calendar.current,
-                                                                  year: self.last.year,
-                                                                  month: self.last.month,
-                                                                  day: self.last.day,
-                                                                  hour: 24,
-                                                                  minute: 0,
-                                                                  second: 0)) ?? endDay
-        return lastTime
+        guard let nextDay = Calendar.current.date(byAdding: .day, value: 1, to: self.last) else { return self.last }
+        let StartOfnextDay = Calendar.current.date(from: DateComponents(calendar: Calendar.current,
+                                                                        year: nextDay.year,
+                                                                        month: nextDay.month,
+                                                                        day: nextDay.day,
+                                                                        hour: 0,
+                                                                        minute: 0,
+                                                                        second: 0,
+                                                                        nanosecond: 0)) ?? self.last
+        return Calendar.current.date(byAdding: .nanosecond, value: -1, to: StartOfnextDay) ?? self.last
     }
     
     func isIncluded(date: Date) -> Bool {

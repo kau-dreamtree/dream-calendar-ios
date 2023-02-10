@@ -13,24 +13,8 @@ import CoreData
 public class Schedule: NSManagedObject {
     
     func isInclude(with date: Date) -> Bool {
-        let startDate = Calendar.current.date(from: DateComponents(
-            calendar: Calendar.current,
-            year: self.startTime.year,
-            month: self.startTime.month,
-            day: self.startTime.day,
-            hour: 0,
-            minute: 0,
-            second: 0)
-        ) ?? self.startTime
-        let endDate = Calendar.current.date(from: DateComponents(
-            calendar: Calendar.current,
-            year: self.endTime.year,
-            month: self.endTime.month,
-            day: self.endTime.day,
-            hour: 23,
-            minute: 59,
-            second: 59)
-        ) ?? self.endTime
+        let startDate = self.startTime.startOfDay
+        let endDate = self.endTime.endOfDay
         return (startDate...endDate) ~= date
     }
 }

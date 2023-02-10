@@ -17,24 +17,10 @@ final class ScheduleManager {
     }
     
     private func monthRangePredicate(withDate date: Date) -> NSPredicate {
-        let firstDay = Calendar.current.date(from: DateComponents(
-            calendar: Calendar.current,
-            year: date.year,
-            month: date.month,
-            day: 1,
-            hour: 0,
-            minute: 0,
-            second: 0,
-            nanosecond: 0
-        )) ?? Date.now
-        
-        let nextMonthFirstDay = Calendar.current.date(byAdding: .month,
-                                                      value: +1,
-                                                      to: firstDay) ?? Date.now
-        
+        let firstDay = date.firstDayOfMonth
         let lastDay = Calendar.current.date(byAdding: .nanosecond,
                                             value: -1,
-                                            to: nextMonthFirstDay) ?? Date.now
+                                            to: firstDay.nextMonth) ?? Date.now
         
         let firstDayCVar = firstDay as CVarArg
         let lastDayCVar = lastDay as CVarArg

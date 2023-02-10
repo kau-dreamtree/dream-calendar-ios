@@ -75,11 +75,7 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate, AdditionV
             calendar: Calendar.current,
             year: year,
             month: month,
-            day: day,
-            hour: 0,
-            minute: 0,
-            second: 0)
-        ) ?? Date()
+            day: day))?.startOfDay ?? Date()
         
         self.selectedDate = selectedDate
         self.date = selectedDate.firstDayOfMonth
@@ -181,9 +177,7 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate, AdditionV
     
     private func monthRangePredicate(withDate date: Date) -> NSPredicate {
         let firstDay = date.firstDayOfMonth
-        let nextMonthFirstDay = Calendar.current.date(byAdding: .month,
-                                                      value: +1,
-                                                      to: firstDay) ?? Date.now
+        let nextMonthFirstDay = firstDay.nextMonth
         let lastDay = Calendar.current.date(byAdding: .nanosecond,
                                             value: -1,
                                             to: nextMonthFirstDay) ?? Date.now
@@ -241,19 +235,7 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate, AdditionV
 
 fileprivate extension Date {
     static let today: Date = {
-        var date = Date()
-        
-        date = Calendar.current.date(from: DateComponents(
-            calendar: Calendar.current,
-            year: date.year,
-            month: date.month,
-            day: date.day,
-            hour: 0,
-            minute: 0,
-            second: 0)
-        ) ?? Date()
-        
-        return date
+        return Date().firstDayOfMonth
     }()
 }
 
