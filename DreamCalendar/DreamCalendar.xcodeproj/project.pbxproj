@@ -33,6 +33,8 @@
 		4A301CD4298CEC9A005ACE70 /* SignupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A301CD3298CEC9A005ACE70 /* SignupViewModel.swift */; };
 		4A301CD6298CF4FA005ACE70 /* ExitButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A301CD5298CF4FA005ACE70 /* ExitButton.swift */; };
 		4A301CD8298CF6DB005ACE70 /* Logo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A301CD7298CF6DB005ACE70 /* Logo.swift */; };
+		4A301CDA298F989F005ACE70 /* TagManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A301CD9298F989F005ACE70 /* TagManager.swift */; };
+		4A301CDC298FB1D2005ACE70 /* TagPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A301CDB298FB1D2005ACE70 /* TagPicker.swift */; };
 		4A3CFC1B2910B0780034F4BA /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A3CFC1A2910B0780034F4BA /* MainView.swift */; };
 		4A3CFC1E2910B4730034F4BA /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A3CFC1D2910B4730034F4BA /* Color+Extension.swift */; };
 		4A62B22528EAA04500FBE1F6 /* CalendarUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A62B21D28EAA04500FBE1F6 /* CalendarUI.framework */; };
@@ -160,6 +162,8 @@
 		4A301CD3298CEC9A005ACE70 /* SignupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupViewModel.swift; sourceTree = "<group>"; };
 		4A301CD5298CF4FA005ACE70 /* ExitButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExitButton.swift; sourceTree = "<group>"; };
 		4A301CD7298CF6DB005ACE70 /* Logo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logo.swift; sourceTree = "<group>"; };
+		4A301CD9298F989F005ACE70 /* TagManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagManager.swift; sourceTree = "<group>"; };
+		4A301CDB298FB1D2005ACE70 /* TagPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagPicker.swift; sourceTree = "<group>"; };
 		4A3CFC1A2910B0780034F4BA /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		4A3CFC1D2910B4730034F4BA /* Color+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
 		4A62B21D28EAA04500FBE1F6 /* CalendarUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CalendarUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -342,6 +346,7 @@
 				4A27D0D629289050007FC2DD /* ScheduleAdditionView.swift */,
 				4AD00590295967E000041173 /* ScheduleAdditionViewModel.swift */,
 				4AAC0A462931DA06009CB29C /* DateStringView.swift */,
+				4A301CDB298FB1D2005ACE70 /* TagPicker.swift */,
 			);
 			path = ScheduleAddition;
 			sourceTree = "<group>";
@@ -379,6 +384,7 @@
 			isa = PBXGroup;
 			children = (
 				4A301CCE298BB2EA005ACE70 /* User.swift */,
+				4A301CD9298F989F005ACE70 /* TagManager.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -732,8 +738,10 @@
 				4AAC0A452931D9DB009CB29C /* TimeInfo.swift in Sources */,
 				4AD005FF295992A900041173 /* Schedule+CoreDataProperties.swift in Sources */,
 				4A301CD8298CF6DB005ACE70 /* Logo.swift in Sources */,
+				4A301CDA298F989F005ACE70 /* TagManager.swift in Sources */,
 				4A08421C28EA99FB003E70A4 /* DreamCalendar.xcdatamodeld in Sources */,
 				4A27D0DC2928A224007FC2DD /* MainTopLeftView.swift in Sources */,
+				4A301CDC298FB1D2005ACE70 /* TagPicker.swift in Sources */,
 				4A3CFC1B2910B0780034F4BA /* MainView.swift in Sources */,
 				4A08421228EA99FA003E70A4 /* ContentView.swift in Sources */,
 				4A301CC42987BDA8005ACE70 /* ScheduleDetailView.swift in Sources */,

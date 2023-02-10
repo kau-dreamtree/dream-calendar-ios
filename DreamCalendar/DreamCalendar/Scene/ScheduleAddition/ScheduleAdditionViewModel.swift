@@ -17,7 +17,8 @@ final class ScheduleAdditionViewModel: ObservableObject {
     private let delegate: AdditionViewPresentDelegate & RefreshMainViewDelegate
     private let scheduleManager: ScheduleManager
     private var cancellables: Set<AnyCancellable> = []
-    private let mode: Mode
+    let tags: [Tag]
+    private var mode: Mode
     let date: Date
     
     private let temporarySchedule: TemporarySchedule
@@ -31,7 +32,7 @@ final class ScheduleAdditionViewModel: ObservableObject {
     }
     
     enum Mode {
-        case create, modify
+        case create, modify, complete
     }
     
     var defaultStartTime: TimeInfo {
@@ -54,6 +55,7 @@ final class ScheduleAdditionViewModel: ObservableObject {
                                                    tagId: schedule.tagId)
         self.date = date
         self.mode = mode
+        self.tags = TagManager.global.tagCollection
         self.setScheduleTimeConstraint()
     }
     
@@ -101,8 +103,11 @@ final class ScheduleAdditionViewModel: ObservableObject {
                 try self.scheduleManager.modifySchedule(self.schedule)
             case .create :
                 try self.scheduleManager.addSchedule(self.schedule)
+            default :
+                break
             }
             self.scheduleManager.removeScheduleAdditionViewModel()
+            self.completeExplicitButtonAction()
             
             self.delegate.refreshMainViewSchedule()
             self.delegate.closeAdditionSheet()
@@ -119,13 +124,25 @@ final class ScheduleAdditionViewModel: ObservableObject {
                 self.restoreChanges()
             case .create :
                 try self.scheduleManager.cancelScheduleAddition(self.schedule)
+            default :
+                break
             }
             self.scheduleManager.removeScheduleAdditionViewModel()
+            self.completeExplicitButtonAction()
             
             self.delegate.closeAdditionSheet()
         } catch {
             self.error = error
         }
+    }
+    
+    func implicitCloseButtonDidTouched() {
+        guard self.mode != .complete else { return }
+        self.closeScheduleButtonDidTouched()
+    }
+    
+    private func completeExplicitButtonAction() {
+        self.mode = .complete
     }
     
     private func restoreChanges() {
