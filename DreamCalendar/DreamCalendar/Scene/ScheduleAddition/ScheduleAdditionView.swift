@@ -67,6 +67,9 @@ struct ScheduleAdditionView: View {
                 }
             }
         }
+        .onDisappear {
+            self.viewModel.implicitCloseButtonDidTouched()
+        }
     }
 }
 
@@ -94,7 +97,7 @@ struct ScheduleAdditionBottomInputView: View {
     
     @Binding private(set) var schedule: Schedule
     @Binding private(set) var additionState: ScheduleAdditionView.SettingState
-    @State private(set) var showStartDatePicker: Bool = false
+    @State private(set) var showTagPicker: Bool = false
     private let defaultStartTime: TimeInfo
     private let defaultEndTime: TimeInfo
     private let viewModel: ScheduleAdditionViewModel
@@ -222,21 +225,32 @@ struct ScheduleAdditionBottomInputView: View {
         let circleWidthHeight: CGFloat = 14
         let textHeight: CGFloat = 17
         
-        HStack {
-            Text(type.title)
-                .foregroundColor(.black)
-                .font(.AppleSDRegular14)
-            Spacer()
-            Circle()
-                .frame(width: circleWidthHeight, height: circleWidthHeight)
-                .foregroundColor(self.schedule.tagType.color)
-            Text(self.schedule.tag(context: self.viewModel.viewContext).title)
-                .frame(height: textHeight)
-                .foregroundColor(.tagTitleGray)
-                .font(.AppleSDRegular14)
+        VStack {
+            HStack {
+                Text(type.title)
+                    .foregroundColor(.black)
+                    .font(.AppleSDRegular14)
+                Spacer()
+                Circle()
+                    .frame(width: circleWidthHeight, height: circleWidthHeight)
+                    .foregroundColor(self.schedule.tagType.color)
+                Text(self.schedule.tag(context: self.viewModel.viewContext).title)
+                    .frame(height: textHeight)
+                    .foregroundColor(.tagTitleGray)
+                    .font(.AppleSDRegular14)
+                
+            }
+            .contentShape(Rectangle())
+            .onTapGesture {
+                self.additionState = .tag
+                self.showTagPicker = true
+            }
         }
-        .onTapGesture {
-            self.additionState = .tag
+        .sheet(isPresented: self.$showTagPicker) {
+            TagPicker(tags: self.viewModel.tags,
+                      selectedTagId: self.$schedule.tagId,
+                      picking: self.$showTagPicker)
+                .padding(.zero)
         }
     }
 }

@@ -9,7 +9,7 @@ import Foundation
 
 typealias TagInfo = (type: TagType, title: String)
 
-enum TagType: Int, Codable {
+enum TagType: Int, Codable, CaseIterable {
     case babyBlue = 1, green, yellow, orange, red, pink, purple, grey, navy, black
     
     var id: Int16 {

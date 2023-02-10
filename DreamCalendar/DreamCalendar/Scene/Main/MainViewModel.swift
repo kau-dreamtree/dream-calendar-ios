@@ -171,7 +171,7 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate, AdditionV
             let schedules = try self.scheduleManager.getSchedule(in: date)
             self.schedules.updateValue(schedules, forKey: date)
         } catch {
-            self.changeError(DCError.coreData(error: error))
+            self.changeError(DCError.coreData(error))
         }
     }
     
