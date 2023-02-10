@@ -17,12 +17,8 @@ final class ScheduleAdditionViewModel: ObservableObject {
     private let delegate: AdditionViewPresentDelegate & RefreshMainViewDelegate
     private let scheduleManager: ScheduleManager
     private var cancellables: Set<AnyCancellable> = []
-<<<<<<< Updated upstream
-    private let mode: Mode
     let tags: [Tag]
-=======
     private var mode: Mode
->>>>>>> Stashed changes
     let date: Date
     
     private let temporarySchedule: TemporarySchedule
