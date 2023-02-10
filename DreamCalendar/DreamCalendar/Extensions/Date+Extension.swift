@@ -46,28 +46,33 @@ extension Date {
     }
     
     var firstDayOfMonth: Date {
+        let firstDay = 1
+        let zero = 0
+        
         return Calendar.current.date(from: DateComponents(
             calendar: Calendar.current,
             year: self.year,
             month: self.month,
-            day: 1,
-            hour: 0,
-            minute: 0,
-            second: 0,
-            nanosecond: 0)
+            day: firstDay,
+            hour: zero,
+            minute: zero,
+            second: zero,
+            nanosecond: zero)
         ) ?? self
     }
     
     var startOfDay: Date {
+        let zero = 0
+        
         return Calendar.current.date(from: DateComponents(
             calendar: Calendar.current,
             year: self.year,
             month: self.month,
             day: self.day,
-            hour: 0,
-            minute: 0,
-            second: 0,
-            nanosecond: 0)
+            hour: zero,
+            minute: zero,
+            second: zero,
+            nanosecond: zero)
         ) ?? self
     }
     
@@ -77,13 +82,22 @@ extension Date {
     }
     
     func toTimeInfo() -> TimeInfo {
+        let startOfDay = 0
+        let halfOfDay = 12
+        let day = 24
+        
         let hour: Int
-        let type: TimeInfo.TimeType = self.hour < 12 ? .am : .pm
+        let type: TimeInfo.TimeType = self.hour < halfOfDay ? .am : .pm
+        
         switch self.hour {
-        case 0 :        hour = 12
-        case 13..<24 :  hour = self.hour - 12
-        default :       hour = self.hour
+        case startOfDay :
+            hour = halfOfDay
+        case (halfOfDay + 1)..<day :
+            hour = self.hour - halfOfDay
+        default :
+            hour = self.hour
         }
+        
         return TimeInfo(date: self,
                         hour: hour,
                         minute: self.minute,

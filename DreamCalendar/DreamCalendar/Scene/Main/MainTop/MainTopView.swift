@@ -10,6 +10,16 @@ import SwiftUI
 typealias MainTopViewDelegate = MainTopLeftViewDelegate & MainTopMiddleViewDelegate & MainTopRightViewDelegate
 
 struct MainTopView: View {
+    
+    private struct Constraint {
+        static let zeroPadding: CGFloat = 0
+        
+        static let height: CGFloat = 27
+        static let leadingTrailingPadding: CGFloat = 25
+        static let topPadding: CGFloat = 5
+        static let bottomPadding: CGFloat = 20
+    }
+    
     private let topTitle: String
     private let delegate: MainTopViewDelegate
     
@@ -19,7 +29,7 @@ struct MainTopView: View {
     }
     
     var body: some View {
-        HStack(spacing: 0) {
+        HStack(spacing: Constraint.zeroPadding) {
             MainTopLeftView(delegate: self.delegate)
             Spacer()
             MainMiddleView(topTitle: self.topTitle,
@@ -27,7 +37,10 @@ struct MainTopView: View {
             Spacer()
             MainTopRightView(delegate: self.delegate)
         }
-        .frame(height: 27)
-        .padding(EdgeInsets(top: 5, leading: 25, bottom: 20, trailing: 25))
+        .frame(height: Constraint.height)
+        .padding(EdgeInsets(top: Constraint.topPadding,
+                            leading: Constraint.leadingTrailingPadding,
+                            bottom: Constraint.bottomPadding,
+                            trailing: Constraint.leadingTrailingPadding))
     }
 }

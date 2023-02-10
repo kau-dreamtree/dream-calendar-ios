@@ -51,13 +51,16 @@ struct TimeInfo {
     }
     
     static func defaultTime(_ type: DefaultTimeType, date: Date) -> TimeInfo {
+        let zero = 0
+        let halfOfDay = 12
+        let day = 24
         let addValue: Int = type == .start ? 1 : 2
         
         let currentDate = Date()
         var hour: Int = currentDate.hour
         let type: TimeType
         
-        switch (currentDate.minute > 0, currentDate.hour < 12, currentDate.hour + addValue < 12, currentDate.hour + addValue < 24) {
+        switch (currentDate.minute > zero, currentDate.hour < halfOfDay, currentDate.hour + addValue < halfOfDay, currentDate.hour + addValue < day) {
         case (true, _, true, _) :
             hour += addValue
             type = .am
@@ -65,15 +68,15 @@ struct TimeInfo {
             hour += addValue
             type = .pm
         case (true, _, false, false) :
-            hour = (hour + addValue) % 24
+            hour = (hour + addValue) % day
             type = .am
         case (false, true, _, _) :
             type = .am
         case (false, false, _, _) :
             type = .pm
         }
-        hour = (hour % 12 == 0) ? 12 : (hour % 12)
-        return TimeInfo(date: date, hour: hour, minute: 0, type: type)
+        hour = (hour % halfOfDay == zero) ? halfOfDay : (hour % halfOfDay)
+        return TimeInfo(date: date, hour: hour, minute: zero, type: type)
     }
 }
 

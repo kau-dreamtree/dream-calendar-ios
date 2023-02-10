@@ -108,7 +108,7 @@ struct LoginView: View {
     }
     
     var body: some View {
-        VStack(alignment: .center, spacing: 0) {
+        VStack(alignment: .center, spacing: Constraint.zeroPadding) {
             self.logo
             self.inputField
             self.loginButton
@@ -132,7 +132,7 @@ struct LoginView: View {
     }
     
     private var inputField: some View {
-        VStack(spacing: 0) {
+        VStack(spacing: Constraint.zeroPadding) {
             ForEach(InputFieldType.allCases, id: \.hashValue) { field in
                 field.fieldView(with: field.bindingValue(with: self.$viewModel))
                 if (field != InputFieldType.allCases.last) {

@@ -14,6 +14,14 @@ enum CalendarUIError: Error {
 
 public struct CalendarView: View {
     
+    private struct Constraint {
+        static let zeroPadding: CGFloat = 0
+        
+        static let radius: CGFloat = 15
+        static let shadowColor: Color = Color.shadowGray
+        static let shadowXY: CGFloat = 0.2
+    }
+    
     public static let bottomViewHeight: CGFloat = 323
     
     public enum Mode {
@@ -104,20 +112,22 @@ public struct CalendarView: View {
             self.schedules = Schedules.sortingSchedules(schedules, on: month, maximumLineCount: mode.maximumLineCount)
             self.mode = mode
         } else {
+            let zero = 0
             self.schedules = []
-            self.mode = Mode.long(weekCount: 0)
+            self.mode = Mode.long(weekCount: zero)
         }
         
         self._selectedDate = selectedDate
     }
     
     public var body: some View {
-        VStack(spacing: 0) {
+        VStack(spacing: Constraint.zeroPadding) {
             WeekdayView()
             
             if let monthInfo = monthInfo {
-                VStack(spacing: 0) {
-                    ForEach(0..<monthInfo.count, id: \.hashValue) { weekIndex in
+                VStack(spacing: Constraint.zeroPadding) {
+                    let zero = 0
+                    ForEach(zero..<monthInfo.count, id: \.hashValue) { weekIndex in
                         Divider()
                         if let week = monthInfo[weekIndex] {
                             WeekView(selectedDate: self.$selectedDate,
@@ -135,7 +145,10 @@ public struct CalendarView: View {
         }
         .frame(maxHeight: self.mode.maxHeight)
         .background(Color.white)
-        .cornerRadius(15)
-        .shadow(color: Color.shadowGray, radius: 15, x: 0.2, y: 0.2)
+        .cornerRadius(Constraint.radius)
+        .shadow(color: Constraint.shadowColor,
+                radius: Constraint.radius,
+                x: Constraint.shadowXY,
+                y: Constraint.shadowXY)
     }
 }
