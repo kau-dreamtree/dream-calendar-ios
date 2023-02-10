@@ -60,7 +60,9 @@ struct Week: Codable, Collection {
                                                                         minute: zero,
                                                                         second: zero,
                                                                         nanosecond: zero)) ?? self.last
-        return Calendar.current.date(byAdding: .nanosecond, value: -one, to: StartOfnextDay) ?? self.last
+        return Calendar.current.date(byAdding: .second,
+                                     value: -one,
+                                     to: StartOfnextDay) ?? self.last
     }
     
     func isIncluded(date: Date) -> Bool {

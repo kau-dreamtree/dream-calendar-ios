@@ -36,11 +36,12 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate, AdditionV
     @Published private(set) var error: Error? = nil
     @Published var isShowAlert: Bool = false
     
-    var schedulesForSelectedDate: [Schedule] {
-        self.schedules[self.date]?.filter({ schedule in
-            schedule.isValid && schedule.isInclude(with: self.selectedDate)
-        }) ?? []
-    }
+    var schedulesForSelectedDate: [Schedule]
+//    var schedulesForSelectedDate: [Schedule] {
+//        self.schedules[self.selectedDate.firstDayOfMonth]?.filter({ schedule in
+//            schedule.isValid && schedule.isInclude(with: self.selectedDate)
+//        }) ?? []
+//    }
     
     var scheduleCollection: [(date: Date, schedules: [Schedule])] {
         return self.schedules.map({ (date: $0.key, schedules: $0.value) }).sorted(by: { $0.date < $1.date })
@@ -80,6 +81,7 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate, AdditionV
         self.selectedDate = selectedDate
         self.date = selectedDate.firstDayOfMonth
         self.schedules = [:]
+        self.schedulesForSelectedDate = []
         self.isWritingMode = false
         self.error = nil
         self.isShowAlert = false
@@ -106,7 +108,10 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate, AdditionV
                 guard date1 == date2 else { return }
                 self?.isDetailMode.toggle()
             })
-            .sink(receiveValue: { _ in })
+            .sink(receiveValue: { [weak self] date in
+                guard let self = self else { return }
+                self.schedulesForSelectedDate = self.schedulesOnDate(date: date)
+            })
             .store(in: &self.cancellables)
         
         self.$error
@@ -178,7 +183,7 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate, AdditionV
     private func monthRangePredicate(withDate date: Date) -> NSPredicate {
         let firstDay = date.firstDayOfMonth
         let nextMonthFirstDay = firstDay.nextMonth
-        let lastDay = Calendar.current.date(byAdding: .nanosecond,
+        let lastDay = Calendar.current.date(byAdding: .second,
                                             value: -1,
                                             to: nextMonthFirstDay) ?? Date.now
         
@@ -230,6 +235,13 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate, AdditionV
     
     func refreshMainViewSchedule() {
         self.fetchAllSchedules(with: self.date)
+        self.schedulesForSelectedDate = schedulesOnDate(date: self.selectedDate)
+    }
+    
+    private func schedulesOnDate(date: Date) -> [Schedule] {
+        return self.schedules[date.firstDayOfMonth]?.filter({ schedule in
+            schedule.isValid && schedule.isInclude(with: date)
+        }) ?? []
     }
 }
 

@@ -18,7 +18,7 @@ final class ScheduleManager {
     
     private func monthRangePredicate(withDate date: Date) -> NSPredicate {
         let firstDay = date.firstDayOfMonth
-        let lastDay = Calendar.current.date(byAdding: .nanosecond,
+        let lastDay = Calendar.current.date(byAdding: .second,
                                             value: -1,
                                             to: firstDay.nextMonth) ?? Date.now
         

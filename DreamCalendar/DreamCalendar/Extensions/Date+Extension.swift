@@ -78,7 +78,7 @@ extension Date {
     
     var endOfDay: Date {
         guard let nextDate = Calendar.current.date(byAdding: .day, value: 1, to: self)?.startOfDay else { return self }
-        return Calendar.current.date(byAdding: .nanosecond, value: -1, to: nextDate) ?? self
+        return Calendar.current.date(byAdding: .second, value: -1, to: nextDate) ?? self
     }
     
     func toTimeInfo() -> TimeInfo {
