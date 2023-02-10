@@ -48,14 +48,21 @@ struct Week: Codable, Collection {
     }
     
     var lastTime: Date {
-        let lastTime = Calendar.current.date(from: DateComponents(calendar: Calendar.current,
-                                                                  year: self.last.year,
-                                                                  month: self.last.month,
-                                                                  day: self.last.day,
-                                                                  hour: 24,
-                                                                  minute: 0,
-                                                                  second: 0)) ?? endDay
-        return lastTime
+        let one = 1
+        let zero = 0
+        
+        guard let nextDay = Calendar.current.date(byAdding: .day, value: one, to: self.last) else { return self.last }
+        let StartOfnextDay = Calendar.current.date(from: DateComponents(calendar: Calendar.current,
+                                                                        year: nextDay.year,
+                                                                        month: nextDay.month,
+                                                                        day: nextDay.day,
+                                                                        hour: zero,
+                                                                        minute: zero,
+                                                                        second: zero,
+                                                                        nanosecond: zero)) ?? self.last
+        return Calendar.current.date(byAdding: .second,
+                                     value: -one,
+                                     to: StartOfnextDay) ?? self.last
     }
     
     func isIncluded(date: Date) -> Bool {
@@ -63,7 +70,8 @@ struct Week: Codable, Collection {
     }
     
     func index(after n: Int) -> Int {
-        return n + 1
+        let unit = 1
+        return n + unit
     }
     
     subscript(i: Int) -> Date? {

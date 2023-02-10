@@ -33,14 +33,71 @@ extension Date {
         }
     }
     
+    var nextMonth: Date {
+        return Calendar.current.date(byAdding: .month,
+                                          value: +1,
+                                          to: self) ?? self
+    }
+    
+    var previousMonth: Date {
+        return Calendar.current.date(byAdding: .month,
+                                          value: -1,
+                                          to: self) ?? self
+    }
+    
+    var firstDayOfMonth: Date {
+        let firstDay = 1
+        let zero = 0
+        
+        return Calendar.current.date(from: DateComponents(
+            calendar: Calendar.current,
+            year: self.year,
+            month: self.month,
+            day: firstDay,
+            hour: zero,
+            minute: zero,
+            second: zero,
+            nanosecond: zero)
+        ) ?? self
+    }
+    
+    var startOfDay: Date {
+        let zero = 0
+        
+        return Calendar.current.date(from: DateComponents(
+            calendar: Calendar.current,
+            year: self.year,
+            month: self.month,
+            day: self.day,
+            hour: zero,
+            minute: zero,
+            second: zero,
+            nanosecond: zero)
+        ) ?? self
+    }
+    
+    var endOfDay: Date {
+        guard let nextDate = Calendar.current.date(byAdding: .day, value: 1, to: self)?.startOfDay else { return self }
+        return Calendar.current.date(byAdding: .second, value: -1, to: nextDate) ?? self
+    }
+    
     func toTimeInfo() -> TimeInfo {
+        let startOfDay = 0
+        let halfOfDay = 12
+        let day = 24
+        
         let hour: Int
-        let type: TimeInfo.TimeType = self.hour < 12 ? .am : .pm
+        let type: TimeInfo.TimeType = self.hour < halfOfDay ? .am : .pm
+        
         switch self.hour {
-        case 0 :        hour = 12
-        case 13..<24 :  hour = self.hour - 12
-        default :       hour = self.hour
+        case startOfDay :
+            hour = halfOfDay
+        case (halfOfDay + 1)..<day :
+            hour = self.hour - halfOfDay
+        default :
+            hour = self.hour
         }
+        
         return TimeInfo(date: self,
                         hour: hour,
                         minute: self.minute,

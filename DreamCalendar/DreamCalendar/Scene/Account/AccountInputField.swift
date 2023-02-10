@@ -28,7 +28,7 @@ struct AccountInputField<InputField: InputableField>: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
+        VStack(alignment: .leading, spacing: Constraint.zeroPadding) {
             Text(self.fieldName)
                 .font(.AppleSDSemiBold12)
                 .frame(height: Constraint.titleHeight)

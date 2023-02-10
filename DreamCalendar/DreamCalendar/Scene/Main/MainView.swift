@@ -15,6 +15,7 @@ protocol AdditionViewPresentDelegate {
 
 struct MainView: View, MainTopViewDelegate {
     @ObservedObject private var viewModel: MainViewModel
+    @State private var calendarViewIndex: CGFloat = 2
     
     private struct Constraint {
         static let zeroPadding: CGFloat = 0
@@ -23,23 +24,54 @@ struct MainView: View, MainTopViewDelegate {
     }
     
     var body: some View {
-        VStack(spacing: 0) {
-            MainTopView(topTitle: self.viewModel.currentTopTitle,
-                        delegate: self)
-            CalendarView(defaultDate: self.viewModel.date,
-                         selectedDate: self.$viewModel.selectedDate,
-                         schedules: self.viewModel.schedules.map({$0.scheduleForUI}),
-                         isShortMode: self.viewModel.isDetailMode)
-            .padding(EdgeInsets(top: Constraint.zeroPadding,
-                                leading: Constraint.leadingTrailingPadding,
-                                bottom: self.viewModel.isDetailMode ? Constraint.bottomPadding : Constraint.zeroPadding,
-                                trailing: Constraint.leadingTrailingPadding))
+        MainTopView(topTitle: self.viewModel.currentTopTitle,
+                    delegate: self)
+        self.pagableCalendarView
             .sheet(isPresented: self.$viewModel.isDetailMode,
                    content: self.detailScheduleBottomView)
             .sheet(isPresented: self.$viewModel.isWritingMode,
                    content: self.scheduleAdditionModalView)
+    }
+    
+    private var pagableCalendarView: some View {
+        GeometryReader { proxy in
+            LazyHStack(spacing: Constraint.zeroPadding) {
+                ForEach(self.viewModel.scheduleCollection, id: \.date) { date, schedules in
+                    self.calendarView(with: schedules, at: date)
+                        .frame(width: proxy.size.width)
+                }
+            }
+            .offset(x: -self.calendarViewIndex * proxy.size.width)
+            .gesture(DragGesture(minimumDistance: Constraint.zeroPadding, coordinateSpace: .global)
+                .onChanged { value in
+                    self.calendarViewIndex = CGFloat(MainViewModel.centerIndex) - (value.translation.width / proxy.size.width)
+                }
+                .onEnded { value in
+                    if abs(value.translation.width) >= proxy.size.width / 2 {
+                        let addition = value.translation.width > 0 ? 0 : +1
+                        self.calendarViewIndex = CGFloat((Int(self.calendarViewIndex) + addition))
+                    } else {
+                        self.calendarViewIndex = CGFloat(Int(self.calendarViewIndex))
+                    }
+                    self.viewModel.changeIndex(Int(self.calendarViewIndex))
+                    self.calendarViewIndex = CGFloat(MainViewModel.centerIndex)
+                })
+        }
+    }
+    
+    @ViewBuilder
+    private func calendarView(with schedules: [Schedule], at date: Date) -> some View {
+        VStack(spacing: Constraint.zeroPadding) {
+            CalendarView(defaultDate: date,
+                         selectedDate: self.$viewModel.selectedDate,
+                         schedules: schedules.map({$0.scheduleForUI}),
+                         isShortMode: self.viewModel.isDetailMode)
             Spacer()
         }
+        .padding(EdgeInsets(top: Constraint.zeroPadding,
+                            leading: Constraint.leadingTrailingPadding,
+                            bottom: self.viewModel.isDetailMode ? Constraint.bottomPadding : Constraint.zeroPadding,
+                            trailing: Constraint.leadingTrailingPadding))
     }
     
     var notNeedTodayButton: Bool {

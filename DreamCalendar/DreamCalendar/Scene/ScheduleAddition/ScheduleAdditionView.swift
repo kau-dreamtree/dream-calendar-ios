@@ -19,6 +19,8 @@ struct ScheduleAdditionView: View {
     }
     
     private struct Constraint {
+        static let zeroPadding: CGFloat = 0
+        
         static let closeButtonTitle = "닫기"
         static let completeButtonTitle = "완료"
         
@@ -37,7 +39,7 @@ struct ScheduleAdditionView: View {
             ZStack {
                 Color.additionViewBackgroundGray
                     .edgesIgnoringSafeArea(.all)
-                VStack(spacing: 0) {
+                VStack(spacing: Constraint.zeroPadding) {
                     ScheduleAdditionTitleInputView(schedule: self.$viewModel.schedule)
                     Divider()
                     ScheduleAdditionBottomInputView(viewModel: self.viewModel,

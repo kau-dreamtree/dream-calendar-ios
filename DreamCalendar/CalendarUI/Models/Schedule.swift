@@ -33,16 +33,25 @@ public struct Schedule: Codable {
     }
     
     var length: Int {
+        let zero = 0
         guard let startDay = Calendar.current.date(from: DateComponents(
             calendar: Calendar.current,
             year: self.startTime.year,
             month: self.startTime.month,
-            day: self.startTime.day)),
+            day: self.startTime.day,
+            hour: zero,
+            minute: zero,
+            second: zero,
+            nanosecond: zero)),
               let endDay = Calendar.current.date(from: DateComponents(
             calendar: Calendar.current,
             year: self.endTime.year,
             month: self.endTime.month,
-            day: self.endTime.day)) else { return 1 }
+            day: self.endTime.day,
+            hour: zero,
+            minute: zero,
+            second: zero,
+            nanosecond: zero)) else { return 1 }
         return (Calendar.current.dateComponents([.day], from: startDay, to: endDay).day ?? 0) + 1
     }
     

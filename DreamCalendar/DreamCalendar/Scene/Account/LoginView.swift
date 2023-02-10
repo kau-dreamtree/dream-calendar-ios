@@ -81,7 +81,7 @@ struct LoginView: View {
     }
     
     var body: some View {
-        VStack(alignment: .center, spacing: 0) {
+        VStack(alignment: .center, spacing: Constraint.zeroPadding) {
             Logo()
             self.inputField
             ZStack(alignment: .top) {
@@ -107,7 +107,7 @@ struct LoginView: View {
     }
     
     private var inputField: some View {
-        VStack(spacing: 0) {
+        VStack(spacing: Constraint.zeroPadding) {
             ForEach(Constraint.fields, id: \.hashValue) { field in
                 if let bindingValue = field.bindingValue(with: self.$viewModel) {
                     field.fieldView(with: bindingValue)
