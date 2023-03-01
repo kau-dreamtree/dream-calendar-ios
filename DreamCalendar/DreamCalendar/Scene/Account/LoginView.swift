@@ -82,7 +82,6 @@ struct LoginView: View {
     
     var body: some View {
         VStack(alignment: .center, spacing: Constraint.zeroPadding) {
-            Logo()
             self.inputField
             ZStack(alignment: .top) {
                 if self.viewModel.didLogin == false {
