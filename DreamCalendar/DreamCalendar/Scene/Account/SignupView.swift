@@ -45,7 +45,6 @@ struct SignupView: View {
                                     bottom: Constraint.zeroPadding,
                                     trailing: Constraint.zeroPadding))
             VStack(alignment: .center, spacing: 0) {
-                Logo()
                 self.inputField
                 ZStack(alignment: .top) {
                     if self.viewModel.didSignup == false && self.viewModel.signupMessage != nil {
