@@ -278,7 +278,6 @@
 		4A08420328EA99FA003E70A4 = {
 			isa = PBXGroup;
 			children = (
-				4AD005A929598C9800041173 /* Models */,
 				4A08420E28EA99FA003E70A4 /* DreamCalendar */,
 				4A08422428EA99FB003E70A4 /* DreamCalendarTests */,
 				4A08422E28EA99FC003E70A4 /* DreamCalendarUITests */,
@@ -303,6 +302,7 @@
 		4A08420E28EA99FA003E70A4 /* DreamCalendar */ = {
 			isa = PBXGroup;
 			children = (
+				4AD005A929598C9800041173 /* Models */,
 				4A6A890129AF414000230CF8 /* Info.plist */,
 				4A301CCD298BB2DF005ACE70 /* Global */,
 				4A0724512918B5E7005AA8B7 /* Scene */,
