@@ -64,6 +64,6 @@ final class LoginViewModel: ObservableObject {
         self.error = nil
         self.didError = false
         self.loginMessage = nil
-        self.didLogin = nil
+        self.didLogin = false
     }
 }
