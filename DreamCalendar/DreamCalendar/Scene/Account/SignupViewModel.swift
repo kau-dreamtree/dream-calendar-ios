@@ -36,21 +36,14 @@ final class SignupViewModel: ObservableObject {
             do {
                 try checkFormat()
                 
-                let apiInfo = DCAPI.Account.signup(email: self.email,
-                                                   password: self.password,
-                                                   name: self.name)
-                let (statusCode, data) = try await DCRequest().request(with: apiInfo)
-                switch statusCode {
-                case 201 :
+                let signupResult = try await AccountManager.global.signup(email: self.email,
+                                                                          password: self.password,
+                                                                          name: self.name)
+                switch signupResult {
+                case true :
                     self.didSignup = true
-                case 409 :
+                case false :
                     self.signupMessage = "이미 등록된 이메일입니다."
-                    self.didSignup = false
-                default :
-                    guard let message = apiInfo.message(data: data) else {
-                        throw DCError.serverError
-                    }
-                    self.signupMessage = message
                     self.didSignup = false
                 }
             } catch let error where error is SignUpFormatError{

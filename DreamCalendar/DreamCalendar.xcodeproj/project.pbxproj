@@ -51,6 +51,8 @@
 		4A62B24928EBEE6C00FBE1F6 /* Days.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A62B24828EBEE6C00FBE1F6 /* Days.swift */; };
 		4A62B24C28EBEEE300FBE1F6 /* WeekdayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A62B24B28EBEEE300FBE1F6 /* WeekdayView.swift */; };
 		4A62B24E28EBEF0500FBE1F6 /* WeekView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A62B24D28EBEF0500FBE1F6 /* WeekView.swift */; };
+		4A6A890429B83E3100230CF8 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A6A890329B83E3100230CF8 /* SettingsView.swift */; };
+		4A6A890629B9903000230CF8 /* AccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A6A890529B9903000230CF8 /* AccountManager.swift */; };
 		4A7F783229640C8B00DA543B /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A7F783129640C8B00DA543B /* LoginView.swift */; };
 		4A7F783429682DEB00DA543B /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A7F783329682DEB00DA543B /* LoginViewModel.swift */; };
 		4A7F78362968311500DA543B /* AccountConfirmButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A7F78352968311500DA543B /* AccountConfirmButton.swift */; };
@@ -180,6 +182,8 @@
 		4A62B24B28EBEEE300FBE1F6 /* WeekdayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekdayView.swift; sourceTree = "<group>"; };
 		4A62B24D28EBEF0500FBE1F6 /* WeekView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekView.swift; sourceTree = "<group>"; };
 		4A6A890129AF414000230CF8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		4A6A890329B83E3100230CF8 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		4A6A890529B9903000230CF8 /* AccountManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountManager.swift; sourceTree = "<group>"; };
 		4A7F783129640C8B00DA543B /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		4A7F783329682DEB00DA543B /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		4A7F78352968311500DA543B /* AccountConfirmButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountConfirmButton.swift; sourceTree = "<group>"; };
@@ -253,6 +257,7 @@
 		4A0724512918B5E7005AA8B7 /* Scene */ = {
 			isa = PBXGroup;
 			children = (
+				4A6A890229B83DFF00230CF8 /* Setting */,
 				4A301CC22987BD96005ACE70 /* ScheduleDetail */,
 				4A7F783029640C7A00DA543B /* Account */,
 				4AD0058D295428FB00041173 /* Model */,
@@ -387,6 +392,7 @@
 			children = (
 				4A301CCE298BB2EA005ACE70 /* User.swift */,
 				4A301CD9298F989F005ACE70 /* TagManager.swift */,
+				4A6A890529B9903000230CF8 /* AccountManager.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -453,6 +459,14 @@
 				4A62B24D28EBEF0500FBE1F6 /* WeekView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		4A6A890229B83DFF00230CF8 /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				4A6A890329B83E3100230CF8 /* SettingsView.swift */,
+			);
+			path = Setting;
 			sourceTree = "<group>";
 		};
 		4A7F783029640C7A00DA543B /* Account */ = {
@@ -732,7 +746,9 @@
 				4A7F78362968311500DA543B /* AccountConfirmButton.swift in Sources */,
 				4A08421928EA99FB003E70A4 /* Persistence.swift in Sources */,
 				4A3CFC1E2910B4730034F4BA /* Color+Extension.swift in Sources */,
+				4A6A890629B9903000230CF8 /* AccountManager.swift in Sources */,
 				4AF36EB62981190600338B7A /* DayScheduleListView.swift in Sources */,
+				4A6A890429B83E3100230CF8 /* SettingsView.swift in Sources */,
 				4AD005FA2959927100041173 /* Tag+CoreDataClass.swift in Sources */,
 				4A301CD2298CD917005ACE70 /* SignupView.swift in Sources */,
 				4A27D0D729289050007FC2DD /* ScheduleAdditionView.swift in Sources */,

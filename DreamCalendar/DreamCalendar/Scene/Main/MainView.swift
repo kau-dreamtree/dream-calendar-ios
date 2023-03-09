@@ -16,6 +16,7 @@ protocol AdditionViewPresentDelegate {
 struct MainView: View, MainTopViewDelegate {
     @ObservedObject private var viewModel: MainViewModel
     @State private var calendarViewIndex: CGFloat = 2
+    @State private var isSettingMode: Bool = false
     
     private struct Constraint {
         static let zeroPadding: CGFloat = 0
@@ -31,6 +32,9 @@ struct MainView: View, MainTopViewDelegate {
                    content: self.detailScheduleBottomView)
             .sheet(isPresented: self.$viewModel.isWritingMode,
                    content: self.scheduleAdditionModalView)
+            .fullScreenCover(isPresented: self.$isSettingMode) {
+                SettingsView(isOpen: self.$isSettingMode)
+            }
     }
     
     private var pagableCalendarView: some View {
@@ -82,6 +86,10 @@ struct MainView: View, MainTopViewDelegate {
         self.viewModel = viewModel
     }
     
+    func settingsButtonDidTouched() {
+        self.isSettingMode = true
+    }
+    
     func todayButtonDidTouched() {
         self.viewModel.goToToday()
     }
@@ -125,7 +133,7 @@ struct MainView: View, MainTopViewDelegate {
 enum DCError: Error {
     static let title: String = "오류"
     
-    case unknown, coreData(Error), network(URLResponse), urlError, requestError(Error), decodingError(Error), serverError
+    case unknown, coreData(Error), network(URLResponse), urlError, requestError(Error), decodingError(Error), serverError, accountError
     
     var message: String {
         switch self {
@@ -136,6 +144,7 @@ enum DCError: Error {
         case .requestError : return "잘못된 요청입니다. \n관리자에게 문의해주세요."
         case .decodingError: return "서버 오류입니다. \n관리자에게 문의해주세요."
         case .serverError: return "서버 오류입니다. \n관리자에게 문의해주세요."
+        case .accountError: return "계정 정보 오류입니다. \n재접속 해주세요."
         }
     }
 }
