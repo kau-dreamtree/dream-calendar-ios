@@ -22,6 +22,7 @@ struct LoginView: View {
         
         static let fields: [InputFieldType] = [.email, .password]
         
+        static let inputFieldTopPadding: CGFloat = 110
         static let inputFieldHeight: CGFloat = 127
         
         static let loginMessageTopPadding: CGFloat = 5
@@ -89,6 +90,8 @@ struct LoginView: View {
                 self.loginButton
             }
             self.accountOptionButtons
+            
+            Spacer()
         }
         .alert(DCError.title, isPresented: self.$viewModel.didError, actions: {
             Button(Constraint.alertButtonName) {
@@ -114,7 +117,10 @@ struct LoginView: View {
             }
         }
         .frame(height: Constraint.inputFieldHeight, alignment: .center)
-        .padding(.zero)
+        .padding(EdgeInsets(top: Constraint.inputFieldTopPadding,
+                            leading: Constraint.zeroPadding,
+                            bottom: Constraint.zeroPadding,
+                            trailing: Constraint.zeroPadding))
     }
     
     private var loginMessage: some View {
