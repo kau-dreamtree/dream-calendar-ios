@@ -27,6 +27,11 @@ struct MainView: View, MainTopViewDelegate {
     var body: some View {
         MainTopView(topTitle: self.viewModel.currentTopTitle,
                     delegate: self)
+        .allowsHitTesting(self.viewModel.isDetailMode == false)
+        .contentShape(Rectangle())
+        .onTapGesture {
+            self.didTopViewTouched()
+        }
         self.pagableCalendarView
             .sheet(isPresented: self.$viewModel.isDetailMode,
                    content: self.detailScheduleBottomView)
@@ -108,6 +113,16 @@ struct MainView: View, MainTopViewDelegate {
     
     func writeButtonDidTouched() {
         self.viewModel.openAdditionSheet()
+    }
+    
+    func didTopViewTouched() {
+        print("aa")
+        switch self.viewModel.isDetailMode {
+        case true :
+            self.viewModel.closeDetailSheet()
+        case false :
+            break
+        }
     }
     
     private func detailScheduleBottomView() -> some View {
