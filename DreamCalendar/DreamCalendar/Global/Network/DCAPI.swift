@@ -49,13 +49,11 @@ struct DCAPI {
         case leave(authorization: String)
         
         var route: String {
-            let route = "/user/auth"
-            
             switch self {
-            case .signup: return route + "/create"
-            case .login, .tokenLogin, .refreshToken: return route + "/login"
-            case .logout : return route + "/logout"
-            case .leave : return route + "/delete"
+            case .signup, .leave: return "/user"
+            case .login, .tokenLogin : return "/auth"
+            case .refreshToken : return "/auth-refresh"
+            case .logout : return "/auth/logout"
             }
         }
         

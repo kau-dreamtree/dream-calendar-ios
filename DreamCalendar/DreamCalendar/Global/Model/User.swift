@@ -9,10 +9,6 @@ import Foundation
 
 struct User {
     
-    static var global: User = User()
-    
-    private init() {}
-    
     private struct Keys {
         static let accessTokenKey = "accessToken"
         static let refreshTokenKey = "refreshToken"
@@ -64,5 +60,17 @@ struct User {
         set {
             UserDefaults.standard.set(newValue, forKey: Keys.password)
         }
+    }
+    
+    mutating func reset() {
+        self.email = nil
+        self.password = nil
+        self.username = nil
+        self.resetToken()
+    }
+    
+    mutating func resetToken() {
+        self.refreshToken = nil
+        self.accessToken = nil
     }
 }

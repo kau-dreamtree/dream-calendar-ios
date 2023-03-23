@@ -70,12 +70,10 @@ struct LoginView: View {
     }
     
     @ObservedObject private var viewModel: LoginViewModel
-    @Binding private var didLogin: Bool?
     @State private var doSignup: Bool
     
-    init(viewModel: LoginViewModel, didLogin: Binding<Bool?>) {
+    init(viewModel: LoginViewModel) {
         self.viewModel = viewModel
-        self._didLogin = didLogin
         self.doSignup = false
     }
     
@@ -83,7 +81,7 @@ struct LoginView: View {
         VStack(alignment: .center, spacing: Constraint.zeroPadding) {
             self.inputField
             ZStack(alignment: .top) {
-                if self.viewModel.didLogin == false {
+                if AccountManager.global.didLogin == false && self.viewModel.loginMessage != nil {
                     self.loginMessage
                 }
                 self.loginButton
@@ -151,8 +149,7 @@ struct LoginView: View {
     
     private func loginButtonDidTouched() {
         Task {
-            guard await self.viewModel.login() == true else { return }
-            self.didLogin = true
+            await self.viewModel.login()
         }
     }
     
