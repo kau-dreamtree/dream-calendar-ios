@@ -116,7 +116,6 @@ struct MainView: View, MainTopViewDelegate {
     }
     
     func didTopViewTouched() {
-        print("aa")
         switch self.viewModel.isDetailMode {
         case true :
             self.viewModel.closeDetailSheet()

@@ -22,6 +22,10 @@ final class AccountManager: ObservableObject {
     
     @MainActor
     func tokenLogin() async throws {
+        #if DEVELOP
+        print("develop")
+        #endif
+        
         guard let accessToken = self.user.accessToken else {
             self.didLogin = false
             return
