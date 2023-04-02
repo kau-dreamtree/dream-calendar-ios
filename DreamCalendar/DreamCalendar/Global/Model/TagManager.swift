@@ -44,4 +44,12 @@ final class TagManager {
         let request = Tag.fetchRequest()
         return try self.viewContext.fetch(request)
     }
+    
+    func saveTagChange() throws {
+        try self.viewContext.save()
+        let tags = try self.fetchAllTag()
+        tags.forEach() { tag in
+            self.tags.updateValue(tag, forKey: Int(tag.id))
+        }
+    }
 }
