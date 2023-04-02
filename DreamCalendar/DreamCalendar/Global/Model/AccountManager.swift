@@ -52,7 +52,7 @@ final class AccountManager: ObservableObject {
         let (statusCode, data) = try await DCRequest().request(with: apiInfo)
         switch statusCode {
         case 200 :
-            if let response = try apiInfo.response(data) as? DCAPI.Account.Response {
+            if let response = try apiInfo.response(data) as? DCAPI.TokenResponse {
                 self.user.accessToken = response.access_token
                 self.user.refreshToken = response.refresh_token
                 self.didLogin = true
@@ -82,12 +82,42 @@ final class AccountManager: ObservableObject {
     
     @MainActor
     func login(email: String, password: String) async throws {
-        let apiInfo = DCAPI.Account.login(email: email, password: password)
-        let (statusCode, data) = try await DCRequest().request(with: apiInfo)
+        let apiInfo: APIInfo
         
+        #if DEVELOP
+        if DeveloperConfiguration.global.loginSetting.accessTokenTest
+            || DeveloperConfiguration.global.loginSetting.refreshTokenTest != 0 {
+            let minute = 60
+            let fourteenDays = 1209600
+            let defaultAccessKeyExpiration = 3600
+            let defaultRefreshKeyExpiration = 5184000
+            let accessExpiration = DeveloperConfiguration.global.loginSetting.accessTokenTest ? minute : defaultAccessKeyExpiration
+            let refreshExpiration: Int
+            
+            switch DeveloperConfiguration.global.loginSetting.refreshTokenTest {
+            case 0:
+                refreshExpiration = defaultRefreshKeyExpiration
+            case 1:
+                refreshExpiration = fourteenDays + minute
+            default:
+                refreshExpiration = minute
+            }
+            
+            apiInfo = DCAPI.Admin.login(email: email,
+                                        password: password,
+                                        accessExpiration: accessExpiration,
+                                        refreshExpiration: refreshExpiration)
+        } else {
+            apiInfo = DCAPI.Account.login(email: email, password: password)
+        }
+        #else
+        apiInfo = DCAPI.Account.login(email: email, password: password)
+        #endif
+        
+        let (statusCode, data) = try await DCRequest().request(with: apiInfo)
         switch statusCode {
         case 200 :
-            if let response = try apiInfo.response(data) as? DCAPI.Account.Response {
+            if let response = try apiInfo.response(data) as? DCAPI.TokenResponse {
                 self.user.accessToken = response.access_token
                 self.user.refreshToken = response.refresh_token
             }
@@ -108,3 +138,5 @@ final class AccountManager: ObservableObject {
         self.didLogin = false
     }
 }
+///  "access_token":"eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imppc3VAbmF2ZXIuY29tIiwiaWF0IjoxNjc5NTU0NTE5LCJleHAiOjE2Nzk1NTQ1Nzl9.Nf3wPklOE9Qy6Qg5KC2c3-gSqf1UFSqla0J7v0GzXfE", "refresh_token":"eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imppc3VAbmF2ZXIuY29tIiwiaWF0IjoxNjc5NTU0NTE5LCJleHAiOjE2ODQ3Mzg1MTl9.j7aDNMhtHezLnMU3CprEhQo1kzYtXi0jpadJFBdFgtk"
+///

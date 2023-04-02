@@ -116,7 +116,6 @@ struct MainView: View, MainTopViewDelegate {
     }
     
     func didTopViewTouched() {
-        print("aa")
         switch self.viewModel.isDetailMode {
         case true :
             self.viewModel.closeDetailSheet()
@@ -136,11 +135,7 @@ struct MainView: View, MainTopViewDelegate {
     
     private func scheduleAdditionModalView() -> some View {
         VStack {
-            if let scheduleAdditionViewModel = self.viewModel.getScheduleAdditionViewModel() {
-                ScheduleAdditionView(viewModel: scheduleAdditionViewModel, delegate: self.viewModel)
-            } else {
-                Text("")
-            }
+            ScheduleAdditionView(viewModel: self.viewModel.getScheduleAdditionViewModel(), delegate: self.viewModel)
         }
     }
 }

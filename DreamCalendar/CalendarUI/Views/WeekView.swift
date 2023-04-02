@@ -93,11 +93,7 @@ struct WeekView: View {
     var weekBlockView: some View {
         VStack(spacing: Constraint.blockVerticalInterval) {
             ForEach(0..<self.mode.maximumLineCount, id: \.hashValue) { day in
-                if let schedules = self.schedules[day] {
-                    blockView(schedules: schedules)
-                } else {
-                    blockView(schedules: [])
-                }
+                self.blockView(schedules: self.schedules[day])
             }
             Spacer()
         }
