@@ -89,7 +89,8 @@ final class ScheduleManager {
         schedule.isAllDay = false
         schedule.startTime = startTime
         schedule.endTime = endTime
-        schedule.tagId = Int16(TagType.babyBlue.rawValue)
+        schedule.tagId = TagManager.global.tagCollection.first?.id ?? Int16(TagType.babyBlue.rawValue)
+        
         return schedule
     }
     

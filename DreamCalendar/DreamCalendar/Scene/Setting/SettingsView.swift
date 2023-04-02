@@ -14,11 +14,13 @@ struct SettingsView: View {
         static let backButtonImageName: String = "xmark"
         
         static let logoutMessage: String = "로그아웃 하시겠습니까?"
+        static let errorMessage: String = "설정 저장 중 오류가 발생하였습니다"
     }
     
     @Binding private var isOpen: Bool
     @State private var didError: Bool = false
     @State private var doLogout: Bool = false
+    @State private var tags: [Tag] = TagManager.global.tagCollection
     
     init(isOpen: Binding<Bool>) {
         self._isOpen = isOpen
@@ -50,6 +52,13 @@ struct SettingsView: View {
             }, message: {
                 Text(Constraint.logoutMessage)
             })
+            .alert("에러", isPresented: self.$didError, actions: {
+                Button("확인",
+                       role: .none,
+                       action: {})
+            }, message: {
+                Text(Constraint.errorMessage)
+            })
         }
     }
     
@@ -59,7 +68,8 @@ struct SettingsView: View {
         
         return Section(header: Text(title)) {
             NavigationLink(field) {
-                Text(field)
+                TagSettingView(tags: self.$tags, didError: self.$didError)
+                    .navigationBarTitleDisplayMode(.inline)
             }
         }
     }

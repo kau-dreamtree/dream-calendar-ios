@@ -18,41 +18,6 @@ struct TagPicker: View {
         static let topPadding: CGFloat = 20
     }
     
-    private struct TagBlock: View {
-        
-        private struct Constraint {
-            static let circleWidthHeight: CGFloat = 14
-            static let textHeight: CGFloat = 17
-            static let height: CGFloat = 30
-            
-            static let zeroPadding: CGFloat = 0
-            static let leadingTrailingPadding: CGFloat = 15
-        }
-        
-        let tag: Tag
-        
-        var body: some View {
-            HStack {
-                Circle()
-                    .frame(width: Constraint.circleWidthHeight, height: Constraint.circleWidthHeight)
-                    .foregroundColor(tag.type.color)
-                Text(tag.title)
-                    .foregroundColor(.black)
-                    .font(.AppleSDRegular14)
-                Spacer()
-                Text(tag.type.defaultTitle)
-                    .frame(height: Constraint.textHeight)
-                    .foregroundColor(.tagTitleGray)
-                    .font(.AppleSDRegular14)
-            }
-            .padding(EdgeInsets(top: Constraint.zeroPadding,
-                                leading: Constraint.leadingTrailingPadding,
-                                bottom: Constraint.zeroPadding,
-                                trailing: Constraint.leadingTrailingPadding))
-            .frame(maxHeight: .infinity)
-        }
-    }
-    
     init(tags: [Tag], selectedTagId: Binding<Int16>, picking: Binding<Bool>) {
         self.tags = tags
         self._selectedTagId = selectedTagId
@@ -84,3 +49,65 @@ struct TagPicker: View {
     }
 }
 
+struct TagBlock: View {
+    
+    enum BlockType {
+        case normal, edit
+    }
+    
+    private struct Constraint {
+        static let circleWidthHeight: CGFloat = 14
+        static let textHeight: CGFloat = 17
+        static let height: CGFloat = 30
+        
+        static let zeroPadding: CGFloat = 0
+        static let leadingTrailingPadding: CGFloat = 15
+        
+        static let orderEditImageName: String = "line.3.horizontal"
+    }
+    
+    @State var tag: Tag
+    let type: BlockType
+    
+    init(tag: Tag, type: BlockType = .normal) {
+        self.tag = tag
+        self.type = type
+    }
+    
+    var body: some View {
+        HStack {
+            Circle()
+                .frame(width: Constraint.circleWidthHeight, height: Constraint.circleWidthHeight)
+                .foregroundColor(tag.type.color)
+            switch self.type {
+            case .normal :
+                Text(tag.title)
+                    .foregroundColor(.black)
+                    .font(.AppleSDRegular14)
+            case .edit :
+                TextField(tag.title, text: self.$tag.title)
+                    .foregroundColor(.black)
+                    .font(.AppleSDRegular14)
+            }
+            
+            Spacer()
+            switch self.type {
+            case .normal :
+                Text(tag.type.defaultTitle)
+                    .frame(height: Constraint.textHeight)
+                    .foregroundColor(.tagTitleGray)
+                    .font(.AppleSDRegular14)
+            case .edit :
+                Image(systemName: Constraint.orderEditImageName)
+                    .foregroundColor(.tagTitleGray)
+                    .frame(height: Constraint.textHeight)
+            }
+            
+        }
+        .padding(EdgeInsets(top: Constraint.zeroPadding,
+                            leading: Constraint.leadingTrailingPadding,
+                            bottom: Constraint.zeroPadding,
+                            trailing: Constraint.leadingTrailingPadding))
+        .frame(maxHeight: .infinity)
+    }
+}
