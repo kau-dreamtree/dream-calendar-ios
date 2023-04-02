@@ -101,12 +101,8 @@ struct DayScheduleListView: View, ScheduleDetailViewDelegate {
     
     private func scheduleAdditionModalView() -> some View {
         VStack {
-            if let scheduleAdditionViewModel = self.viewModel.getScheduleAdditionViewModel() {
-                ScheduleAdditionView(viewModel: scheduleAdditionViewModel,
-                                     delegate: self.delegate)
-            } else {
-                Text("")
-            }
+            ScheduleAdditionView(viewModel: self.viewModel.getScheduleAdditionViewModel(),
+                                 delegate: self.delegate)
         }
     }
     

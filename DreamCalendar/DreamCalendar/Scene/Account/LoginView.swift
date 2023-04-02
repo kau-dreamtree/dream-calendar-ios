@@ -71,6 +71,9 @@ struct LoginView: View {
     
     @ObservedObject private var viewModel: LoginViewModel
     @State private var doSignup: Bool
+    #if DEVELOP
+    @State private var isDevelopSettingMode: Bool = false
+    #endif
     
     init(viewModel: LoginViewModel) {
         self.viewModel = viewModel
@@ -78,6 +81,14 @@ struct LoginView: View {
     }
     
     var body: some View {
+        #if DEVELOP
+        ZStack(alignment: .topLeading) {
+            self.adminSettingButton
+        }
+        .sheet(isPresented: self.$isDevelopSettingMode) {
+            DevLoginSettingsView()
+        }
+        #endif
         VStack(alignment: .center, spacing: Constraint.zeroPadding) {
             self.inputField
             ZStack(alignment: .top) {
@@ -146,6 +157,20 @@ struct LoginView: View {
                             bottom: Constraint.zeroPadding,
                             trailing: Constraint.zeroPadding))
     }
+    
+    #if DEVELOP
+    private var adminSettingButton: some View {
+        let imageTitle = "개발자 설정"
+        let height: CGFloat = 25
+        
+        return Button {
+            self.isDevelopSettingMode = true
+        } label: {
+            Text(imageTitle)
+        }
+        .frame(height: height)
+    }
+    #endif
     
     private func loginButtonDidTouched() {
         Task {

@@ -27,7 +27,7 @@
 		4A301CC62989528B005ACE70 /* ScheduleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A301CC52989528B005ACE70 /* ScheduleManager.swift */; };
 		4A301CC829897275005ACE70 /* ScheduleDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A301CC729897274005ACE70 /* ScheduleDetailViewModel.swift */; };
 		4A301CCA298B91A3005ACE70 /* DCRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A301CC9298B91A3005ACE70 /* DCRequest.swift */; };
-		4A301CCC298BB224005ACE70 /* DCAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A301CCB298BB224005ACE70 /* DCAPI.swift */; };
+		4A301CCC298BB224005ACE70 /* DCAccountAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A301CCB298BB224005ACE70 /* DCAccountAPI.swift */; };
 		4A301CCF298BB2EA005ACE70 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A301CCE298BB2EA005ACE70 /* User.swift */; };
 		4A301CD2298CD917005ACE70 /* SignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A301CD1298CD917005ACE70 /* SignupView.swift */; };
 		4A301CD4298CEC9A005ACE70 /* SignupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A301CD3298CEC9A005ACE70 /* SignupViewModel.swift */; };
@@ -37,6 +37,68 @@
 		4A301CDC298FB1D2005ACE70 /* TagPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A301CDB298FB1D2005ACE70 /* TagPicker.swift */; };
 		4A3CFC1B2910B0780034F4BA /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A3CFC1A2910B0780034F4BA /* MainView.swift */; };
 		4A3CFC1E2910B4730034F4BA /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A3CFC1D2910B4730034F4BA /* Color+Extension.swift */; };
+		4A54DD1329CC2122005A3E20 /* TagType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD0058E2954290500041173 /* TagType.swift */; };
+		4A54DD1429CC2122005A3E20 /* HolidayAnniversary+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD005EE2959927100041173 /* HolidayAnniversary+CoreDataClass.swift */; };
+		4A54DD1529CC2122005A3E20 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A7F783329682DEB00DA543B /* LoginViewModel.swift */; };
+		4A54DD1629CC2122005A3E20 /* PersistentContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD005BE29598D5700041173 /* PersistentContainer.swift */; };
+		4A54DD1729CC2122005A3E20 /* AccountInputField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A7F78372968312C00DA543B /* AccountInputField.swift */; };
+		4A54DD1829CC2122005A3E20 /* ScheduleUpdateLog+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD005EC2959927100041173 /* ScheduleUpdateLog+CoreDataClass.swift */; };
+		4A54DD1929CC2122005A3E20 /* Schedule+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD005FC295992A900041173 /* Schedule+CoreDataClass.swift */; };
+		4A54DD1A29CC2122005A3E20 /* HolidayAnniversary+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD005EF2959927100041173 /* HolidayAnniversary+CoreDataProperties.swift */; };
+		4A54DD1B29CC2122005A3E20 /* MainTopRightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A27D0DD2928A249007FC2DD /* MainTopRightView.swift */; };
+		4A54DD1C29CC2122005A3E20 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0724542918B615005AA8B7 /* MainViewModel.swift */; };
+		4A54DD1D29CC2122005A3E20 /* MainTopMiddleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A27D0D92928A217007FC2DD /* MainTopMiddleView.swift */; };
+		4A54DD1E29CC2122005A3E20 /* AccountConfirmButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A7F78352968311500DA543B /* AccountConfirmButton.swift */; };
+		4A54DD1F29CC2122005A3E20 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A08421828EA99FB003E70A4 /* Persistence.swift */; };
+		4A54DD2029CC2122005A3E20 /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A3CFC1D2910B4730034F4BA /* Color+Extension.swift */; };
+		4A54DD2129CC2122005A3E20 /* AccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A6A890529B9903000230CF8 /* AccountManager.swift */; };
+		4A54DD2229CC2122005A3E20 /* DayScheduleListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF36EB52981190600338B7A /* DayScheduleListView.swift */; };
+		4A54DD2329CC2122005A3E20 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A6A890329B83E3100230CF8 /* SettingsView.swift */; };
+		4A54DD2429CC2122005A3E20 /* Tag+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD005F02959927100041173 /* Tag+CoreDataClass.swift */; };
+		4A54DD2529CC2122005A3E20 /* SignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A301CD1298CD917005ACE70 /* SignupView.swift */; };
+		4A54DD2629CC2122005A3E20 /* ScheduleAdditionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A27D0D629289050007FC2DD /* ScheduleAdditionView.swift */; };
+		4A54DD2729CC2122005A3E20 /* HalfSheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF36EB22981184A00338B7A /* HalfSheetController.swift */; };
+		4A54DD2829CC2122005A3E20 /* TimeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAC0A442931D9DB009CB29C /* TimeInfo.swift */; };
+		4A54DD2929CC2122005A3E20 /* Schedule+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD005FD295992A900041173 /* Schedule+CoreDataProperties.swift */; };
+		4A54DD2A29CC2122005A3E20 /* Logo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A301CD7298CF6DB005ACE70 /* Logo.swift */; };
+		4A54DD2B29CC2122005A3E20 /* TagManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A301CD9298F989F005ACE70 /* TagManager.swift */; };
+		4A54DD2C29CC2122005A3E20 /* DreamCalendar.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4A08421A28EA99FB003E70A4 /* DreamCalendar.xcdatamodeld */; };
+		4A54DD2D29CC2122005A3E20 /* MainTopLeftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A27D0DB2928A224007FC2DD /* MainTopLeftView.swift */; };
+		4A54DD2E29CC2122005A3E20 /* TagPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A301CDB298FB1D2005ACE70 /* TagPicker.swift */; };
+		4A54DD2F29CC2122005A3E20 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A3CFC1A2910B0780034F4BA /* MainView.swift */; };
+		4A54DD3029CC2122005A3E20 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A08421128EA99FA003E70A4 /* ContentView.swift */; };
+		4A54DD3129CC2122005A3E20 /* ScheduleDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A301CC32987BDA8005ACE70 /* ScheduleDetailView.swift */; };
+		4A54DD3229CC2122005A3E20 /* Tag+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAC0A482931DBB5009CB29C /* Tag+Extension.swift */; };
+		4A54DD3329CC2122005A3E20 /* DreamCalendarApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A08420F28EA99FA003E70A4 /* DreamCalendarApp.swift */; };
+		4A54DD3429CC2122005A3E20 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD96EF72928B76A00C31C06 /* Date+Extension.swift */; };
+		4A54DD3529CC2122005A3E20 /* Tag+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD005F12959927100041173 /* Tag+CoreDataProperties.swift */; };
+		4A54DD3629CC2122005A3E20 /* ScheduleUpdateLog+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD005ED2959927100041173 /* ScheduleUpdateLog+CoreDataProperties.swift */; };
+		4A54DD3729CC2122005A3E20 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0724582918B970005AA8B7 /* View+Extension.swift */; };
+		4A54DD3829CC2122005A3E20 /* Alert+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD00592295982CA00041173 /* Alert+Extension.swift */; };
+		4A54DD3929CC2122005A3E20 /* ScheduleAdditionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD00590295967E000041173 /* ScheduleAdditionViewModel.swift */; };
+		4A54DD3A29CC2122005A3E20 /* DCRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A301CC9298B91A3005ACE70 /* DCRequest.swift */; };
+		4A54DD3B29CC2122005A3E20 /* DCAccountAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A301CCB298BB224005ACE70 /* DCAccountAPI.swift */; };
+		4A54DD3C29CC2122005A3E20 /* SignupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A301CD3298CEC9A005ACE70 /* SignupViewModel.swift */; };
+		4A54DD3D29CC2122005A3E20 /* MainTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0724562918B647005AA8B7 /* MainTopView.swift */; };
+		4A54DD3E29CC2122005A3E20 /* TagUpdateLog+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD005E82959927100041173 /* TagUpdateLog+CoreDataClass.swift */; };
+		4A54DD3F29CC2122005A3E20 /* ExitButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A301CD5298CF4FA005ACE70 /* ExitButton.swift */; };
+		4A54DD4029CC2122005A3E20 /* TagUpdateLog+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD005E92959927100041173 /* TagUpdateLog+CoreDataProperties.swift */; };
+		4A54DD4129CC2122005A3E20 /* ScheduleDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A301CC729897274005ACE70 /* ScheduleDetailViewModel.swift */; };
+		4A54DD4229CC2122005A3E20 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A7F783129640C8B00DA543B /* LoginView.swift */; };
+		4A54DD4329CC2122005A3E20 /* DateStringView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAC0A462931DA06009CB29C /* DateStringView.swift */; };
+		4A54DD4429CC2122005A3E20 /* ScheduleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A301CC52989528B005ACE70 /* ScheduleManager.swift */; };
+		4A54DD4529CC2122005A3E20 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A301CCE298BB2EA005ACE70 /* User.swift */; };
+		4A54DD4729CC2122005A3E20 /* CalendarUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A62B21D28EAA04500FBE1F6 /* CalendarUI.framework */; };
+		4A54DD4929CC2122005A3E20 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4A08421628EA99FB003E70A4 /* Preview Assets.xcassets */; };
+		4A54DD4A29CC2122005A3E20 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4A08421328EA99FB003E70A4 /* Assets.xcassets */; };
+		4A54DD4C29CC2122005A3E20 /* CalendarUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4A62B21D28EAA04500FBE1F6 /* CalendarUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4A54DD5529CC214E005A3E20 /* DevLoginSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A54DD5329CC213F005A3E20 /* DevLoginSettingsView.swift */; };
+		4A54DD5B29CC21FF005A3E20 /* DeveloperConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A54DD5929CC21F9005A3E20 /* DeveloperConfiguration.swift */; };
+		4A54DD5C29CC23FD005A3E20 /* AccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A6A890529B9903000230CF8 /* AccountManager.swift */; };
+		4A54DD5F29CC2803005A3E20 /* DCAdminAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A54DD5D29CC27ED005A3E20 /* DCAdminAPI.swift */; };
+		4A54DD6529CC2BDA005A3E20 /* DeveloperConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A54DD5929CC21F9005A3E20 /* DeveloperConfiguration.swift */; };
+		4A54DD6629CC2BE9005A3E20 /* DCAdminAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A54DD5D29CC27ED005A3E20 /* DCAdminAPI.swift */; };
+		4A54DD6729CC2D09005A3E20 /* DevLoginSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A54DD5329CC213F005A3E20 /* DevLoginSettingsView.swift */; };
 		4A62B22528EAA04500FBE1F6 /* CalendarUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A62B21D28EAA04500FBE1F6 /* CalendarUI.framework */; };
 		4A62B22C28EAA04500FBE1F6 /* CalendarUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A62B22B28EAA04500FBE1F6 /* CalendarUITests.swift */; };
 		4A62B23028EAA04500FBE1F6 /* CalendarUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A62B21D28EAA04500FBE1F6 /* CalendarUI.framework */; };
@@ -52,7 +114,6 @@
 		4A62B24C28EBEEE300FBE1F6 /* WeekdayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A62B24B28EBEEE300FBE1F6 /* WeekdayView.swift */; };
 		4A62B24E28EBEF0500FBE1F6 /* WeekView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A62B24D28EBEF0500FBE1F6 /* WeekView.swift */; };
 		4A6A890429B83E3100230CF8 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A6A890329B83E3100230CF8 /* SettingsView.swift */; };
-		4A6A890629B9903000230CF8 /* AccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A6A890529B9903000230CF8 /* AccountManager.swift */; };
 		4A7F783229640C8B00DA543B /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A7F783129640C8B00DA543B /* LoginView.swift */; };
 		4A7F783429682DEB00DA543B /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A7F783329682DEB00DA543B /* LoginViewModel.swift */; };
 		4A7F78362968311500DA543B /* AccountConfirmButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A7F78352968311500DA543B /* AccountConfirmButton.swift */; };
@@ -97,6 +158,13 @@
 			remoteGlobalIDString = 4A08420B28EA99FA003E70A4;
 			remoteInfo = DreamCalendar;
 		};
+		4A54DD1129CC2122005A3E20 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4A08420428EA99FA003E70A4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4A62B21C28EAA04500FBE1F6;
+			remoteInfo = CalendarUI;
+		};
 		4A62B22628EAA04500FBE1F6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 4A08420428EA99FA003E70A4 /* Project object */;
@@ -132,6 +200,17 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		4A54DD4B29CC2122005A3E20 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				4A54DD4C29CC2122005A3E20 /* CalendarUI.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -158,7 +237,7 @@
 		4A301CC52989528B005ACE70 /* ScheduleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleManager.swift; sourceTree = "<group>"; };
 		4A301CC729897274005ACE70 /* ScheduleDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleDetailViewModel.swift; sourceTree = "<group>"; };
 		4A301CC9298B91A3005ACE70 /* DCRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DCRequest.swift; sourceTree = "<group>"; };
-		4A301CCB298BB224005ACE70 /* DCAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DCAPI.swift; sourceTree = "<group>"; };
+		4A301CCB298BB224005ACE70 /* DCAccountAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DCAccountAPI.swift; sourceTree = "<group>"; };
 		4A301CCE298BB2EA005ACE70 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		4A301CD1298CD917005ACE70 /* SignupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupView.swift; sourceTree = "<group>"; };
 		4A301CD3298CEC9A005ACE70 /* SignupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupViewModel.swift; sourceTree = "<group>"; };
@@ -168,6 +247,10 @@
 		4A301CDB298FB1D2005ACE70 /* TagPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagPicker.swift; sourceTree = "<group>"; };
 		4A3CFC1A2910B0780034F4BA /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		4A3CFC1D2910B4730034F4BA /* Color+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
+		4A54DD5129CC2122005A3E20 /* DreamCalendar-Dev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "DreamCalendar-Dev.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4A54DD5329CC213F005A3E20 /* DevLoginSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevLoginSettingsView.swift; sourceTree = "<group>"; };
+		4A54DD5929CC21F9005A3E20 /* DeveloperConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperConfiguration.swift; sourceTree = "<group>"; };
+		4A54DD5D29CC27ED005A3E20 /* DCAdminAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DCAdminAPI.swift; sourceTree = "<group>"; };
 		4A62B21D28EAA04500FBE1F6 /* CalendarUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CalendarUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A62B22428EAA04500FBE1F6 /* CalendarUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CalendarUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A62B22B28EAA04500FBE1F6 /* CalendarUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarUITests.swift; sourceTree = "<group>"; };
@@ -236,6 +319,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		4A54DD4629CC2122005A3E20 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4A54DD4729CC2122005A3E20 /* CalendarUI.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4A62B21A28EAA04500FBE1F6 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -300,6 +391,7 @@
 				4A08422B28EA99FC003E70A4 /* DreamCalendarUITests.xctest */,
 				4A62B21D28EAA04500FBE1F6 /* CalendarUI.framework */,
 				4A62B22428EAA04500FBE1F6 /* CalendarUITests.xctest */,
+				4A54DD5129CC2122005A3E20 /* DreamCalendar-Dev.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -392,6 +484,7 @@
 			children = (
 				4A301CCE298BB2EA005ACE70 /* User.swift */,
 				4A301CD9298F989F005ACE70 /* TagManager.swift */,
+				4A54DD5929CC21F9005A3E20 /* DeveloperConfiguration.swift */,
 				4A6A890529B9903000230CF8 /* AccountManager.swift */,
 			);
 			path = Model;
@@ -465,6 +558,7 @@
 			isa = PBXGroup;
 			children = (
 				4A6A890329B83E3100230CF8 /* SettingsView.swift */,
+				4A54DD5329CC213F005A3E20 /* DevLoginSettingsView.swift */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -497,7 +591,8 @@
 			children = (
 				4AD005BE29598D5700041173 /* PersistentContainer.swift */,
 				4A301CC9298B91A3005ACE70 /* DCRequest.swift */,
-				4A301CCB298BB224005ACE70 /* DCAPI.swift */,
+				4A301CCB298BB224005ACE70 /* DCAccountAPI.swift */,
+				4A54DD5D29CC27ED005A3E20 /* DCAdminAPI.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -597,6 +692,25 @@
 			productReference = 4A08422B28EA99FC003E70A4 /* DreamCalendarUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		4A54DD0F29CC2122005A3E20 /* DreamCalendar-Dev */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4A54DD4D29CC2122005A3E20 /* Build configuration list for PBXNativeTarget "DreamCalendar-Dev" */;
+			buildPhases = (
+				4A54DD1229CC2122005A3E20 /* Sources */,
+				4A54DD4629CC2122005A3E20 /* Frameworks */,
+				4A54DD4829CC2122005A3E20 /* Resources */,
+				4A54DD4B29CC2122005A3E20 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4A54DD1029CC2122005A3E20 /* PBXTargetDependency */,
+			);
+			name = "DreamCalendar-Dev";
+			productName = DreamCalendar;
+			productReference = 4A54DD5129CC2122005A3E20 /* DreamCalendar-Dev.app */;
+			productType = "com.apple.product-type.application";
+		};
 		4A62B21C28EAA04500FBE1F6 /* CalendarUI */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4A62B23228EAA04500FBE1F6 /* Build configuration list for PBXNativeTarget "CalendarUI" */;
@@ -683,6 +797,7 @@
 				4A08422A28EA99FC003E70A4 /* DreamCalendarUITests */,
 				4A62B21C28EAA04500FBE1F6 /* CalendarUI */,
 				4A62B22328EAA04500FBE1F6 /* CalendarUITests */,
+				4A54DD0F29CC2122005A3E20 /* DreamCalendar-Dev */,
 			);
 		};
 /* End PBXProject section */
@@ -711,6 +826,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		4A54DD4829CC2122005A3E20 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4A54DD4929CC2122005A3E20 /* Preview Assets.xcassets in Resources */,
+				4A54DD4A29CC2122005A3E20 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4A62B21B28EAA04500FBE1F6 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -735,6 +859,7 @@
 				4AD0058F2954290500041173 /* TagType.swift in Sources */,
 				4AD005F82959927100041173 /* HolidayAnniversary+CoreDataClass.swift in Sources */,
 				4A7F783429682DEB00DA543B /* LoginViewModel.swift in Sources */,
+				4A54DD6729CC2D09005A3E20 /* DevLoginSettingsView.swift in Sources */,
 				4AD005BF29598D5700041173 /* PersistentContainer.swift in Sources */,
 				4A7F78382968312C00DA543B /* AccountInputField.swift in Sources */,
 				4AD005F62959927100041173 /* ScheduleUpdateLog+CoreDataClass.swift in Sources */,
@@ -742,11 +867,12 @@
 				4AD005F92959927100041173 /* HolidayAnniversary+CoreDataProperties.swift in Sources */,
 				4A27D0DE2928A249007FC2DD /* MainTopRightView.swift in Sources */,
 				4A0724552918B615005AA8B7 /* MainViewModel.swift in Sources */,
+				4A54DD6629CC2BE9005A3E20 /* DCAdminAPI.swift in Sources */,
 				4A27D0DA2928A217007FC2DD /* MainTopMiddleView.swift in Sources */,
 				4A7F78362968311500DA543B /* AccountConfirmButton.swift in Sources */,
 				4A08421928EA99FB003E70A4 /* Persistence.swift in Sources */,
 				4A3CFC1E2910B4730034F4BA /* Color+Extension.swift in Sources */,
-				4A6A890629B9903000230CF8 /* AccountManager.swift in Sources */,
+				4A54DD5C29CC23FD005A3E20 /* AccountManager.swift in Sources */,
 				4AF36EB62981190600338B7A /* DayScheduleListView.swift in Sources */,
 				4A6A890429B83E3100230CF8 /* SettingsView.swift in Sources */,
 				4AD005FA2959927100041173 /* Tag+CoreDataClass.swift in Sources */,
@@ -772,7 +898,8 @@
 				4AD00593295982CA00041173 /* Alert+Extension.swift in Sources */,
 				4AD00591295967E000041173 /* ScheduleAdditionViewModel.swift in Sources */,
 				4A301CCA298B91A3005ACE70 /* DCRequest.swift in Sources */,
-				4A301CCC298BB224005ACE70 /* DCAPI.swift in Sources */,
+				4A301CCC298BB224005ACE70 /* DCAccountAPI.swift in Sources */,
+				4A54DD6529CC2BDA005A3E20 /* DeveloperConfiguration.swift in Sources */,
 				4A301CD4298CEC9A005ACE70 /* SignupViewModel.swift in Sources */,
 				4A0724572918B647005AA8B7 /* MainTopView.swift in Sources */,
 				4AD005F22959927100041173 /* TagUpdateLog+CoreDataClass.swift in Sources */,
@@ -800,6 +927,67 @@
 			files = (
 				4A08423228EA99FC003E70A4 /* DreamCalendarUITestsLaunchTests.swift in Sources */,
 				4A08423028EA99FC003E70A4 /* DreamCalendarUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4A54DD1229CC2122005A3E20 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4A54DD1329CC2122005A3E20 /* TagType.swift in Sources */,
+				4A54DD1429CC2122005A3E20 /* HolidayAnniversary+CoreDataClass.swift in Sources */,
+				4A54DD1529CC2122005A3E20 /* LoginViewModel.swift in Sources */,
+				4A54DD1629CC2122005A3E20 /* PersistentContainer.swift in Sources */,
+				4A54DD1729CC2122005A3E20 /* AccountInputField.swift in Sources */,
+				4A54DD5F29CC2803005A3E20 /* DCAdminAPI.swift in Sources */,
+				4A54DD1829CC2122005A3E20 /* ScheduleUpdateLog+CoreDataClass.swift in Sources */,
+				4A54DD1929CC2122005A3E20 /* Schedule+CoreDataClass.swift in Sources */,
+				4A54DD1A29CC2122005A3E20 /* HolidayAnniversary+CoreDataProperties.swift in Sources */,
+				4A54DD1B29CC2122005A3E20 /* MainTopRightView.swift in Sources */,
+				4A54DD1C29CC2122005A3E20 /* MainViewModel.swift in Sources */,
+				4A54DD1D29CC2122005A3E20 /* MainTopMiddleView.swift in Sources */,
+				4A54DD1E29CC2122005A3E20 /* AccountConfirmButton.swift in Sources */,
+				4A54DD5B29CC21FF005A3E20 /* DeveloperConfiguration.swift in Sources */,
+				4A54DD1F29CC2122005A3E20 /* Persistence.swift in Sources */,
+				4A54DD2029CC2122005A3E20 /* Color+Extension.swift in Sources */,
+				4A54DD2129CC2122005A3E20 /* AccountManager.swift in Sources */,
+				4A54DD2229CC2122005A3E20 /* DayScheduleListView.swift in Sources */,
+				4A54DD2329CC2122005A3E20 /* SettingsView.swift in Sources */,
+				4A54DD2429CC2122005A3E20 /* Tag+CoreDataClass.swift in Sources */,
+				4A54DD5529CC214E005A3E20 /* DevLoginSettingsView.swift in Sources */,
+				4A54DD2529CC2122005A3E20 /* SignupView.swift in Sources */,
+				4A54DD2629CC2122005A3E20 /* ScheduleAdditionView.swift in Sources */,
+				4A54DD2729CC2122005A3E20 /* HalfSheetController.swift in Sources */,
+				4A54DD2829CC2122005A3E20 /* TimeInfo.swift in Sources */,
+				4A54DD2929CC2122005A3E20 /* Schedule+CoreDataProperties.swift in Sources */,
+				4A54DD2A29CC2122005A3E20 /* Logo.swift in Sources */,
+				4A54DD2B29CC2122005A3E20 /* TagManager.swift in Sources */,
+				4A54DD2C29CC2122005A3E20 /* DreamCalendar.xcdatamodeld in Sources */,
+				4A54DD2D29CC2122005A3E20 /* MainTopLeftView.swift in Sources */,
+				4A54DD2E29CC2122005A3E20 /* TagPicker.swift in Sources */,
+				4A54DD2F29CC2122005A3E20 /* MainView.swift in Sources */,
+				4A54DD3029CC2122005A3E20 /* ContentView.swift in Sources */,
+				4A54DD3129CC2122005A3E20 /* ScheduleDetailView.swift in Sources */,
+				4A54DD3229CC2122005A3E20 /* Tag+Extension.swift in Sources */,
+				4A54DD3329CC2122005A3E20 /* DreamCalendarApp.swift in Sources */,
+				4A54DD3429CC2122005A3E20 /* Date+Extension.swift in Sources */,
+				4A54DD3529CC2122005A3E20 /* Tag+CoreDataProperties.swift in Sources */,
+				4A54DD3629CC2122005A3E20 /* ScheduleUpdateLog+CoreDataProperties.swift in Sources */,
+				4A54DD3729CC2122005A3E20 /* View+Extension.swift in Sources */,
+				4A54DD3829CC2122005A3E20 /* Alert+Extension.swift in Sources */,
+				4A54DD3929CC2122005A3E20 /* ScheduleAdditionViewModel.swift in Sources */,
+				4A54DD3A29CC2122005A3E20 /* DCRequest.swift in Sources */,
+				4A54DD3B29CC2122005A3E20 /* DCAccountAPI.swift in Sources */,
+				4A54DD3C29CC2122005A3E20 /* SignupViewModel.swift in Sources */,
+				4A54DD3D29CC2122005A3E20 /* MainTopView.swift in Sources */,
+				4A54DD3E29CC2122005A3E20 /* TagUpdateLog+CoreDataClass.swift in Sources */,
+				4A54DD3F29CC2122005A3E20 /* ExitButton.swift in Sources */,
+				4A54DD4029CC2122005A3E20 /* TagUpdateLog+CoreDataProperties.swift in Sources */,
+				4A54DD4129CC2122005A3E20 /* ScheduleDetailViewModel.swift in Sources */,
+				4A54DD4229CC2122005A3E20 /* LoginView.swift in Sources */,
+				4A54DD4329CC2122005A3E20 /* DateStringView.swift in Sources */,
+				4A54DD4429CC2122005A3E20 /* ScheduleManager.swift in Sources */,
+				4A54DD4529CC2122005A3E20 /* User.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -842,6 +1030,11 @@
 			isa = PBXTargetDependency;
 			target = 4A08420B28EA99FA003E70A4 /* DreamCalendar */;
 			targetProxy = 4A08422C28EA99FC003E70A4 /* PBXContainerItemProxy */;
+		};
+		4A54DD1029CC2122005A3E20 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4A62B21C28EAA04500FBE1F6 /* CalendarUI */;
+			targetProxy = 4A54DD1129CC2122005A3E20 /* PBXContainerItemProxy */;
 		};
 		4A62B22728EAA04500FBE1F6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1287,6 +1480,97 @@
 			};
 			name = Develop;
 		};
+		4A54DD4E29CC2122005A3E20 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"DreamCalendar/Preview Content\"";
+				DEVELOPMENT_TEAM = 4CLMD5ZPC3;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "DreamCalendar copy-Info.plist";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dreamtree.DreamCalendar;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		4A54DD4F29CC2122005A3E20 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"DreamCalendar/Preview Content\"";
+				DEVELOPMENT_TEAM = 4CLMD5ZPC3;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "DreamCalendar copy-Info.plist";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dreamtree.DreamCalendar;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		4A54DD5029CC2122005A3E20 /* Develop */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"DreamCalendar/Preview Content\"";
+				DEVELOPMENT_TEAM = 4CLMD5ZPC3;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "DreamCalendar copy-Info.plist";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dreamtree.DreamCalendar;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Develop;
+		};
 		4A62B23328EAA04500FBE1F6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1425,6 +1709,16 @@
 				4A08423C28EA99FC003E70A4 /* Debug */,
 				4A08423D28EA99FC003E70A4 /* Release */,
 				4A54DD0C29CC029B005A3E20 /* Develop */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4A54DD4D29CC2122005A3E20 /* Build configuration list for PBXNativeTarget "DreamCalendar-Dev" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4A54DD4E29CC2122005A3E20 /* Debug */,
+				4A54DD4F29CC2122005A3E20 /* Release */,
+				4A54DD5029CC2122005A3E20 /* Develop */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

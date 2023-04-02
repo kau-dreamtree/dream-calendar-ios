@@ -39,7 +39,13 @@ enum HttpMethod {
     }
 }
 
-struct DCAPI {
+final class DCAPI {
+    
+    struct TokenResponse: Decodable {
+        let access_token: String
+        let refresh_token: String
+    }
+    
     enum Account: APIInfo {
         case signup(email: String, password: String, name: String)
         case login(email: String, password: String)
@@ -93,8 +99,8 @@ struct DCAPI {
         
         var responseType: Decodable.Type? {
             switch self {
-            case .login :
-                return Response.self
+            case .login, .refreshToken :
+                return TokenResponse.self
             default :
                 return nil
             }
@@ -107,11 +113,6 @@ struct DCAPI {
             } catch {
                 throw DCError.decodingError(error)
             }
-        }
-        
-        struct Response: Decodable {
-            let access_token: String
-            let refresh_token: String
         }
     }
 }
