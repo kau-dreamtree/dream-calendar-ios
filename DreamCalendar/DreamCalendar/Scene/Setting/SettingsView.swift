@@ -90,12 +90,13 @@ struct SettingsView: View {
     
     private func etcSection() -> some View {
         let title = "기타"
-        let fields = ["이용약관", "개인정보 처리방침"]
+        let fields = [("이용약관", "TermsOfUse"), ("개인정보 처리방침", "PrivacyPolicy")]
         
         return Section(header: Text(title)) {
-            ForEach(fields, id: \.hashValue) { field in
-                NavigationLink(field) {
-                    Text(field)
+            ForEach(fields, id: \.0) { title, fileName in
+                NavigationLink(title) {
+                    LongTextView(title: title, fileName: fileName)
+                        .navigationBarTitleDisplayMode(.inline)
                 }
             }
         }
