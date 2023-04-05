@@ -52,4 +52,11 @@ final class TagManager {
             self.tags.updateValue(tag, forKey: Int(tag.id))
         }
     }
+    
+    func deleteAll() throws {
+        let request: NSFetchRequest<NSFetchRequestResult> = Tag.fetchRequest()
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: request)
+        try self.viewContext.execute(deleteRequest)
+        self.tags.removeAll()
+    }
 }

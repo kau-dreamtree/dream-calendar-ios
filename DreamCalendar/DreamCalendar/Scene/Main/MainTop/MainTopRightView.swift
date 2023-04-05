@@ -22,7 +22,7 @@ struct MainTopRightView: View {
     var body: some View {
         HStack(spacing: 15) {
             Button {
-                //TODO: search action 지정 필요
+                // TODO: search action 지정 필요
                 delegate.searchButtonDidTouched()
             } label: {
                 Image(systemName: "magnifyingglass")

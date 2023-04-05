@@ -14,16 +14,21 @@ struct SettingsView: View {
         static let backButtonImageName: String = "xmark"
         
         static let logoutMessage: String = "로그아웃 하시겠습니까?"
-        static let errorMessage: String = "설정 저장 중 오류가 발생하였습니다"
+        static let errorMessage: String = "설정 중 오류가 발생하였습니다"
+        static let logoutErrorMessage: String = "로그아웃 중 오류가 발생하였습니다"
     }
     
     @Binding private var isOpen: Bool
     @State private var didError: Bool = false
+    @State private var didLogoutError: Bool = false
     @State private var doLogout: Bool = false
     @State private var tags: [Tag] = TagManager.global.tagCollection
     
-    init(isOpen: Binding<Bool>) {
+    private let scheduleManager: ScheduleManager
+    
+    init(isOpen: Binding<Bool>, scheduleManager: ScheduleManager) {
         self._isOpen = isOpen
+        self.scheduleManager = scheduleManager
     }
     
     var body: some View {
@@ -58,6 +63,13 @@ struct SettingsView: View {
                        action: {})
             }, message: {
                 Text(Constraint.errorMessage)
+            })
+            .alert("에러", isPresented: self.$didLogoutError, actions: {
+                Button("확인",
+                       role: .none,
+                       action: {})
+            }, message: {
+                Text(Constraint.logoutErrorMessage)
             })
         }
     }
@@ -105,9 +117,12 @@ struct SettingsView: View {
     private func logout() {
         Task {
             do {
+                try self.scheduleManager.deleteAll()
+                try TagManager.global.deleteAll()
                 try await AccountManager.global.logout()
+                try TagManager.initializeGlobalTagManager(with: self.scheduleManager.viewContext)
             } catch {
-                print(error)
+                self.didLogoutError = true
             }
         }
     }

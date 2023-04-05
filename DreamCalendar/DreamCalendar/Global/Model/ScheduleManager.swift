@@ -101,5 +101,12 @@ final class ScheduleManager {
                                    NSSortDescriptor(key: "endTime", ascending: false)]
         return try self.viewContext.fetch(request).sorted()
     }
+    
+    func deleteAll() throws {
+        let request: NSFetchRequest<NSFetchRequestResult> = Schedule.fetchRequest()
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: request)
+        
+        try self.viewContext.execute(deleteRequest)
+    }
 }
 

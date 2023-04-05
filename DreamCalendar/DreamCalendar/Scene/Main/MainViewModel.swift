@@ -30,18 +30,13 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate, AdditionV
     @Published var selectedDate: Date
     @Published var date: Date
     private var cancellables: Set<AnyCancellable> = Set<AnyCancellable>()
-    private let scheduleManager: ScheduleManager
+    let scheduleManager: ScheduleManager
     
     @Published private(set) var schedules: [Date: [Schedule]]
     @Published private(set) var error: Error? = nil
     @Published var isShowAlert: Bool = false
     
     var schedulesForSelectedDate: [Schedule]
-//    var schedulesForSelectedDate: [Schedule] {
-//        self.schedules[self.selectedDate.firstDayOfMonth]?.filter({ schedule in
-//            schedule.isValid && schedule.isInclude(with: self.selectedDate)
-//        }) ?? []
-//    }
     
     var scheduleCollection: [(date: Date, schedules: [Schedule])] {
         return self.schedules.map({ (date: $0.key, schedules: $0.value) }).sorted(by: { $0.date < $1.date })
