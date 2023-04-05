@@ -52,4 +52,17 @@ final class TagManager {
             self.tags.updateValue(tag, forKey: Int(tag.id))
         }
     }
+    
+    func reinitializeAll() throws {
+        Self.tagKeys.forEach { key in
+            guard var tag = self.tags[key] else { return }
+            tag.order = tag.type.defaultOrder
+            tag.title = tag.type.defaultTitle
+        }
+        try self.viewContext.save()
+    }
+    
+    func tag(id: Int16) -> Tag {
+        self.tags[Int(id)] ?? .defaultTag(context: self.viewContext, id: id)
+    }
 }

@@ -38,7 +38,8 @@ struct MainView: View, MainTopViewDelegate {
             .sheet(isPresented: self.$viewModel.isWritingMode,
                    content: self.scheduleAdditionModalView)
             .fullScreenCover(isPresented: self.$isSettingMode) {
-                SettingsView(isOpen: self.$isSettingMode)
+                SettingsView(isOpen: self.$isSettingMode,
+                             scheduleManager: self.viewModel.scheduleManager)
             }
     }
     

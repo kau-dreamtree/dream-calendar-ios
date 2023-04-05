@@ -234,7 +234,7 @@ struct ScheduleAdditionBottomInputView: View {
                 Circle()
                     .frame(width: circleWidthHeight, height: circleWidthHeight)
                     .foregroundColor(self.schedule.tagType.color)
-                Text(self.schedule.tag(context: self.viewModel.viewContext).title)
+                Text(self.schedule.tag.title)
                     .frame(height: textHeight)
                     .foregroundColor(.tagTitleGray)
                     .font(.AppleSDRegular14)

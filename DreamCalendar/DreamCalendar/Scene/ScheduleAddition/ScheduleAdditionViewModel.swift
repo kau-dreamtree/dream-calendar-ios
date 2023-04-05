@@ -13,7 +13,6 @@ final class ScheduleAdditionViewModel: ObservableObject {
     
     @Published var schedule: Schedule
     @Published private var error: Error? = nil
-    let viewContext: NSManagedObjectContext
     private let delegate: AdditionViewPresentDelegate & RefreshMainViewDelegate
     private let scheduleManager: ScheduleManager
     private var cancellables: Set<AnyCancellable> = []
@@ -45,7 +44,6 @@ final class ScheduleAdditionViewModel: ObservableObject {
     
     init(_ manager: ScheduleManager, delegate: AdditionViewPresentDelegate & RefreshMainViewDelegate, schedule: Schedule, mode: Mode, date: Date) {
         self.scheduleManager = manager
-        self.viewContext = manager.viewContext
         self.delegate = delegate
         self.schedule = schedule
         self.temporarySchedule = TemporarySchedule(title: schedule.title,

@@ -9,7 +9,7 @@ import CoreData
 
 final class ScheduleManager {
     
-    let viewContext: NSManagedObjectContext
+    private let viewContext: NSManagedObjectContext
     private var scheduleAdditionViewModel: ScheduleAdditionViewModel? = nil
     
     init(viewContext: NSManagedObjectContext) {
@@ -100,6 +100,13 @@ final class ScheduleManager {
         request.sortDescriptors = [NSSortDescriptor(key: "startTime", ascending: true),
                                    NSSortDescriptor(key: "endTime", ascending: false)]
         return try self.viewContext.fetch(request).sorted()
+    }
+    
+    func deleteAll() throws {
+        let request: NSFetchRequest<NSFetchRequestResult> = Schedule.fetchRequest()
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: request)
+        
+        try self.viewContext.execute(deleteRequest)
     }
 }
 

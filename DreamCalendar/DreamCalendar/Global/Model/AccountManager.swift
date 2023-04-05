@@ -129,6 +129,7 @@ final class AccountManager: ObservableObject {
         }
     }
     
+    @MainActor
     func logout() async throws {
         guard let accessToken = self.user.accessToken else { throw DCError.accountError }
         let apiInfo = DCAPI.Account.logout(authorization: accessToken)
@@ -138,5 +139,3 @@ final class AccountManager: ObservableObject {
         self.didLogin = false
     }
 }
-///  "access_token":"eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imppc3VAbmF2ZXIuY29tIiwiaWF0IjoxNjc5NTU0NTE5LCJleHAiOjE2Nzk1NTQ1Nzl9.Nf3wPklOE9Qy6Qg5KC2c3-gSqf1UFSqla0J7v0GzXfE", "refresh_token":"eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imppc3VAbmF2ZXIuY29tIiwiaWF0IjoxNjc5NTU0NTE5LCJleHAiOjE2ODQ3Mzg1MTl9.j7aDNMhtHezLnMU3CprEhQo1kzYtXi0jpadJFBdFgtk"
-///
