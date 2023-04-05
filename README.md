@@ -49,7 +49,7 @@
 <div align="center">
     <h3>👫🏻 협업과정 </h3>
     <a href=https://tmfrlrkvlek.notion.site/4217b8bd8f5e41d18e903a916ce03e48?v=7ef98b0ca8c4493da5e4681bfe2d664d>BackLog</a><br>
-    <a href=https://github.com/kau-dreamtree/server-dream-calendar>Backend Repo</a><br>
+    <a href=https://github.com/kau-dreamtree/server-dream-calendar>Server Repo</a><br>
 </div>
 
 <br>
