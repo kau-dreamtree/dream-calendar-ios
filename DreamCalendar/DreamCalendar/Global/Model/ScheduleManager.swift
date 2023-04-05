@@ -9,7 +9,7 @@ import CoreData
 
 final class ScheduleManager {
     
-    let viewContext: NSManagedObjectContext
+    private let viewContext: NSManagedObjectContext
     private var scheduleAdditionViewModel: ScheduleAdditionViewModel? = nil
     
     init(viewContext: NSManagedObjectContext) {

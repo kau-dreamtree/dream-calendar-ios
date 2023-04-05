@@ -31,19 +31,8 @@ extension Schedule : Identifiable {
 }
 
 extension Schedule {
-    func tag(context: NSManagedObjectContext) -> Tag {
-        let request: NSFetchRequest<Tag> = Tag.fetchRequest()
-        request.predicate = NSPredicate(format: "id = %d", self.tagId)
-        
-        do {
-            if let tag = try PersistenceController.shared.fetch(request: request).first {
-                return tag
-            } else {
-                return Tag.defaultTag(context: context, id: self.tagId)
-            }
-        } catch {
-            return Tag.defaultTag(context: context, id: self.tagId)
-        }
+    var tag: Tag {
+        return TagManager.global.tag(id: self.tagId)
     }
     
     var tagType: TagType {

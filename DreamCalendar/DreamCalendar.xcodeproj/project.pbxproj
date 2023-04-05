@@ -491,8 +491,8 @@
 			isa = PBXGroup;
 			children = (
 				4A301CCE298BB2EA005ACE70 /* User.swift */,
-				4A301CD9298F989F005ACE70 /* TagManager.swift */,
 				4A54DD5929CC21F9005A3E20 /* DeveloperConfiguration.swift */,
+				4A301CD9298F989F005ACE70 /* TagManager.swift */,
 				4A6A890529B9903000230CF8 /* AccountManager.swift */,
 				4A301CC52989528B005ACE70 /* ScheduleManager.swift */,
 			);

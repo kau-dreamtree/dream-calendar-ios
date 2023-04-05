@@ -53,10 +53,16 @@ final class TagManager {
         }
     }
     
-    func deleteAll() throws {
-        let request: NSFetchRequest<NSFetchRequestResult> = Tag.fetchRequest()
-        let deleteRequest = NSBatchDeleteRequest(fetchRequest: request)
-        try self.viewContext.execute(deleteRequest)
-        self.tags.removeAll()
+    func reinitializeAll() throws {
+        Self.tagKeys.forEach { key in
+            guard var tag = self.tags[key] else { return }
+            tag.order = tag.type.defaultOrder
+            tag.title = tag.type.defaultTitle
+        }
+        try self.viewContext.save()
+    }
+    
+    func tag(id: Int16) -> Tag {
+        self.tags[Int(id)] ?? .defaultTag(context: self.viewContext, id: id)
     }
 }

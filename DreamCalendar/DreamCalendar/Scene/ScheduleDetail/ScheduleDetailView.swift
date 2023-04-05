@@ -136,7 +136,7 @@ struct ScheduleDetailView: View {
             Circle()
                 .foregroundColor(self.viewModel.schedule.tagType.color)
                 .padding(.zero)
-            Text(self.viewModel.schedule.tagType.defaultTitle)
+            Text(self.viewModel.schedule.tag.title)
                 .font(.AppleSDRegular14)
                 .foregroundColor(.tagTitleGray)
                 .frame(alignment: .trailing)

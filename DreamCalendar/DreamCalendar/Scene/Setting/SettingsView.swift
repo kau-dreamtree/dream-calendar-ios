@@ -118,9 +118,8 @@ struct SettingsView: View {
         Task {
             do {
                 try self.scheduleManager.deleteAll()
-                try TagManager.global.deleteAll()
+                try TagManager.global.reinitializeAll()
                 try await AccountManager.global.logout()
-                try TagManager.initializeGlobalTagManager(with: self.scheduleManager.viewContext)
             } catch {
                 self.didLogoutError = true
             }
