@@ -57,14 +57,19 @@ struct MainView: View, MainTopViewDelegate {
                     self.calendarViewIndex = CGFloat(MainViewModel.centerIndex) - (value.translation.width / proxy.size.width)
                 }
                 .onEnded { value in
+                    let index: CGFloat
                     if abs(value.translation.width) >= proxy.size.width / 2 {
-                        let addition = value.translation.width > 0 ? 0 : +1
-                        self.calendarViewIndex = CGFloat((Int(self.calendarViewIndex) + addition))
+                        let addition = value.translation.width > 0 ? 0 : 1
+                        index = CGFloat((Int(self.calendarViewIndex) + addition))
                     } else {
-                        self.calendarViewIndex = CGFloat(Int(self.calendarViewIndex))
+                        let addition = value.translation.width > 0 ? 1 : 0
+                        index = CGFloat(Int(self.calendarViewIndex) + addition)
                     }
-                    self.viewModel.changeIndex(Int(self.calendarViewIndex))
-                    self.calendarViewIndex = CGFloat(MainViewModel.centerIndex)
+                    let duration: CGFloat = ((proxy.size.width - abs(value.translation.width)) / proxy.size.width)
+                    withAnimation(.easeOut(duration: duration)) {
+                        self.calendarViewIndex = CGFloat(MainViewModel.centerIndex)
+                        self.viewModel.changeIndex(Int(index))
+                    }
                 })
         }
     }
