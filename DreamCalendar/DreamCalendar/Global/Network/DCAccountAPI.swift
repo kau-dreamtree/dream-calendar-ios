@@ -28,13 +28,14 @@ extension APIInfo {
 }
 
 enum HttpMethod {
-    case post, get, delete
+    case post, get, delete, put
     
     func toString() -> String {
         switch self {
         case .post : return "POST"
         case .get : return "GET"
         case .delete : return "DELETE"
+        case .put : return "PUT"
         }
     }
 }

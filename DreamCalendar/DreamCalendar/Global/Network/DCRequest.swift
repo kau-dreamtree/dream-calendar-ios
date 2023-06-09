@@ -39,7 +39,12 @@ fileprivate struct NetworkContainer {
 
 struct DCRequest {
 
-    static private let ip: String = "http://3.39.195.86"
+    static private let ip: String = {
+        #if DEVELOP
+        return "https://test.dreamtree.shop"
+        #endif
+        return "https://product.dreamtree.shop"
+    }()
     static private let networkContainer = NetworkContainer()
     
     func request(with api: APIInfo) async throws -> (Int, Data) {
