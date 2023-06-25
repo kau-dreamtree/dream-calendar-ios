@@ -60,19 +60,66 @@ final class ScheduleManager {
     }
     
     func addSchedule(_ schedule: Schedule) throws {
-        schedule.createLog(self.viewContext, type: .create)
+        let log = schedule.createLog(self.viewContext, type: .create)
         try self.viewContext.save()
+        
+        guard let accessToken = AccountManager.global.user.accessToken else { return }
+        let apiInfo = DCAPI.Schedule.add(accessToken: accessToken,
+                                         title: schedule.title,
+                                         tag: Int(schedule.tag.id),
+                                         isAllDay: schedule.isAllDay,
+                                         startDate: schedule.startTime,
+                                         endDate: schedule.endTime)
+        try self.request(apiInfo, updatedSchedule: schedule, withLog: log)
     }
     
     func modifySchedule(_ schedule: Schedule) throws {
-        schedule.createLog(self.viewContext, type: .update)
+        let log = schedule.createLog(self.viewContext, type: .update)
         try self.viewContext.save()
+        
+        guard let accessToken = AccountManager.global.user.accessToken else { return }
+        let apiInfo = DCAPI.Schedule.modify(accessToken: accessToken,
+                                            serverId: schedule.serverId,
+                                            title: schedule.title,
+                                            tag: Int(schedule.tag.id),
+                                            isAllDay: schedule.isAllDay,
+                                            startDate: schedule.startTime,
+                                            endDate: schedule.endTime)
+        try self.request(apiInfo, updatedSchedule: schedule, withLog: log)
     }
     
     func deleteSchedule(_ schedule: Schedule) throws {
-        schedule.createLog(self.viewContext, type: .delete)
+        let log = schedule.createLog(self.viewContext, type: .delete)
         schedule.isValid = false
         try self.viewContext.save()
+        
+        guard schedule.serverId != 0,
+              let accessToken = AccountManager.global.user.accessToken else { return }
+        let apiInfo = DCAPI.Schedule.delete(accessToken: accessToken,
+                                            serverId: schedule.serverId,
+                                            title: schedule.title,
+                                            tag: Int(schedule.tag.id),
+                                            isAllDay: schedule.isAllDay,
+                                            startDate: schedule.startTime,
+                                            endDate: schedule.endTime)
+        try self.request(apiInfo, updatedSchedule: schedule, withLog: log)
+    }
+    
+    private func request(_ apiInfo: APIInfo, updatedSchedule schedule: Schedule, withLog log: ScheduleUpdateLog) throws {
+        do {
+            Task {
+                let (statusCode, data) = try await DCRequest().request(with: apiInfo)
+                switch statusCode {
+                case 200..<300 :
+                    guard let response = try apiInfo.response(data) as? DCAPI.ScheduleResponse else { return }
+                    schedule.serverId = response.id
+                    self.viewContext.delete(log)
+                    try self.viewContext.save()
+                default :
+                    return
+                }
+            }
+        }
     }
     
     func getSchedule(in date: Date) throws -> [Schedule] {
