@@ -32,7 +32,7 @@ struct AccountConfirmButton: View {
     var body: some View {
         Button(action: self.action) {
             Text(self.fieldName)
-                .font(.AppleSDRegular12)
+                .font(.AppleSDRegular14)
                 .foregroundColor(.white)
                 .frame(width: Constraint.width)
         }

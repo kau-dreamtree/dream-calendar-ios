@@ -58,7 +58,7 @@ struct LoginView: View {
         var body: some View {
             Button(action: self.action) {
                 Text(self.title)
-                    .font(.AppleSDRegular10)
+                    .font(.AppleSDRegular12)
                     .foregroundColor(.black)
                     .lineSpacing(Constraint.lineHeight)
             }
@@ -74,6 +74,7 @@ struct LoginView: View {
     #if DEVELOP
     @State private var isDevelopSettingMode: Bool = false
     #endif
+    @FocusState private var focusedField: InputFieldType?
     
     init(viewModel: LoginViewModel) {
         self.viewModel = viewModel
@@ -116,6 +117,10 @@ struct LoginView: View {
             ForEach(Constraint.fields, id: \.hashValue) { field in
                 if let bindingValue = field.bindingValue(with: self.$viewModel) {
                     field.fieldView(with: bindingValue)
+                        .onSubmit {
+                            self.focusedField = self.nextField(withCurrentField: field)
+                        }
+                        .focused(self.$focusedField, equals: field)
                 }
                 if (field != InputFieldType.allCases.last) {
                     Spacer()
@@ -128,7 +133,7 @@ struct LoginView: View {
     
     private var loginMessage: some View {
         Text(self.viewModel.loginMessage ?? Constraint.defaultErrorMessage)
-            .font(.AppleSDRegular10)
+            .font(.AppleSDRegular12)
             .foregroundColor(.red)
             .frame(alignment: .center)
             .padding(EdgeInsets(top: Constraint.loginMessageTopPadding,
@@ -186,6 +191,15 @@ struct LoginView: View {
     private func signupButtonDidTouched() {
         self.doSignup = true
         self.viewModel.resetLoginStatus()
+    }
+    
+    private func nextField(withCurrentField currentField: InputFieldType) -> InputFieldType? {
+        switch currentField {
+        case .email :
+            return .password
+        default :
+            return nil
+        }
     }
 }
 
