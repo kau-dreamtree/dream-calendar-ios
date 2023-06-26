@@ -20,7 +20,7 @@ struct SignupView: View {
         static let signupSuccessMessage: String = "회원가입을 완료했습니다.\n로그인 페이지로 이동합니다."
         
         static let inputFieldTopPadding: CGFloat = 110
-        static let inputFieldHeight: CGFloat = 295
+        static let inputFieldHeight: CGFloat = 300
         
         static let buttonName: String = "회원가입"
         static let buttonTopPadding: CGFloat = 34
@@ -31,6 +31,7 @@ struct SignupView: View {
     
     @Binding private var doSignup: Bool
     @ObservedObject private var viewModel: SignupViewModel
+    @FocusState private var focusedField: InputFieldType?
     
     init(doSignup: Binding<Bool>) {
         self._doSignup = doSignup
@@ -76,6 +77,10 @@ struct SignupView: View {
         VStack(spacing: 0) {
             ForEach(Constraint.fields, id: \.hashValue) { field in
                 field.fieldView(with: field.bindingValue(with: self.$viewModel))
+                    .onSubmit {
+                        self.focusedField = self.nextField(withCurrentField: field)
+                    }
+                    .focused(self.$focusedField, equals: field)
                 if (field != InputFieldType.allCases.last) {
                     Spacer()
                 }
@@ -90,7 +95,7 @@ struct SignupView: View {
     
     private var signupMessage: some View {
         Text(self.viewModel.signupMessage ?? Constraint.defaultErrorMessage)
-            .font(.AppleSDRegular10)
+            .font(.AppleSDRegular12)
             .foregroundColor(.red)
             .frame(alignment: .center)
             .padding(EdgeInsets(top: Constraint.signupMessageTopPadding,
@@ -109,6 +114,19 @@ struct SignupView: View {
     
     private func signupButtonDidTouched() {
         self.viewModel.singup()
+    }
+    
+    private func nextField(withCurrentField currentField: InputFieldType) -> InputFieldType? {
+        switch currentField {
+        case .name :
+            return .email
+        case .email :
+            return .password
+        case .password :
+            return .passwordCheck
+        case .passwordCheck :
+            return nil
+        }
     }
 }
 

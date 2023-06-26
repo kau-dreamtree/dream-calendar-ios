@@ -30,12 +30,12 @@ struct AccountInputField<InputField: InputableField>: View {
     var body: some View {
         VStack(alignment: .leading, spacing: Constraint.zeroPadding) {
             Text(self.fieldName)
-                .font(.AppleSDSemiBold12)
+                .font(.AppleSDSemiBold14)
                 .frame(height: Constraint.titleHeight)
             
             InputField.init("", text: self.$inputValue)
                 .textInputAutocapitalization(.never)
-                .font(.AppleSDBold12)
+                .font(.AppleSDBold14)
                 .padding(EdgeInsets(top: Constraint.inputFieldTopPadding,
                                     leading: Constraint.zeroPadding,
                                     bottom: Constraint.zeroPadding,

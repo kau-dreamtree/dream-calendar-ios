@@ -12,10 +12,10 @@ fileprivate struct NetworkContainer {
         print("""
         
         Request >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        url \(request)
-        method \(request.httpMethod ?? "")
-        header \(request.allHTTPHeaderFields ?? [:])
-        body \(String(data: request.httpBody ?? Data(), encoding: String.Encoding.utf8) ?? "nil")
+        url : \(request)
+        method : \(request.httpMethod ?? "")
+        header : \(request.allHTTPHeaderFields ?? [:])
+        body : \(String(data: request.httpBody ?? Data(), encoding: String.Encoding.utf8) ?? "nil")
         <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         
         """)
@@ -24,8 +24,8 @@ fileprivate struct NetworkContainer {
         print("""
         
         Response >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        statusCode \((response as? HTTPURLResponse)?.statusCode ?? 0)
-        data \(String(data: data, encoding: String.Encoding.utf8) ?? "nil")
+        statusCode : \((response as? HTTPURLResponse)?.statusCode ?? 0)
+        data : \(String(data: data, encoding: String.Encoding.utf8) ?? "nil")
         <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         
         """)
@@ -43,7 +43,7 @@ struct DCRequest {
         #if DEVELOP
         return "https://test.dreamtree.shop"
         #endif
-        return "https://product.dreamtree.shop"
+        return "https://api.dreamtree.shop"
     }()
     static private let networkContainer = NetworkContainer()
     
