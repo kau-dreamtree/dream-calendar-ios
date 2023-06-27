@@ -149,7 +149,7 @@ struct MainView: View, MainTopViewDelegate {
 enum DCError: Error {
     static let title: String = "오류"
     
-    case unknown, coreData(Error), network(URLResponse), urlError, requestError(Error), decodingError(Error), serverError, accountError
+    case unknown, coreData(Error), network(URLResponse), urlError, requestError(Error), decodingError(Data), serverError, accountError, batchError
     
     var message: String {
         switch self {
@@ -161,6 +161,7 @@ enum DCError: Error {
         case .decodingError: return "서버 오류입니다. \n관리자에게 문의해주세요."
         case .serverError: return "서버 오류입니다. \n관리자에게 문의해주세요."
         case .accountError: return "계정 정보 오류입니다. \n재접속 해주세요."
+        case .batchError: return "코어 데이터 오류입니다. \n앱을 재시동 해주세요."
         }
     }
 }

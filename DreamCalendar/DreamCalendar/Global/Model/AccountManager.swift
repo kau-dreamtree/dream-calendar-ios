@@ -81,7 +81,7 @@ final class AccountManager: ObservableObject {
     }
     
     @MainActor
-    func login(email: String, password: String) async throws {
+    func login(email: String, password: String, scheduleManager: ScheduleManager) async throws {
         let apiInfo: APIInfo
         
         #if DEVELOP
@@ -121,7 +121,12 @@ final class AccountManager: ObservableObject {
                 self.user.accessToken = response.access_token
                 self.user.refreshToken = response.refresh_token
             }
-            self.didLogin = true
+            do {
+                self.didLogin = try await scheduleManager.fetchAll()
+            } catch {
+                self.user.reset()
+                throw error
+            }
         case 404 :
             break
         default :

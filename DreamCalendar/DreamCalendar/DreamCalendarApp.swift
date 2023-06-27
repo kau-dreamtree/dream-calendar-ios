@@ -14,15 +14,17 @@ struct DreamCalendarApp: App {
     @ObservedObject private var accountManager: AccountManager = AccountManager.global
     @State private var didError: Bool = false
     @State private var error: Error? = nil
+    private let scheduleManager: ScheduleManager = ScheduleManager(viewContext: PersistenceController.shared.container.viewContext)
 
     var body: some Scene {
         WindowGroup {
             switch self.accountManager.didLogin {
             case true :
-                MainView(viewModel: MainViewModel(self.persistenceController.container.viewContext))
+                MainView(viewModel: MainViewModel(self.scheduleManager))
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
             case false :
-                LoginView(viewModel: LoginViewModel())
+                LoginView(viewModel: LoginViewModel(scheduleManager: self.scheduleManager))
+                    .environment(\.managedObjectContext, persistenceController.container.viewContext)
             default :
                 ActivityIndicator(isAnimating: Binding<Bool?>(get: { return nil }, set: { _, _ in }), style: .large)
                     .alert(DCError.title, isPresented: self.$didError) {

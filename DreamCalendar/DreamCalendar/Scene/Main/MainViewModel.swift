@@ -42,9 +42,9 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate, AdditionV
         return self.schedules.map({ (date: $0.key, schedules: $0.value) }).sorted(by: { $0.date < $1.date })
     }
     
-    init(_ context: NSManagedObjectContext, selectedYear: Int? = nil, month selectedMonth: Int? = nil, day selectedDay: Int? = 32) {
+    init(_ scheduleManager: ScheduleManager, selectedYear: Int? = nil, month selectedMonth: Int? = nil, day selectedDay: Int? = 32) {
         
-        self.scheduleManager = ScheduleManager(viewContext: context)
+        self.scheduleManager = scheduleManager
         
         let year: Int, month: Int, day: Int
         var selectedDate = Date()

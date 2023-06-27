@@ -117,10 +117,11 @@ struct SettingsView: View {
     private func logout() {
         Task {
             do {
+                try await AccountManager.global.logout()
                 try self.scheduleManager.deleteAll()
                 try TagManager.global.reinitializeAll()
-                try await AccountManager.global.logout()
             } catch {
+                print(error)
                 self.didLogoutError = true
             }
         }

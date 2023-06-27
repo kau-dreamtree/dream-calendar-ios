@@ -20,15 +20,15 @@ extension DCAPI {
     
     enum Schedule: APIInfo {
         case add(accessToken: String, title: String, tag: Int, isAllDay: Bool, startDate: Date, endDate: Date)
-        case schedule(accessToken: String, serverId: Int)
+        case schedule(accessToken: String, serverId: Int64)
         case schedules(accessToken: String)
         case modify(accessToken: String, serverId: Int64, title: String, tag: Int, isAllDay: Bool, startDate: Date, endDate: Date)
-        case delete(accessToken: String, serverId: Int64, title: String, tag: Int, isAllDay: Bool, startDate: Date, endDate: Date)
+        case delete(accessToken: String, serverId: Int64)
         
         var route: String {
             switch self {
-            case .add, .modify, .delete: return "/schedule"
-            case .schedule(_, let id): return "/schedule/\(id)"
+            case .add: return "/schedule"
+            case .schedule(_, let id), .modify(_, let id, _, _, _, _, _), .delete(_, let id): return "/schedule/\(id)"
             case .schedules: return "/schedules"
             }
         }
@@ -44,7 +44,7 @@ extension DCAPI {
         
         var header: [(key: String, value: String)]? {
             switch self {
-            case .add(let accessToken, _, _, _, _, _), .schedule(let accessToken, _), .schedules(let accessToken), .modify(let accessToken, _, _, _, _, _, _), .delete(let accessToken, _, _, _, _, _, _) :
+            case .add(let accessToken, _, _, _, _, _), .schedule(let accessToken, _), .schedules(let accessToken), .modify(let accessToken, _, _, _, _, _, _), .delete(let accessToken, _) :
                 return [("Content-Type", "application/json"), ("Authorization", accessToken)]
             }
         }
@@ -55,7 +55,7 @@ extension DCAPI {
             switch self {
             case .add(_, let title, let tag, let isAllDay, let startDate, let endDate) :
                 body = ["title": title, "tag": tag, "is_all_day": isAllDay, "start_at": startDate.serverString, "end_at": endDate.serverString]
-            case .modify(_, let serverId, let title, let tag, let isAllDay, let startDate, let endDate), .delete(_, let serverId, let title, let tag, let isAllDay, let startDate, let endDate) :
+            case .modify(_, let serverId, let title, let tag, let isAllDay, let startDate, let endDate) :
                 body = ["id": serverId, "title": title, "tag": tag, "is_all_day": isAllDay, "start_at": startDate.serverString, "end_at": endDate.serverString]
             default :
                 return nil
@@ -83,7 +83,7 @@ extension DCAPI {
             do {
                 return try JSONDecoder().decode(responseType, from: data)
             } catch {
-                throw DCError.decodingError(error)
+                throw DCError.decodingError(data)
             }
         }
     }
