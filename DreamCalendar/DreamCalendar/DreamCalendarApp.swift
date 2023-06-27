@@ -53,7 +53,7 @@ struct DreamCalendarApp: App {
     private func presentFirstPage() {
         Task {
             do {
-                try await AccountManager.global.tokenLogin()
+                try await AccountManager.global.tokenLogin(with: self.scheduleManager)
             } catch {
                 self.error = error
                 self.didError = true

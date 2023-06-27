@@ -21,7 +21,7 @@ final class AccountManager: ObservableObject {
     }
     
     @MainActor
-    func tokenLogin() async throws {
+    func tokenLogin(with scheduleManager: ScheduleManager) async throws {
         guard let accessToken = self.user.accessToken else {
             self.didLogin = false
             return
@@ -33,16 +33,17 @@ final class AccountManager: ObservableObject {
         case 200 :
             self.didLogin = true
         case 401 :
-            try await refreshToken()
+            try await refreshToken(with: scheduleManager)
         default :
-            self.user.accessToken = nil
-            self.user.refreshToken = nil
+            self.user.reset()
+            try scheduleManager.deleteAll()
+            try TagManager.global.reinitializeAll()
             self.didLogin = false
         }
     }
     
     @MainActor
-    private func refreshToken() async throws {
+    private func refreshToken(with scheduleManager: ScheduleManager) async throws {
         guard let refreshToken = self.user.refreshToken else {
             self.didLogin = false
             return
@@ -58,8 +59,9 @@ final class AccountManager: ObservableObject {
                 self.didLogin = true
             }
         default :
-            self.user.accessToken = nil
-            self.user.refreshToken = nil
+            self.user.reset()
+            try scheduleManager.deleteAll()
+            try TagManager.global.reinitializeAll()
             self.didLogin = false
         }
     }
