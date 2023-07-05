@@ -159,11 +159,13 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate, AdditionV
     }
     
     private func fetchAllSchedules(with current: Date) {
-        self.fetchSchedules(with: current.previousMonth.previousMonth)
-        self.fetchSchedules(with: current.previousMonth)
-        self.fetchSchedules(with: current)
-        self.fetchSchedules(with: current.nextMonth)
-        self.fetchSchedules(with: current.nextMonth.nextMonth)
+        DispatchQueue.main.async {
+            self.fetchSchedules(with: current.previousMonth.previousMonth)
+            self.fetchSchedules(with: current.previousMonth)
+            self.fetchSchedules(with: current)
+            self.fetchSchedules(with: current.nextMonth)
+            self.fetchSchedules(with: current.nextMonth.nextMonth)
+        }
     }
     
     private func fetchSchedules(with date: Date) {
@@ -229,8 +231,10 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate, AdditionV
     }
     
     func refreshMainViewSchedule() {
-        self.fetchAllSchedules(with: self.date)
-        self.schedulesForSelectedDate = schedulesOnDate(date: self.selectedDate)
+        DispatchQueue.main.async {
+            self.fetchAllSchedules(with: self.date)
+            self.schedulesForSelectedDate = self.schedulesOnDate(date: self.selectedDate)
+        }
     }
     
     private func schedulesOnDate(date: Date) -> [Schedule] {

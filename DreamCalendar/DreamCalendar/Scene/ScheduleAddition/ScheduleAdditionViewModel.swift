@@ -94,23 +94,27 @@ final class ScheduleAdditionViewModel: ObservableObject {
     }
     
     func uploadScheduleButtonDidTouched() {
-        do {
-            self.removeAllBinding()
-            switch self.mode {
-            case .modify :
-                try self.scheduleManager.modifySchedule(self.schedule)
-            case .create :
-                try self.scheduleManager.addSchedule(self.schedule)
-            default :
-                break
+        Task {
+            do {
+                self.removeAllBinding()
+                switch self.mode {
+                case .modify :
+                    try await self.scheduleManager.modifySchedule(self.schedule)
+                case .create :
+                    try await self.scheduleManager.addSchedule(self.schedule)
+                default :
+                    break
+                }
+                self.scheduleManager.removeScheduleAdditionViewModel()
+                self.completeExplicitButtonAction()
+                
+                self.delegate.refreshMainViewSchedule()
+                self.delegate.closeAdditionSheet()
+            } catch {
+                DispatchQueue.main.async {
+                    self.error = error
+                }
             }
-            self.scheduleManager.removeScheduleAdditionViewModel()
-            self.completeExplicitButtonAction()
-            
-            self.delegate.refreshMainViewSchedule()
-            self.delegate.closeAdditionSheet()
-        } catch {
-            self.error = error
         }
     }
     

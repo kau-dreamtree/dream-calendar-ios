@@ -63,9 +63,11 @@ final class ScheduleDetailViewModel: ObservableObject {
     
     func deleteSchedule() {
         do {
-            try self.scheduleManager.deleteSchedule(self.schedule)
-            self.scheduleEditingDelegate.refreshMainViewSchedule()
-            self.delegate.closeDetailView()
+            Task {
+                try await self.scheduleManager.deleteSchedule(self.schedule)
+                self.scheduleEditingDelegate.refreshMainViewSchedule()
+                self.delegate.closeDetailView()
+            }
         } catch {
             self.error = error
         }

@@ -13,7 +13,9 @@ import CoreData
 extension ScheduleUpdateLog {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<ScheduleUpdateLog> {
-        return NSFetchRequest<ScheduleUpdateLog>(entityName: "ScheduleUpdateLog")
+        let request = NSFetchRequest<ScheduleUpdateLog>(entityName: "ScheduleUpdateLog")
+        request.relationshipKeyPathsForPrefetching = ["schedule"]
+        return request
     }
 
     @NSManaged public var id: UUID
