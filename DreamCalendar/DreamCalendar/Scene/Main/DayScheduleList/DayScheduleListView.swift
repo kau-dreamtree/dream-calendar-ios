@@ -14,7 +14,7 @@ struct DayScheduleListView: View, ScheduleDetailViewDelegate {
     private let delegate: AdditionViewPresentDelegate
     
     private(set) var date: Date
-    private(set) var schedules: [Schedule]
+    private(set) var schedules: [(Schedule, Bool)]
     private let detent: HalfSheet<Self>.Detent
     
     @State private var selectedSchedule: Schedule? = nil
@@ -32,7 +32,7 @@ struct DayScheduleListView: View, ScheduleDetailViewDelegate {
         static let blockTopBottomPadding: CGFloat = 5
     }
     
-    init(delegate: AdditionViewPresentDelegate, viewModel: ObservedObject<MainViewModel>, schedules: [Schedule], detent: HalfSheet<Self>.Detent) {
+    init(delegate: AdditionViewPresentDelegate, viewModel: ObservedObject<MainViewModel>, schedules: [(Schedule, Bool)], detent: HalfSheet<Self>.Detent) {
         self.delegate = delegate
         self._viewModel = viewModel
         self.date = viewModel.wrappedValue.selectedDate
@@ -78,8 +78,8 @@ struct DayScheduleListView: View, ScheduleDetailViewDelegate {
     
     private var scheduleList: some View {
         List {
-            ForEach(self.schedules) { schedule in
-                ScheduleDetailBlock(schedule: schedule)
+            ForEach(self.schedules, id: \.0) { schedule in
+                ScheduleDetailBlock(schedule: schedule.0, isNotUpdated: schedule.1)
                     .listRowInsets(EdgeInsets(top: Constraint.blockTopBottomPadding,
                                               leading: Constraint.blockLeadingTrailingPadding,
                                               bottom: Constraint.blockTopBottomPadding,
@@ -87,7 +87,7 @@ struct DayScheduleListView: View, ScheduleDetailViewDelegate {
                     .listRowSeparator(.hidden)
                     .contentShape(Rectangle())
                     .onTapGesture {
-                        self.selectedSchedule = schedule
+                        self.selectedSchedule = schedule.0
                     }
             }
         }
@@ -124,6 +124,7 @@ struct DayScheduleListView: View, ScheduleDetailViewDelegate {
 struct ScheduleDetailBlock: View {
     
     let schedule: Schedule
+    let isNotUpdated: Bool
     
     private struct Constraint {
         static let zeroPadding: CGFloat = 0
@@ -143,6 +144,9 @@ struct ScheduleDetailBlock: View {
     var body: some View {
         HStack(spacing: Constraint.zeroPadding) {
             self.leftBar
+            if self.isNotUpdated {
+                WarningImage(color: self.schedule.tagType.color)
+            }
             self.title
             if self.schedule.isAllDay {
                 self.allDayInfo

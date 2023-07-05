@@ -18,6 +18,9 @@
 		4A08422628EA99FC003E70A4 /* DreamCalendarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A08422528EA99FC003E70A4 /* DreamCalendarTests.swift */; };
 		4A08423028EA99FC003E70A4 /* DreamCalendarUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A08422F28EA99FC003E70A4 /* DreamCalendarUITests.swift */; };
 		4A08423228EA99FC003E70A4 /* DreamCalendarUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A08423128EA99FC003E70A4 /* DreamCalendarUITestsLaunchTests.swift */; };
+		4A0C2E8F2A5553D30008B815 /* Extension+NotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0C2E8E2A5553D30008B815 /* Extension+NotificationCenter.swift */; };
+		4A0C2E912A5559580008B815 /* WarningImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0C2E902A5559580008B815 /* WarningImage.swift */; };
+		4A0C2E922A55595B0008B815 /* WarningImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0C2E902A5559580008B815 /* WarningImage.swift */; };
 		4A27D0D729289050007FC2DD /* ScheduleAdditionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A27D0D629289050007FC2DD /* ScheduleAdditionView.swift */; };
 		4A27D0DA2928A217007FC2DD /* MainTopMiddleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A27D0D92928A217007FC2DD /* MainTopMiddleView.swift */; };
 		4A27D0DC2928A224007FC2DD /* MainTopLeftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A27D0DB2928A224007FC2DD /* MainTopLeftView.swift */; };
@@ -235,6 +238,8 @@
 		4A08422B28EA99FC003E70A4 /* DreamCalendarUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DreamCalendarUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A08422F28EA99FC003E70A4 /* DreamCalendarUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DreamCalendarUITests.swift; sourceTree = "<group>"; };
 		4A08423128EA99FC003E70A4 /* DreamCalendarUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DreamCalendarUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		4A0C2E8E2A5553D30008B815 /* Extension+NotificationCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+NotificationCenter.swift"; sourceTree = "<group>"; };
+		4A0C2E902A5559580008B815 /* WarningImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningImage.swift; sourceTree = "<group>"; };
 		4A27D0D629289050007FC2DD /* ScheduleAdditionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleAdditionView.swift; sourceTree = "<group>"; };
 		4A27D0D92928A217007FC2DD /* MainTopMiddleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTopMiddleView.swift; sourceTree = "<group>"; };
 		4A27D0DB2928A224007FC2DD /* MainTopLeftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTopLeftView.swift; sourceTree = "<group>"; };
@@ -367,6 +372,7 @@
 				4A0724532918B607005AA8B7 /* Main */,
 				4A301CD5298CF4FA005ACE70 /* ExitButton.swift */,
 				4A301CD7298CF6DB005ACE70 /* Logo.swift */,
+				4A0C2E902A5559580008B815 /* WarningImage.swift */,
 			);
 			path = Scene;
 			sourceTree = "<group>";
@@ -509,6 +515,7 @@
 				4AD96EF72928B76A00C31C06 /* Date+Extension.swift */,
 				4AAC0A482931DBB5009CB29C /* Tag+Extension.swift */,
 				4AD00592295982CA00041173 /* Alert+Extension.swift */,
+				4A0C2E8E2A5553D30008B815 /* Extension+NotificationCenter.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -899,6 +906,7 @@
 				4AD005FA2959927100041173 /* Tag+CoreDataClass.swift in Sources */,
 				4A301CD2298CD917005ACE70 /* SignupView.swift in Sources */,
 				4A27D0D729289050007FC2DD /* ScheduleAdditionView.swift in Sources */,
+				4A0C2E912A5559580008B815 /* WarningImage.swift in Sources */,
 				4AF36EB32981184A00338B7A /* HalfSheetController.swift in Sources */,
 				4AAC0A452931D9DB009CB29C /* TimeInfo.swift in Sources */,
 				4AD005FF295992A900041173 /* Schedule+CoreDataProperties.swift in Sources */,
@@ -921,6 +929,7 @@
 				4A301CCC298BB224005ACE70 /* DCAccountAPI.swift in Sources */,
 				4A97D2932A33911F0041EB6F /* DCScheduleAPI.swift in Sources */,
 				4A54DD6529CC2BDA005A3E20 /* DeveloperConfiguration.swift in Sources */,
+				4A0C2E8F2A5553D30008B815 /* Extension+NotificationCenter.swift in Sources */,
 				4A301CD4298CEC9A005ACE70 /* SignupViewModel.swift in Sources */,
 				4A0724572918B647005AA8B7 /* MainTopView.swift in Sources */,
 				4AD005F22959927100041173 /* TagUpdateLog+CoreDataClass.swift in Sources */,
@@ -985,6 +994,7 @@
 				4A54DD2A29CC2122005A3E20 /* Logo.swift in Sources */,
 				4A54DD2B29CC2122005A3E20 /* TagManager.swift in Sources */,
 				4A54DD2C29CC2122005A3E20 /* DreamCalendar.xcdatamodeld in Sources */,
+				4A0C2E922A55595B0008B815 /* WarningImage.swift in Sources */,
 				4A54DD2D29CC2122005A3E20 /* MainTopLeftView.swift in Sources */,
 				4A54DD2E29CC2122005A3E20 /* TagPicker.swift in Sources */,
 				4A54DD2F29CC2122005A3E20 /* MainView.swift in Sources */,

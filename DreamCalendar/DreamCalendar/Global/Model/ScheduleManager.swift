@@ -12,8 +12,11 @@ final class ScheduleManager {
     
     private let viewContext: NSManagedObjectContext
     private var scheduleAdditionViewModel: ScheduleAdditionViewModel?
-    @Published private var localCommitLog: [ScheduleUpdateLog]
+    @Published private(set) var localCommitLog: [ScheduleUpdateLog]
     private var cancellable: AnyCancellable?
+    var notUpdatedSchedules: [Schedule] {
+        return self.localCommitLog.map({ $0.schedule })
+    }
     
     private var networkManager: NetworkManager?
     
@@ -60,6 +63,8 @@ final class ScheduleManager {
     private func refreshLocalCommitLogs() {
         let request = ScheduleUpdateLog.fetchRequest()
         self.localCommitLog = ((try? self.viewContext.fetch(request)) ?? []).sorted(by: { $0.createdDate < $1.createdDate })
+        
+        NotificationCenter.default.post(name: .backgroundUpdated, object: nil, userInfo: nil);
     }
     
     private func pushLocalCommitLog(_ localCommitLogs: [ScheduleUpdateLog], withAccessToken accessToken: String) async throws {

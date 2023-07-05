@@ -76,11 +76,11 @@ struct MainView: View, MainTopViewDelegate {
     }
     
     @ViewBuilder
-    private func calendarView(with schedules: [Schedule], at date: Date) -> some View {
+    private func calendarView(with schedules: [(Schedule, Bool)], at date: Date) -> some View {
         VStack(spacing: Constraint.zeroPadding) {
             CalendarView(defaultDate: date,
                          selectedDate: self.$viewModel.selectedDate,
-                         schedules: schedules.map({$0.scheduleForUI}),
+                         schedules: schedules.map({$0.0.scheduleForUI(isNotUpdated: $0.1 == false)}),
                          isShortMode: self.viewModel.isDetailMode)
             Spacer()
         }

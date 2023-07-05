@@ -32,13 +32,13 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate, AdditionV
     private var cancellables: Set<AnyCancellable> = Set<AnyCancellable>()
     let scheduleManager: ScheduleManager
     
-    @Published private(set) var schedules: [Date: [Schedule]]
+    @Published private(set) var schedules: [Date: [(Schedule, Bool)]]
     @Published private(set) var error: Error? = nil
     @Published var isShowAlert: Bool = false
     
-    var schedulesForSelectedDate: [Schedule]
+    var schedulesForSelectedDate: [(Schedule, Bool)]
     
-    var scheduleCollection: [(date: Date, schedules: [Schedule])] {
+    var scheduleCollection: [(date: Date, schedules: [(Schedule, Bool)])] {
         return self.schedules.map({ (date: $0.key, schedules: $0.value) }).sorted(by: { $0.date < $1.date })
     }
     
@@ -82,6 +82,10 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate, AdditionV
         self.isShowAlert = false
         self.fetchAllSchedules(with: self.date)
         self.binding()
+        
+        NotificationCenter.default.addObserver(forName: .backgroundUpdated, object: nil, queue: nil) { [weak self] _ in
+            self?.refreshMainViewSchedule()
+        }
     }
     
     deinit {
@@ -171,7 +175,8 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate, AdditionV
     private func fetchSchedules(with date: Date) {
         do {
             let schedules = try self.scheduleManager.getSchedule(in: date)
-            self.schedules.updateValue(schedules, forKey: date)
+            let notUpdatedSchedules = Set(self.scheduleManager.localCommitLog.map({ $0.schedule }))
+            self.schedules.updateValue(schedules.map({($0, notUpdatedSchedules.contains($0) == false)}), forKey: date)
         } catch {
             self.changeError(DCError.coreData(error))
         }
@@ -237,9 +242,11 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate, AdditionV
         }
     }
     
-    private func schedulesOnDate(date: Date) -> [Schedule] {
-        return self.schedules[date.firstDayOfMonth]?.filter({ schedule in
-            schedule.isValid && schedule.isInclude(with: date)
+    private func schedulesOnDate(date: Date) -> [(Schedule, Bool)] {
+        return self.schedules[date.firstDayOfMonth]?.map({$0.0}).filter({ schedule in
+            return schedule.isValid && schedule.isInclude(with: date)
+        }).map({ [weak self] schedule in
+            return (schedule, self?.scheduleManager.notUpdatedSchedules.contains(schedule) == true)
         }) ?? []
     }
 }

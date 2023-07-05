@@ -158,6 +158,10 @@ struct BlockView: View {
         static let width: CGFloat = 46
         static let zeroPadding: CGFloat = 0
         static let blockHorizontalInterval: CGFloat = 2
+        static let warningImageWidthHeight: CGFloat = 10
+        static let warningImageTextInterval: CGFloat = 1
+        
+        static let warningImageName: String = "exclamationmark.triangle"
     }
     
     init(schedule: ScheduleBlock?, in week: Week) {
@@ -172,14 +176,36 @@ struct BlockView: View {
     
     var body: some View {
         ZStack {
-            Text(schedule?.title ?? "공백")
-                .font(.AppleSDBold12)
-                .foregroundColor(schedule?.fontColor ?? .clear)
-                .frame(height: Constraint.height, alignment: .center)
+            HStack(spacing: 0) {
+                if schedule?.schedule.isNotUpdated == true {
+                    self.warningImage
+                }
+                self.title
+            }
         }
         .frame(width: self.width, height: Constraint.height)
         .background(schedule?.backgroundColor ?? .clear)
         .cornerRadius(Constraint.cornerRadius)
+    }
+    
+    private var warningImage: some View {
+        Image(systemName: Constraint.warningImageName)
+            .resizable()
+            .foregroundColor(schedule?.fontColor ?? .gray)
+            .frame(width: Constraint.warningImageWidthHeight,
+                   height: Constraint.warningImageWidthHeight,
+                   alignment: .center)
+            .padding(EdgeInsets(top: Constraint.zeroPadding,
+                                leading: Constraint.zeroPadding,
+                                bottom: Constraint.zeroPadding,
+                                trailing: Constraint.warningImageTextInterval))
+    }
+    
+    private var title: some View {
+        Text(schedule?.title ?? "공백")
+            .font(.AppleSDBold12)
+            .foregroundColor(schedule?.fontColor ?? .clear)
+            .frame(height: Constraint.height, alignment: .center)
     }
 }
 
