@@ -25,6 +25,7 @@ final class ScheduleManager {
         
         self.cancellable = self.$localCommitLog
             .dropFirst(2)
+            .removeDuplicates()
             .sink(receiveValue: { [weak self] logs in
                 guard logs.isEmpty == false ,
                       let accessToken = AccountManager.global.user.accessToken,
