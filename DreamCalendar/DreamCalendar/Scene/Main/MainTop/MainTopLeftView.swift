@@ -20,6 +20,8 @@ struct MainTopLeftView: View {
         static let settingsButtonImageTitle: String = "gearshape"
         static let todayButtonImageTitle: String = "arrowshape.turn.up.backward"
         static let buttonHeight: CGFloat = 20
+        
+        static let imageHeightWidth: CGFloat = 20
     }
     
     private let delegate: MainTopLeftViewDelegate
@@ -34,6 +36,8 @@ struct MainTopLeftView: View {
                 delegate.settingsButtonDidTouched()
             } label: {
                 Image(systemName: Constraint.settingsButtonImageTitle)
+                    .resizable()
+                    .frame(width: Constraint.imageHeightWidth, height: Constraint.buttonHeight)
                     .foregroundColor(.buttonGray)
             }
             .frame(height: Constraint.buttonHeight)
@@ -41,6 +45,8 @@ struct MainTopLeftView: View {
                 delegate.todayButtonDidTouched()
             } label: {
                 Image(systemName: Constraint.todayButtonImageTitle)
+                    .resizable()
+                    .frame(width: Constraint.imageHeightWidth, height: Constraint.buttonHeight)
                     .foregroundColor(.buttonGray)
             }
             .frame(height: Constraint.buttonHeight)

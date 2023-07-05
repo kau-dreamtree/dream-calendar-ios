@@ -150,6 +150,7 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate, AdditionV
     }
     
     func goToToday() {
+        guard self.selectedDate != Date.today else { return }
         self.selectedDate = Date.today
         self.date = self.selectedDate.firstDayOfMonth
     }

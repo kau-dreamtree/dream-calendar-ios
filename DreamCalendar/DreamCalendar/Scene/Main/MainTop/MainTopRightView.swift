@@ -15,27 +15,41 @@ protocol MainTopRightViewDelegate {
 struct MainTopRightView: View {
     private let delegate: MainTopRightViewDelegate
     
+    private struct Constraint {
+        static let buttonHeight: CGFloat = 20
+        static let spacing: CGFloat = 15
+        
+        static let imageHeightWidth: CGFloat = 20
+        
+        static let searchImageTitle: String = "magnifyingglass"
+        static let writeImageTitle: String = "square.and.pencil"
+    }
+    
     init(delegate: MainTopRightViewDelegate) {
         self.delegate = delegate
     }
     
     var body: some View {
-        HStack(spacing: 15) {
+        HStack(spacing: Constraint.spacing) {
             Button {
                 // TODO: search action 지정 필요
                 delegate.searchButtonDidTouched()
             } label: {
-                Image(systemName: "magnifyingglass")
+                Image(systemName: Constraint.searchImageTitle)
+                    .resizable()
+                    .frame(width: Constraint.imageHeightWidth, height: Constraint.buttonHeight)
                     .foregroundColor(.buttonGray)
             }
-            .frame(height: 20)
+            .frame(height: Constraint.buttonHeight)
             Button {
                 delegate.writeButtonDidTouched()
             } label: {
-                Image(systemName: "square.and.pencil")
+                Image(systemName: Constraint.writeImageTitle)
+                    .resizable()
+                    .frame(width: Constraint.imageHeightWidth, height: Constraint.buttonHeight)
                     .foregroundColor(.buttonGray)
             }
-            .frame(height: 20)
+            .frame(height: Constraint.buttonHeight)
         }
     }
 }
