@@ -32,19 +32,19 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate, AdditionV
     private var cancellables: Set<AnyCancellable> = Set<AnyCancellable>()
     let scheduleManager: ScheduleManager
     
-    @Published private(set) var schedules: [Date: [Schedule]]
+    @Published private(set) var schedules: [Date: [(Schedule, Bool)]]
     @Published private(set) var error: Error? = nil
     @Published var isShowAlert: Bool = false
     
-    var schedulesForSelectedDate: [Schedule]
+    var schedulesForSelectedDate: [(Schedule, Bool)]
     
-    var scheduleCollection: [(date: Date, schedules: [Schedule])] {
+    var scheduleCollection: [(date: Date, schedules: [(Schedule, Bool)])] {
         return self.schedules.map({ (date: $0.key, schedules: $0.value) }).sorted(by: { $0.date < $1.date })
     }
     
-    init(_ context: NSManagedObjectContext, selectedYear: Int? = nil, month selectedMonth: Int? = nil, day selectedDay: Int? = 32) {
+    init(_ scheduleManager: ScheduleManager, selectedYear: Int? = nil, month selectedMonth: Int? = nil, day selectedDay: Int? = 32) {
         
-        self.scheduleManager = ScheduleManager(viewContext: context)
+        self.scheduleManager = scheduleManager
         
         let year: Int, month: Int, day: Int
         var selectedDate = Date()
@@ -82,6 +82,10 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate, AdditionV
         self.isShowAlert = false
         self.fetchAllSchedules(with: self.date)
         self.binding()
+        
+        NotificationCenter.default.addObserver(forName: .backgroundUpdated, object: nil, queue: nil) { [weak self] _ in
+            self?.refreshMainViewSchedule()
+        }
     }
     
     deinit {
@@ -159,17 +163,20 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate, AdditionV
     }
     
     private func fetchAllSchedules(with current: Date) {
-        self.fetchSchedules(with: current.previousMonth.previousMonth)
-        self.fetchSchedules(with: current.previousMonth)
-        self.fetchSchedules(with: current)
-        self.fetchSchedules(with: current.nextMonth)
-        self.fetchSchedules(with: current.nextMonth.nextMonth)
+        DispatchQueue.main.async {
+            self.fetchSchedules(with: current.previousMonth.previousMonth)
+            self.fetchSchedules(with: current.previousMonth)
+            self.fetchSchedules(with: current)
+            self.fetchSchedules(with: current.nextMonth)
+            self.fetchSchedules(with: current.nextMonth.nextMonth)
+        }
     }
     
     private func fetchSchedules(with date: Date) {
         do {
             let schedules = try self.scheduleManager.getSchedule(in: date)
-            self.schedules.updateValue(schedules, forKey: date)
+            let notUpdatedSchedules = Set(self.scheduleManager.localCommitLog.map({ $0.schedule }))
+            self.schedules.updateValue(schedules.map({($0, notUpdatedSchedules.contains($0) == false)}), forKey: date)
         } catch {
             self.changeError(DCError.coreData(error))
         }
@@ -229,13 +236,17 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate, AdditionV
     }
     
     func refreshMainViewSchedule() {
-        self.fetchAllSchedules(with: self.date)
-        self.schedulesForSelectedDate = schedulesOnDate(date: self.selectedDate)
+        DispatchQueue.main.async {
+            self.fetchAllSchedules(with: self.date)
+            self.schedulesForSelectedDate = self.schedulesOnDate(date: self.selectedDate)
+        }
     }
     
-    private func schedulesOnDate(date: Date) -> [Schedule] {
-        return self.schedules[date.firstDayOfMonth]?.filter({ schedule in
-            schedule.isValid && schedule.isInclude(with: date)
+    private func schedulesOnDate(date: Date) -> [(Schedule, Bool)] {
+        return self.schedules[date.firstDayOfMonth]?.map({$0.0}).filter({ schedule in
+            return schedule.isValid && schedule.isInclude(with: date)
+        }).map({ [weak self] schedule in
+            return (schedule, self?.scheduleManager.notUpdatedSchedules.contains(schedule) == true)
         }) ?? []
     }
 }

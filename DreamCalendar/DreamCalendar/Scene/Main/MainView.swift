@@ -57,15 +57,16 @@ struct MainView: View, MainTopViewDelegate {
                     self.calendarViewIndex = CGFloat(MainViewModel.centerIndex) - (value.translation.width / proxy.size.width)
                 }
                 .onEnded { value in
+                    // TODO: 속도 반영하여 스와이핑
                     let index: CGFloat
-                    if abs(value.translation.width) >= proxy.size.width / 2 {
+                    if abs(value.translation.width) >= proxy.size.width / 3 {
                         let addition = value.translation.width > 0 ? 0 : 1
                         index = CGFloat((Int(self.calendarViewIndex) + addition))
                     } else {
                         let addition = value.translation.width > 0 ? 1 : 0
                         index = CGFloat(Int(self.calendarViewIndex) + addition)
                     }
-                    let duration: CGFloat = ((proxy.size.width - abs(value.translation.width)) / proxy.size.width)
+                    let duration: CGFloat = ((proxy.size.width - abs(value.translation.width)) / (proxy.size.width * 2))
                     withAnimation(.easeOut(duration: duration)) {
                         self.calendarViewIndex = CGFloat(MainViewModel.centerIndex)
                         self.viewModel.changeIndex(Int(index))
@@ -75,11 +76,11 @@ struct MainView: View, MainTopViewDelegate {
     }
     
     @ViewBuilder
-    private func calendarView(with schedules: [Schedule], at date: Date) -> some View {
+    private func calendarView(with schedules: [(Schedule, Bool)], at date: Date) -> some View {
         VStack(spacing: Constraint.zeroPadding) {
             CalendarView(defaultDate: date,
                          selectedDate: self.$viewModel.selectedDate,
-                         schedules: schedules.map({$0.scheduleForUI}),
+                         schedules: schedules.map({$0.0.scheduleForUI(isNotUpdated: $0.1 == false)}),
                          isShortMode: self.viewModel.isDetailMode)
             Spacer()
         }
@@ -149,7 +150,7 @@ struct MainView: View, MainTopViewDelegate {
 enum DCError: Error {
     static let title: String = "오류"
     
-    case unknown, coreData(Error), network(URLResponse), urlError, requestError(Error), decodingError(Error), serverError, accountError
+    case unknown, coreData(Error), network(URLResponse), urlError, requestError(Error), decodingError(Data), serverError, accountError, batchError, connection
     
     var message: String {
         switch self {
@@ -161,6 +162,8 @@ enum DCError: Error {
         case .decodingError: return "서버 오류입니다. \n관리자에게 문의해주세요."
         case .serverError: return "서버 오류입니다. \n관리자에게 문의해주세요."
         case .accountError: return "계정 정보 오류입니다. \n재접속 해주세요."
+        case .batchError: return "코어 데이터 오류입니다. \n앱을 재시동 해주세요."
+        case .connection : return "네트워크 연결에 실패했습니다.\n네트워크 환경을 확인해주세요."
         }
     }
 }

@@ -20,20 +20,28 @@ fileprivate struct NetworkContainer {
         
         """)
         
-        let (data, response) = try await URLSession.shared.data(for: request)
-        print("""
-        
-        Response >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        statusCode : \((response as? HTTPURLResponse)?.statusCode ?? 0)
-        data : \(String(data: data, encoding: String.Encoding.utf8) ?? "nil")
-        <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-        
-        """)
-        guard let httpResponse = response as? HTTPURLResponse,
-              (100..<500) ~= httpResponse.statusCode else {
-            throw DCError.network(response)
+        do {
+            let (data, response) = try await URLSession.shared.data(for: request)
+            
+            print("""
+            
+            Response >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+            statusCode : \((response as? HTTPURLResponse)?.statusCode ?? 0)
+            data : \(String(data: data, encoding: String.Encoding.utf8) ?? "nil")
+            <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+            
+            """)
+            guard let httpResponse = response as? HTTPURLResponse,
+                  (100..<500) ~= httpResponse.statusCode else {
+                throw DCError.network(response)
+            }
+            if httpResponse.statusCode == 408 {
+                throw DCError.network(response)
+            }
+            return (httpResponse.statusCode, data)
+        } catch {
+            throw DCError.connection
         }
-        return (httpResponse.statusCode, data)
     }
 }
 

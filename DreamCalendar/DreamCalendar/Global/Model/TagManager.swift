@@ -49,6 +49,9 @@ final class TagManager {
         try self.viewContext.save()
         let tags = try self.fetchAllTag()
         tags.forEach() { tag in
+            if self.tags[Int(tag.id)] != tag {
+                // TODO: TagUpdateLog 기록 추가
+            }
             self.tags.updateValue(tag, forKey: Int(tag.id))
         }
     }
@@ -59,6 +62,8 @@ final class TagManager {
             tag.order = tag.type.defaultOrder
             tag.title = tag.type.defaultTitle
         }
+        
+        
         try self.viewContext.save()
     }
     

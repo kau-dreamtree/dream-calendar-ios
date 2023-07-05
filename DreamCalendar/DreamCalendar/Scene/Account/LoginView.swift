@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-
+import Network
 
 protocol InputableField: View {
     init(_ titleKey: LocalizedStringKey, text: Binding<String>)

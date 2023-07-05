@@ -23,6 +23,9 @@ struct ScheduleDetailView: View {
         static let timeInfoInterval: CGFloat = 20
         static let circleTagTitleInterval: CGFloat = 5
         
+        static let warningImageHeightWidth: CGFloat = 10
+        static let titleImageInterval: CGFloat = 2
+        
         static let tagTitle: String = "태그"
         
         static let menuEditButtonTitle: String = "수정"
@@ -91,6 +94,9 @@ struct ScheduleDetailView: View {
                                     leading: Constraint.zeroPadding,
                                     bottom: Constraint.zeroPadding,
                                     trailing: Constraint.circleTagTitleInterval))
+            if self.viewModel.scheduleIsNotUpdated == true {
+                WarningImage(color: self.viewModel.schedule.tagType.color)
+            }
             Text(self.viewModel.schedule.title)
                 .font(.AppleSDBold16)
                 .foregroundColor(.black)

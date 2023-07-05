@@ -16,12 +16,13 @@ public struct Schedule: Codable {
     let endTime: Date
     let tag: TagUI
     let isValid: Bool
+    let isNotUpdated: Bool
     
     public static func ==(lhs: Self, rhs: Self) -> Bool {
         return lhs.id == rhs.id
     }
     
-    public init(id: UUID, serverId: Int, title: String, isAllDay: Bool, startTime: Date, endTime: Date, tag: TagUI, isValid: Bool) {
+    public init(id: UUID, serverId: Int, title: String, isAllDay: Bool, startTime: Date, endTime: Date, tag: TagUI, isValid: Bool, isNotUpdated: Bool) {
         self.id = id
         self.serverId = serverId
         self.title = title
@@ -30,6 +31,7 @@ public struct Schedule: Codable {
         self.endTime = endTime
         self.tag = tag
         self.isValid = isValid
+        self.isNotUpdated = isNotUpdated
     }
     
     var length: Int {

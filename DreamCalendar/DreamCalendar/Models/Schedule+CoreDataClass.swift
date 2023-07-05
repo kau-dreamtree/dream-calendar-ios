@@ -22,7 +22,7 @@ public class Schedule: NSManagedObject {
 import CalendarUI
 
 extension Schedule {
-    var scheduleForUI: CalendarUI.Schedule {
+    func scheduleForUI(isNotUpdated: Bool) -> CalendarUI.Schedule {
         let schedule = CalendarUI.Schedule(id: self.id,
                                            serverId: Int(self.serverId),
                                            title: self.title,
@@ -30,7 +30,8 @@ extension Schedule {
                                            startTime: self.startTime,
                                            endTime: self.endTime,
                                            tag: CalendarUI.TagUI(rawValue: Int(self.tagId)),
-                                           isValid: self.isValid)
+                                           isValid: self.isValid,
+                                           isNotUpdated: isNotUpdated)
         return schedule
     }
 }

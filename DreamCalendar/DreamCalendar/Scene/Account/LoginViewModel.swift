@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import CoreData
+import Network
 
 final class LoginViewModel: ObservableObject {
     
@@ -14,19 +16,21 @@ final class LoginViewModel: ObservableObject {
     @Published var didError: Bool
     @Published private(set) var loginMessage: String?
     private(set) var error: Error?
+    private let scheduleManager: ScheduleManager
     
-    init(email: String = "", password: String = "") {
+    init(email: String = "", password: String = "", scheduleManager: ScheduleManager) {
         self.email = email
         self.password = password
         self.didError = false
         self.loginMessage = nil
         self.error = nil
+        self.scheduleManager = scheduleManager
     }
     
     @MainActor
     func login() async {
         do {
-            try await AccountManager.global.login(email: self.email, password: self.password)
+            try await AccountManager.global.login(email: self.email, password: self.password, scheduleManager: self.scheduleManager)
             if AccountManager.global.didLogin == false {
                 self.loginMessage = "이메일 또는 비밀번호가 틀렸습니다."
             }

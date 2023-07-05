@@ -17,6 +17,7 @@ final class ScheduleDetailViewModel: ObservableObject {
     private let date: Date
     private let delegate: ScheduleDetailViewDelegate
     let scheduleEditingDelegate: AdditionViewPresentDelegate & RefreshMainViewDelegate
+    let scheduleIsNotUpdated: Bool
     
     @Published var isEditingMode: Bool = false
     @Published private(set) var error: Error? = nil
@@ -51,6 +52,7 @@ final class ScheduleDetailViewModel: ObservableObject {
         self.date = date
         self.delegate = delegate
         self.scheduleEditingDelegate = scheduleEditingDelegate
+        self.scheduleIsNotUpdated = scheduleManager.notUpdatedSchedules.contains(schedule)
     }
     
     func closeDetailView() {
@@ -62,12 +64,14 @@ final class ScheduleDetailViewModel: ObservableObject {
     }
     
     func deleteSchedule() {
-        do {
-            try self.scheduleManager.deleteSchedule(self.schedule)
-            self.scheduleEditingDelegate.refreshMainViewSchedule()
-            self.delegate.closeDetailView()
-        } catch {
-            self.error = error
+        Task {
+            do {
+                try await self.scheduleManager.deleteSchedule(self.schedule)
+                self.scheduleEditingDelegate.refreshMainViewSchedule()
+                self.delegate.closeDetailView()
+            } catch {
+                self.error = error
+            }
         }
     }
     

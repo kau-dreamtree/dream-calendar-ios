@@ -112,7 +112,7 @@ final class DCAPI {
             do {
                 return try JSONDecoder().decode(responseType, from: data)
             } catch {
-                throw DCError.decodingError(error)
+                throw DCError.decodingError(data)
             }
         }
     }
