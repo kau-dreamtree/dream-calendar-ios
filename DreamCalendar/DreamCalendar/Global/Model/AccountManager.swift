@@ -129,10 +129,10 @@ final class AccountManager: ObservableObject {
                 self.user.reset()
                 throw error
             }
-        case 404 :
-            break
-        default :
+        case 500..<600 :
             throw DCError.serverError
+        default :
+            throw DCError.unknown
         }
     }
     
