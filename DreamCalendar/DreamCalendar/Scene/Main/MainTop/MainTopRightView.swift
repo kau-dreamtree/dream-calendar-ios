@@ -32,7 +32,7 @@ struct MainTopRightView: View {
     var body: some View {
         HStack(spacing: Constraint.spacing) {
             Button {
-                // TODO: search action 지정 필요
+                // TODO: search action 지정 후 hidden 해지 필요
                 delegate.searchButtonDidTouched()
             } label: {
                 Image(systemName: Constraint.searchImageTitle)
@@ -41,6 +41,7 @@ struct MainTopRightView: View {
                     .foregroundColor(.buttonGray)
             }
             .frame(height: Constraint.buttonHeight)
+            .hidden()
             Button {
                 delegate.writeButtonDidTouched()
             } label: {

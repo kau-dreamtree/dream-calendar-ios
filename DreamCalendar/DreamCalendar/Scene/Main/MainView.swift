@@ -59,17 +59,20 @@ struct MainView: View, MainTopViewDelegate {
                 .onEnded { value in
                     // TODO: 속도 반영하여 스와이핑
                     let index: CGFloat
-                    if abs(value.translation.width) >= proxy.size.width / 3 {
-                        let addition = value.translation.width > 0 ? 0 : 1
+                    let zero: CGFloat = 0
+                    let standard: CGFloat = 3
+                    if abs(value.predictedEndTranslation.width) >= proxy.size.width / standard {
+                        let addition = value.predictedEndTranslation.width > zero ? 0 : 1
                         index = CGFloat((Int(self.calendarViewIndex) + addition))
                     } else {
-                        let addition = value.translation.width > 0 ? 1 : 0
+                        let addition = value.predictedEndTranslation.width > zero ? 1 : 0
                         index = CGFloat(Int(self.calendarViewIndex) + addition)
                     }
-                    let duration: CGFloat = ((proxy.size.width - abs(value.translation.width)) / (proxy.size.width * 2))
+                    let minDuration: CGFloat = 0.3
+                    let duration: CGFloat = max(minDuration, ((proxy.size.width - abs(value.predictedEndTranslation.width)) / (proxy.size.width)))
                     withAnimation(.easeOut(duration: duration)) {
-                        self.calendarViewIndex = CGFloat(MainViewModel.centerIndex)
                         self.viewModel.changeIndex(Int(index))
+                        self.calendarViewIndex = CGFloat(MainViewModel.centerIndex)
                     }
                 })
         }

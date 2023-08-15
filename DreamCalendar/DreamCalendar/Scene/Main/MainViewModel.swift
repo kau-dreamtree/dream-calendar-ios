@@ -28,7 +28,7 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate, AdditionV
     @Published var isDetailWritingMode: Bool = false
     
     @Published var selectedDate: Date
-    @Published var date: Date
+    @Published private var date: Date
     private var cancellables: Set<AnyCancellable> = Set<AnyCancellable>()
     let scheduleManager: ScheduleManager
     
