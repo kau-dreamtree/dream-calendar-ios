@@ -141,9 +141,9 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate, AdditionV
         let pageUnit = 1
         switch index {
         case Self.centerIndex - pageUnit :
-            self.date = self.date.previousMonth
+            self.goToPreviousMonth()
         case Self.centerIndex + pageUnit :
-            self.date = self.date.nextMonth
+            self.goToNextMonth()
         default :
             break
         }
@@ -152,14 +152,16 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate, AdditionV
     func goToToday() {
         guard self.selectedDate != Date.today else { return }
         self.selectedDate = Date.today
-        self.date = self.selectedDate.firstDayOfMonth
+        self.date = Date.today.firstDayOfMonth
     }
     
     func goToPreviousMonth() {
+        self.selectedDate = self.date.previousMonth.firstDayOfMonth
         self.date = self.date.previousMonth
     }
     
     func goToNextMonth() {
+        self.selectedDate = self.date.nextMonth.firstDayOfMonth
         self.date = self.date.nextMonth
     }
     
@@ -254,7 +256,17 @@ final class MainViewModel: ObservableObject, DateManipulationDelegate, AdditionV
 
 fileprivate extension Date {
     static let today: Date = {
-        return Date().firstDayOfMonth
+        let current = Date()
+        let zero = 0
+        return Calendar.current.date(from: DateComponents(
+            calendar: Calendar.current,
+            year: current.year,
+            month: current.month,
+            day: current.day,
+            hour: zero,
+            minute: zero,
+            second: zero,
+            nanosecond: zero)) ?? current
     }()
 }
 

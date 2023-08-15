@@ -19,7 +19,8 @@ struct User {
     
     var accessToken: String? {
         get {
-            return UserDefaults.standard.string(forKey: Keys.accessTokenKey)
+            guard let token = UserDefaults.standard.string(forKey: Keys.accessTokenKey) else { return nil }
+            return "Bearer \(token)"
         }
         set {
             UserDefaults.standard.set(newValue, forKey: Keys.accessTokenKey)
@@ -28,7 +29,8 @@ struct User {
     
     var refreshToken: String? {
         get {
-            return UserDefaults.standard.string(forKey: Keys.refreshTokenKey)
+            guard let token = UserDefaults.standard.string(forKey: Keys.refreshTokenKey) else { return nil }
+            return "Bearer \(token)"
         }
         set {
             UserDefaults.standard.set(newValue, forKey: Keys.refreshTokenKey)
